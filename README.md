@@ -1,4 +1,4 @@
-*Kingdom Heart Save Editor*
+# Kingdom Heart Save Editor
 
 For now only KH1 and KH1FM are supported. Any other KH game is a very longterm goal.
 
