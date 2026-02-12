@@ -17,6 +17,8 @@ def __create_journal(tab):
         return create_journal_characters()
     if tab == "101 Dalmatians":
         return create_dalmatians()
+    if tab == "Trinity List":
+        return create_trinity()
 
 def create_journal():
     jtabs = dcc.Tabs(id="JournalTabs", value="Journal Flags")
@@ -34,4 +36,3 @@ def create_journal():
         jtabs,
         html.Div(id="JournalDiv"),
     ])
-    
