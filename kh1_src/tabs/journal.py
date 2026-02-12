@@ -7,12 +7,31 @@ import kh1_src.kh1_utils as utils
     Input("JournalTabs", "value"),
 )
 def __create_journal(tab):
+    if tab == "Chronicles":
+        return __create_chronicles()
     if tab == "Ansem's Report":
         return __create_reports()
     if tab == "Characters":
         return __create_journal_characters()
     if tab == "101 Dalmatians":
         return __create_dalmatians()
+
+def __create_chronicles():
+    kh1 = utils.kh1
+    chronicles = [
+        html.Div([
+            dcc.Markdown(list(kh1.chronicles_dict.keys())[i]),
+            dcc.Checklist(
+                options=[
+                    {"label": f"Part {j+1}", "value": (1 << 7 - j)}\
+                    for j in range(list(kh1.chronicles_dict.values())[i])
+                ],
+                value=[kh1.chronicles[i] & (1 << j) for j in range(8)],
+                id={"type": "Chronicle", "index": i},
+            )
+        ]) for i in range(len(kh1.chronicles))
+    ]
+    return html.Div(chronicles, style={"margin-top": 20})
 
 def __create_reports():
     kh1 = utils.kh1
@@ -155,6 +174,14 @@ def the_heartless_callback(values, ids):
         pass
 
 @callback(
+    Input({"type": "Chronicle", "index": ALL}, "value"),
+)
+def chronicles_callback(values):
+    kh1 = utils.kh1
+    for i in range(len(kh1.chronicles)):
+        kh1.chronicles[i] = sum(values[i])
+
+@callback(
     Input({"type": "Report", "index": ALL}, "value"),
 )
 def reports_callback(values):
@@ -185,3 +212,4 @@ def dalmatians_callback(values):
     kh1 = utils.kh1
     for i in range(len(kh1.dalmatians)):
         kh1.dalmatians[i] = sum(values[i])
+        
