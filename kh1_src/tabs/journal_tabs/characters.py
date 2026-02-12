@@ -31,22 +31,11 @@ def __create_characters_12():
             id={"type": "Journal Character Entry", "index": v},
         ) for k, v in kh1.journal_chars_2_dict.items()
     ])
-    bosses = html.Div([
-        dcc.Checklist(
-            options=[
-                {"label": k, "value": (1 << v % 16)}
-            ],
-            value=[kh1.journal_chars[v // 16] & (1 << v % 16)],
-            id={"type": "Journal Character Entry", "index": v},
-        ) for k, v in kh1.journal_boss_dict.items()
-    ])
     return html.Div([
         html.H3("Characters 1:"),
         chars1,
         html.H3("Characters 2:"),
         chars2,
-        html.H3("Heartless Bosses:"),
-        bosses,
     ])
 
 def __create_the_heartless():
@@ -68,7 +57,21 @@ def __create_the_heartless():
             style={"margin-top": 20, "gap": 10},
         ) for k, v in zip(heartlessnames, range(len(heartlessnames)))
     ])
-    return html.Div([html.H3("Heartless Kill Counts:"), heartless])
+    bosses = html.Div([
+        dcc.Checklist(
+            options=[
+                {"label": k, "value": (1 << v % 16)}
+            ],
+            value=[kh1.journal_chars[v // 16] & (1 << v % 16)],
+            id={"type": "Journal Character Entry", "index": v},
+        ) for k, v in kh1.journal_boss_dict.items()
+    ])
+    return html.Div([
+        html.H3("Heartless Kill Counts:"),
+        heartless,
+        html.H3("Heartless Bosses:"),
+        bosses,
+    ])
 
 def create_journal_characters():
     jctabs = dcc.Tabs(id="JournalCharactersTabs", value="Characters 1 & 2")
@@ -102,12 +105,9 @@ def the_heartless_callback(values, ids):
 )
 def journal_characters_callback(values, ids):
     kh1 = utils.kh1
-    l = [[] for i in range(23)]
-    i = 0
-    for id in ids:
-        idx = id["index"] // 16
-        if len(values[i]) > 0:
-            l[idx].append(values[i][-1])
-        i += 1
-    for i in list(range(16)) + [19, 20, 21, 22]: # Skipping unknown bytes
-        kh1.journal_chars[i] = sum(l[i]) if len(l[i]) > 0 else 0
+    for i in range(len(values)):
+        v = ids[i]["index"]
+        if (1 << v % 16) in values[i]:
+            kh1.journal_chars[v // 16] |= (1 << v % 16)
+        else:
+            kh1.journal_chars[v // 16] &= ~(1 << v % 16)
