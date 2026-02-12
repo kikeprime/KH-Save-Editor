@@ -1,13 +1,8 @@
 from dash import Dash, html, dcc, callback, Input, Output, State, ALL
 
 from kh1_src.kh1 import *
+from kh1_src.tabs import *
 import kh1_src.kh1_utils as utils
-from kh1_src.tabs.general import *
-from kh1_src.tabs.characters import *
-from kh1_src.tabs.inventory import *
-from kh1_src.tabs.journal import *
-from kh1_src.tabs.config import *
-from kh1_src.tabs.gummi import *
 
 
 kh1 = None
