@@ -54,6 +54,7 @@ class KH1GummiShip:
 class KH1:
     def __init__(self, slot=0, fm=False):
         self.dicts()
+        self.trinity_dicts()
         self.gummi_dicts()
         if slot != 0:
             self.fm = fm
@@ -159,7 +160,7 @@ class KH1:
 
         self.trinity_unlock = c_ubyte(data[0x1C1B])
         self.trinity_count = (c_ubyte*6)(*data[0x1C66:0x1C6C]) # Jump, Unused, Charge, Ladder, Push, Detect
-        self.trinity_flags = (c_ubyte*20)(*data[0x1C6C:0x1C80]) # The Trinity flags spread across these but the end offset might change
+        self.trinity_flags = (c_ubyte*0x48)(*data[0x1C6C:0x1CB4]) # The Trinity flags spread across these but the end offset might change
         
         self.world_statuses = (c_ubyte*15)(*data[0x1EF0:0x1EFF])
         self.landingpoints = (c_ubyte*15)(*data[0x1EFF:0x1F0E])
@@ -270,6 +271,7 @@ class KH1:
         
         self.data[0x1C1B] = self.trinity_unlock
         self.data[0x1C66:0x1C6C] = bytearray(self.trinity_count)
+        self.data[0x1C6C:0x1CB4] = bytearray(self.trinity_flags)
         
         self.data[0x1EF0:0x1EFF] = bytearray(self.world_statuses)
         self.data[0x1EFF:0x1F0E] = bytearray(self.landingpoints)
@@ -935,12 +937,39 @@ class KH1:
             "Kurt Zisa": 0x150,
             "Phantom": 0x143,
         }
+    
+    def trinity_dicts(self):
         self.trinity_names = [
             "Trinity Jump",
             "Trinity Charge",
             "Trinity Ladder",
             "Trinity Push",
             "Trinity Detect",
+        ]
+        self.trinity_dict_list = [
+            {
+                "Traverse Town: 1st District: World Exit": 0x05,
+                "Traverse Town: 1st District: Balcony": 0x06,
+                "Traverse Town: Magician's Study": 0x450,
+                "Traverse Town: 3rd District": 0x473,
+                "Wonderland: Lotus Forest: 1": 0x25,
+                "Wonderland: Lotus Forest: 2": 0x26,
+                "Olympus Coliseum: Coliseum Gates: 1": 0x45,
+                "Olympus Coliseum: Coliseum Gates: 2": 0x46,
+                "Deep Jungle: Climbing Trees": 0x64,
+                "Deep Jungle: Camp": 0x65,
+                "Agrabah: Bazaar": 0x86,
+                "Agrabah: Silent Chamber": 0x82,
+                "Monstro: Chamber 5": 0xA3,
+                "Monstro: Throat": 0xA4,
+                "Monstro: Mouth": 0xA5,
+                "Hollow Bastion: Dungeon": 0xF5,
+                "Hollow Bastion: Great Crest": 0xF6,
+            },
+            {},
+            {},
+            {},
+            {},
         ]
     
     def gummi_dicts(self):
@@ -1132,4 +1161,5 @@ class KH1:
             1, 1,
             1, 1, 1,
             # All blueprints have 1 max.
-        ]
+            ]
+        
