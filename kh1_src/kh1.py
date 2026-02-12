@@ -54,6 +54,7 @@ class KH1GummiShip:
 class KH1:
     def __init__(self, slot=0, fm=False):
         self.dicts()
+        self.gummi_dicts()
         if slot != 0:
             self.fm = fm
             if self.fm:
@@ -158,6 +159,7 @@ class KH1:
 
         self.trinity_unlock = c_ubyte(data[0x1C1B])
         self.trinity_count = (c_ubyte*6)(*data[0x1C66:0x1C6C]) # Jump, Unused, Charge, Ladder, Push, Detect
+        self.trinity_flags = (c_ubyte*20)(*data[0x1C6C:0x1C80]) # The Trinity flags spread across these but the end offset might change
         
         self.world_statuses = (c_ubyte*15)(*data[0x1EF0:0x1EFF])
         self.landingpoints = (c_ubyte*15)(*data[0x1EFF:0x1F0E])
@@ -933,6 +935,15 @@ class KH1:
             "Kurt Zisa": 0x150,
             "Phantom": 0x143,
         }
+        self.trinity_names = [
+            "Trinity Jump",
+            "Trinity Charge",
+            "Trinity Ladder",
+            "Trinity Push",
+            "Trinity Detect",
+        ]
+    
+    def gummi_dicts(self):
         self.gummi_block_cockpit_dict = {
             "Cure-G": 0x00,
             "Curaga-G": 0x01,
@@ -1122,4 +1133,3 @@ class KH1:
             1, 1, 1,
             # All blueprints have 1 max.
         ]
-        
