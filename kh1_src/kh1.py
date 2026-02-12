@@ -151,7 +151,8 @@ class KH1:
         # self.boss_journal = (c_ubyte*4)(*data[0x16F6:0x16FA])
         # data[0x16FA:0x1703] is unknown
         self.dalmatians = (c_ubyte*13)(*data[0x1703:0x1710])
-
+        
+        self.chronicles = (c_ubyte*10)(*data[0x1997:0x19BF:4])
         self.reports = (c_ubyte*2)(*data[0x19C0:0x19C2])
         self.journal_unlock = c_ubyte(data[0x19C4]) # bit index 3, 0x1F for completed game so needs further investigation
 
@@ -261,6 +262,7 @@ class KH1:
         self.data[0x16E3:0x16FA] = bytearray(self.journal_chars)
         self.data[0x1703:0x1710] = bytearray(self.dalmatians)
         
+        self.data[0x1997:0x19BF:4] = bytearray(self.chronicles)
         self.data[0x19C0:0x19C2] = bytearray(self.reports)
         self.data[0x19C4] = self.journal_unlock
         
@@ -760,6 +762,19 @@ class KH1:
             "Simba": 0x05,
             "Bahamut": 0x06
         }
+        # The value is the number of parts.
+        self.chronicles_dict = {
+            "Sora's Story": 5,
+            "Wonderland": 3,
+            "Olympus Coliseum": 3,
+            "Deep Jungle": 3,
+            "Agrabah": 3,
+            "Monstro": 3,
+            "Hundred Acre Woods": 2,
+            "Atlantica": 3,
+            "Halloween Town": 3,
+            "Neverland": 3,
+        }
         # Byte index * 16 + bit index
         # Characters with multiple entry flags only have 1 set at a time.
         self.journal_chars_1_dict = {
@@ -1107,3 +1122,4 @@ class KH1:
             1, 1, 1,
             # All blueprints have 1 max.
         ]
+        
