@@ -35,7 +35,8 @@ def __create_trinity(i):
             options=[
                 {"label": k, "value": (1 << v % 16)}
             ],
-            value=[kh1.trinity_flags[v // 16] & (1 << v % 16)],
+            value=[kh1.trinity_flags[v // 16] & (1 << v % 16)] if v != 0x1A40\
+            else [kh1.data[0x1C6C + v // 16] & (1 << v % 16)],
             id={"type": "Trinity", "index": v},
         ) for k, v in kh1.trinity_dict_list[i].items()
     ])
@@ -105,8 +106,14 @@ def trinity_callback(values, ids):
     for i in range(len(values)):
         v = ids[i]["index"]
         if (1 << v % 16) in values[i]:
-            kh1.trinity_flags[v // 16] |= (1 << v % 16)
+            if v != 0x1A40:
+                kh1.trinity_flags[v // 16] |= (1 << v % 16)
+            else:
+                kh1.data[0x1C6C + v // 16] |= (1 << v % 16)
             count += 1
         else:
-            kh1.trinity_flags[v // 16] &= ~(1 << v % 16)
+            if v != 0x1A40:
+                kh1.trinity_flags[v // 16] &= ~(1 << v % 16)
+            else:
+                kh1.data[0x1C6C + v // 16] &= ~(1 << v % 16)
     return [count]
