@@ -160,7 +160,9 @@ class KH1:
 
         self.trinity_unlock = c_ubyte(data[0x1C1B])
         self.trinity_count = (c_ubyte*6)(*data[0x1C66:0x1C6C]) # Jump, Unused, Charge, Ladder, Push, Detect
-        self.trinity_flags = (c_ubyte*0x48)(*data[0x1C6C:0x1CB4]) # The Trinity flags spread across these but the end offset might change
+        # The Trinity flags spread across these.
+        # The OC Lobby Push isn't here but at 0x1E10 bit index 0.
+        self.trinity_flags = (c_ubyte*0x48)(*data[0x1C6C:0x1CB4])
         
         self.world_statuses = (c_ubyte*15)(*data[0x1EF0:0x1EFF])
         self.landingpoints = (c_ubyte*15)(*data[0x1EFF:0x1F0E])
@@ -1039,8 +1041,8 @@ class KH1:
         ]
         self.trinity_dict_list = [
             {
-                "Traverse Town: 1st District: World Exit": 0x05,
-                "Traverse Town: 1st District: Balcony": 0x06,
+                "Traverse Town: 1st District: At the World Exit": 0x06,
+                "Traverse Town: 1st District: On the balcony": 0x05,
                 "Traverse Town: Magician's Study": 0x450,
                 "Traverse Town: 3rd District": 0x473,
                 "Wonderland: Lotus Forest: 1": 0x25,
@@ -1057,9 +1059,32 @@ class KH1:
                 "Hollow Bastion: Dungeon": 0xF5,
                 "Hollow Bastion: Great Crest": 0xF6,
             },
-            {},
-            {},
-            {},
+            {
+                "Traverse Town: 1st District": 0x447,
+                "Traverse Town: 2nd District": 0x454,
+                "Traverse Town: Alleyway": 0x455,
+                "Agrabah: Treasure Room": 0x83,
+                "Halloween Town: Oogie's Manor": 0xC6,
+                "Hollow Bastion: Entrance Hall": 0x107,
+            },
+            {
+                "Traverse Town: Accessory Shop": 0x463,
+                "Wonderland: Bizarre Room": 0x23,
+                "Wonderland: Rabbit Hole": 0x24,
+                "Olympus Coliseum: Coliseum Gates": 0x43,
+                "Deep Jungle: Treetop": 0x63,
+                "Agrabah: Agrabah: Storage": 0x85,
+                "Monstro: Mouth": 0xA6,
+                "Neverland: Ship: Cabin": 0xE0,
+                "Hollow Bastion: Library": 0x106,
+            },
+            {
+                "Traverse Town: Mystical House": 0x16,
+                # Has special treatment since its out of bounds.
+                "Olympus Coliseum: Coliseum: Lobby": 0x1A40,
+                "Agrabah: Cave: Hall": 0x84,
+                "Neverland: Ship: Hold": 0xE1,
+            },
             {},
         ]
     
