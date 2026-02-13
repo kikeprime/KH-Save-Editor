@@ -1252,5 +1252,4 @@ class KH1:
             1, 1,
             1, 1, 1,
             # All blueprints have 1 max.
-                ]
-    
+        ]
