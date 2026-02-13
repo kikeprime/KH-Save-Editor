@@ -40,7 +40,7 @@ def __create_characters_12():
 
 def __create_the_heartless():
     kh1 = utils.kh1
-    heartlessnames = kh1.fmheartlessnames if kh1.fm else kh1.heartlessnames
+    heartless_dict = kh1.heartless_fm_dict if kh1.fm else kh1.heartless_dict
     heartless = html.Div([
         html.Div([
             html.Label(k + ": "),
@@ -55,7 +55,7 @@ def __create_the_heartless():
             ),
         ],
             style={"margin-top": 20, "gap": 10},
-        ) for k, v in zip(heartlessnames, range(len(heartlessnames)))
+        ) for k, v in heartless_dict.items()
     ])
     bosses = html.Div([
         dcc.Checklist(
