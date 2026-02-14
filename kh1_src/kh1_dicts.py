@@ -1,4 +1,6 @@
 def dicts(obj):
+    trinity_dicts(obj)
+    gummi_dicts(obj)
     obj.character_dict = {
         "Sora": 0,
         "Donald": 1,
