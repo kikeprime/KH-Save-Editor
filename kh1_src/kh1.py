@@ -2,7 +2,7 @@ import os
 import struct
 
 from ctypes import *
-from .kh1_dicts import *
+from .kh1_dicts import dicts
 
 
 class KH1Character:
@@ -29,9 +29,9 @@ class KH1Character:
         # data[0x2A:0x32] is unknown
         self.weapon = c_ubyte(data[0x32])
         # data[0x33:0x38] is unknown
-        self.submp = c_ushort(int.from_bytes(data[0x38:0x3A][::-1])) # 30 or 0x1E means 1 MP
-        # data[0x3A:0x3C]is unknown
-        self.exp = c_uint(int.from_bytes(data[0x3C:0x40][::-1]))
+        self.submp = c_ushort(int.from_bytes(data[0x38:0x3A:-1])) # 30 or 0x1E means 1 MP
+        # data[0x3A:0x3C] is unknown
+        self.exp = c_uint(int.from_bytes(data[0x3C:0x40:-1]))
         self.abilities = (c_ubyte*48)(*data[0x40:0x70]) # Pooh has unknown data here with invalid ability IDs.
         self.magic = c_ubyte(data[0x70])
         # data[0x71:0x74] is unknown
@@ -44,19 +44,17 @@ class KH1GummiBlock:
 
 class KH1GummiShip:
     def __init__(self, data):
-        self.blockcount = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
-        self.x = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
-        self.y = c_ushort(int.from_bytes(data[0x04:0x06][::-1]))
-        self.z = c_ushort(int.from_bytes(data[0x06:0x08][::-1]))
-        self.transformpair = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
+        self.blockcount = c_ushort(int.from_bytes(data[0x00:0x02:-1]))
+        self.x = c_ushort(int.from_bytes(data[0x02:0x04:-1]))
+        self.y = c_ushort(int.from_bytes(data[0x04:0x06:-1]))
+        self.z = c_ushort(int.from_bytes(data[0x06:0x08:-1]))
+        self.transformpair = c_ushort(int.from_bytes(data[0x08:0x0A:-1]))
         self.name = bytearray(data[0x4C:0x56])
 
 
 class KH1:
     def __init__(self, slot=0, fm=False):
         dicts(self)
-        trinity_dicts(self)
-        gummi_dicts(self)
         if slot != 0:
             self.fm = fm
             if self.fm:
@@ -75,7 +73,7 @@ class KH1:
                 with open(os.path.join("files", self.filename, "system.bin"), "rb") as sysfile:
                     self.sysdata = (c_ubyte*0x400)(*sysfile.read())
                 # Playtime in seconds * 60 but possibly in seconds * 50 in PAL versions
-                self.playtime = c_uint(int.from_bytes(self.sysdata[0x10:0x14][::-1]))
+                self.playtime = c_uint(int.from_bytes(self.sysdata[0x10:0x14:-1]))
 
     def __parse_data(self, data):
         # For FM the currently loaded save file starts at 0x3F8380 in the memory according to the RetroAchievements code notes.
@@ -116,16 +114,16 @@ class KH1:
         # data[0x0820:0x082C] is unknown.
         self.shortcuts = (c_ubyte*3)(*data[0x082C:0x082F])
         # data[0x082F:0x0836] is unknown.
-        self.cure_on_friends = c_ushort(int.from_bytes(data[0x0836:0x0838][::-1]))
+        self.cure_on_friends = c_ushort(int.from_bytes(data[0x0836:0x0838:-1]))
         # data[0x0838:0x083E] is unknown.
-        self.heartless_killed = c_ushort(int.from_bytes(data[0x083E:0x0840][::-1]))
+        self.heartless_killed = c_ushort(int.from_bytes(data[0x083E:0x0840:-1]))
         # data[0x0840:0x0844] is unknown.
-        self.deflected = c_ushort(int.from_bytes(data[0x0844:0x0846][::-1]))
+        self.deflected = c_ushort(int.from_bytes(data[0x0844:0x0846:-1]))
         # data[0x0846:0x0848] is unknown.
-        self.item_usage = c_ushort(int.from_bytes(data[0x0848:0x084A][::-1]))
-        self.hits = c_ushort(int.from_bytes(data[0x084A:0x084C][::-1]))
-        self.friend_ko = c_ushort(int.from_bytes(data[0x084C:0x084E][::-1]))
-        self.deaths = c_ushort(int.from_bytes(data[0x084E:0x0850][::-1]))
+        self.item_usage = c_ushort(int.from_bytes(data[0x0848:0x084A:-1]))
+        self.hits = c_ushort(int.from_bytes(data[0x084A:0x084C:-1]))
+        self.friend_ko = c_ushort(int.from_bytes(data[0x084C:0x084E:-1]))
+        self.deaths = c_ushort(int.from_bytes(data[0x084E:0x0850:-1]))
 
         self.currentcup = c_ubyte(data[0x0F26])
         self.philcup = c_ubyte(data[0x0F36])
@@ -138,8 +136,8 @@ class KH1:
         self.wakkawins = c_ubyte(data[0x101C])
         self.selphiewins = c_ubyte(data[0x101D])
 
-        self.sorawins = c_ushort(int.from_bytes(data[0x1036:0x1038][::-1]))
-        self.rikuwins = c_ushort(int.from_bytes(data[0x1038:0x103A][::-1]))
+        self.sorawins = c_ushort(int.from_bytes(data[0x1036:0x1038:-1]))
+        self.rikuwins = c_ushort(int.from_bytes(data[0x1038:0x103A:-1]))
 
         self.slides = (c_ubyte*6)(*data[0x1207:0x120D])
         self.slides_watched = c_ubyte(data[0x1212])
@@ -168,9 +166,9 @@ class KH1:
         self.world_statuses = (c_ubyte*15)(*data[0x1EF0:0x1EFF])
         self.landingpoints = (c_ubyte*15)(*data[0x1EFF:0x1F0E])
         
-        self.world = c_uint(int.from_bytes(data[0x2040:0x2044][::-1]))
-        self.room = c_uint(int.from_bytes(data[0x2044:0x2048][::-1]))
-        self.flag = c_uint(int.from_bytes(data[0x2048:0x204C][::-1]))
+        self.world = c_uint(int.from_bytes(data[0x2040:0x2044:-1]))
+        self.room = c_uint(int.from_bytes(data[0x2044:0x2048:-1]))
+        self.flag = c_uint(int.from_bytes(data[0x2048:0x204C:-1]))
 
         self.GUMI = bytearray(data[0x2400:0x2404]).decode() # ASCII string "GUMI"
         # data[0x2404] seems to be a version code, 0 for vanilla and 1 for FM, needs further investigation.
@@ -182,50 +180,50 @@ class KH1:
         self.gummiships = [KH1GummiShip(data[0x241C+i*0x0F70:0x241C+(i+1)*0x0F70]) for i in range(10)]
         self.gummiblocks = (c_ubyte*108)(*data[0xBE78:0xBEE4])
 
-        self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF01:0xBF05][::-1]))
-        self.gummi_accelerate = c_uint(int.from_bytes(data[0xBF05:0xBF09][::-1]))
-        self.gummi_transform = c_uint(int.from_bytes(data[0xBF09:0xBF0D][::-1]))
-        self.gummi_scannon = c_uint(int.from_bytes(data[0xBF0D:0xBF11][::-1]))
-        self.gummi_mcannon = c_uint(int.from_bytes(data[0xBF11:0xBF15][::-1]))
-        self.gummi_lcannon = c_uint(int.from_bytes(data[0xBF15:0xBF19][::-1]))
-        self.gummi_slaser = c_uint(int.from_bytes(data[0xBF19:0xBF1D][::-1]))
-        self.gummi_mlaser = c_uint(int.from_bytes(data[0xBF1D:0xBF21][::-1]))
-        self.gummi_llaser = c_uint(int.from_bytes(data[0xBF21:0xBF25][::-1]))
+        self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF01:0xBF05:-1]))
+        self.gummi_accelerate = c_uint(int.from_bytes(data[0xBF05:0xBF09:-1]))
+        self.gummi_transform = c_uint(int.from_bytes(data[0xBF09:0xBF0D:-1]))
+        self.gummi_scannon = c_uint(int.from_bytes(data[0xBF0D:0xBF11:-1]))
+        self.gummi_mcannon = c_uint(int.from_bytes(data[0xBF11:0xBF15:-1]))
+        self.gummi_lcannon = c_uint(int.from_bytes(data[0xBF15:0xBF19:-1]))
+        self.gummi_slaser = c_uint(int.from_bytes(data[0xBF19:0xBF1D:-1]))
+        self.gummi_mlaser = c_uint(int.from_bytes(data[0xBF1D:0xBF21:-1]))
+        self.gummi_llaser = c_uint(int.from_bytes(data[0xBF21:0xBF25:-1]))
         
-        self.autolock = c_uint(int.from_bytes(data[0x16400:0x16404][::-1]))
-        self.targetlock = c_uint(int.from_bytes(data[0x16404:0x16408][::-1]))
-        self.camera = c_uint(int.from_bytes(data[0x16408:0x1640C][::-1]))
+        self.autolock = c_uint(int.from_bytes(data[0x16400:0x16404:-1]))
+        self.targetlock = c_uint(int.from_bytes(data[0x16404:0x16408:-1]))
+        self.camera = c_uint(int.from_bytes(data[0x16408:0x1640C:-1]))
         # data[0x1640C:0x16410] is unknown
-        self.vibration = c_uint(int.from_bytes(data[0x16410:0x16414][::-1]))
-        self.sound = c_uint(int.from_bytes(data[0x16414:0x16418][::-1]))
-        self.datainstall = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # JP/FM
-        self.difficulty = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # USA/EU
+        self.vibration = c_uint(int.from_bytes(data[0x16410:0x16414:-1]))
+        self.sound = c_uint(int.from_bytes(data[0x16414:0x16418:-1]))
+        self.datainstall = c_uint(int.from_bytes(data[0x16418:0x1641C:-1])) # JP/FM
+        self.difficulty = c_uint(int.from_bytes(data[0x16418:0x1641C:-1])) # USA/EU
         
-        self.munny = c_uint(int.from_bytes(data[0x1641C:0x16420][::-1]))
+        self.munny = c_uint(int.from_bytes(data[0x1641C:0x16420:-1]))
 
         # Final Mix stuff
         if self.fm:
             self.heartless = (c_ushort*51)(*struct.unpack("<51H", bytearray(data[0x07D8:0x083E])))
             self.shortcuts = (c_ubyte*3)(*data[0x0844:0x0847])
-            self.cure_on_friends = c_ushort(int.from_bytes(data[0x084E:0x0850][::-1]))
-            self.heartless_killed = c_ushort(int.from_bytes(data[0x0856:0x0858][::-1]))
-            self.deflected = c_ushort(int.from_bytes(data[0x085C:0x085E][::-1]))
-            self.item_usage = c_ushort(int.from_bytes(data[0x0860:0x0862][::-1]))
-            self.hits = c_ushort(int.from_bytes(data[0x0862:0x0864][::-1]))
-            self.friend_ko = c_ushort(int.from_bytes(data[0x0864:0x0868][::-1]))
-            self.deaths = c_ushort(int.from_bytes(data[0x0868:0x086A][::-1]))
+            self.cure_on_friends = c_ushort(int.from_bytes(data[0x084E:0x0850:-1]))
+            self.heartless_killed = c_ushort(int.from_bytes(data[0x0856:0x0858:-1]))
+            self.deflected = c_ushort(int.from_bytes(data[0x085C:0x085E:-1]))
+            self.item_usage = c_ushort(int.from_bytes(data[0x0860:0x0862:-1]))
+            self.hits = c_ushort(int.from_bytes(data[0x0862:0x0864:-1]))
+            self.friend_ko = c_ushort(int.from_bytes(data[0x0864:0x0868:-1]))
+            self.deaths = c_ushort(int.from_bytes(data[0x0868:0x086A:-1]))
             self.xemnas = c_ubyte(data[0x1118])
             self.gummiblocks = (c_ubyte*160)(*data[0xBE78:0xBF18]) # 144 bytes until last Design Gummi
-            self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF41:0xBF45][::-1]))
-            self.gummi_accelerate = c_uint(int.from_bytes(data[0xBF45:0xBF49][::-1]))
-            self.gummi_transform = c_uint(int.from_bytes(data[0xBF49:0xBF4D][::-1]))
-            self.gummi_scannon = c_uint(int.from_bytes(data[0xBF4D:0xBF51][::-1]))
-            self.gummi_mcannon = c_uint(int.from_bytes(data[0xBF51:0xBF55][::-1]))
-            self.gummi_lcannon = c_uint(int.from_bytes(data[0xBF55:0xBF59][::-1]))
-            self.gummi_slaser = c_uint(int.from_bytes(data[0xBF59:0xBF5D][::-1]))
-            self.gummi_mlaser = c_uint(int.from_bytes(data[0xBF5D:0xBF61][::-1]))
-            self.gummi_llaser = c_uint(int.from_bytes(data[0xBF61:0xBF65][::-1]))
-            self.difficulty = c_uint(int.from_bytes(data[0x1642C:0x16430][::-1]))
+            self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF41:0xBF45:-1]))
+            self.gummi_accelerate = c_uint(int.from_bytes(data[0xBF45:0xBF49:-1]))
+            self.gummi_transform = c_uint(int.from_bytes(data[0xBF49:0xBF4D:-1]))
+            self.gummi_scannon = c_uint(int.from_bytes(data[0xBF4D:0xBF51:-1]))
+            self.gummi_mcannon = c_uint(int.from_bytes(data[0xBF51:0xBF55:-1]))
+            self.gummi_lcannon = c_uint(int.from_bytes(data[0xBF55:0xBF59:-1]))
+            self.gummi_slaser = c_uint(int.from_bytes(data[0xBF59:0xBF5D:-1]))
+            self.gummi_mlaser = c_uint(int.from_bytes(data[0xBF5D:0xBF61:-1]))
+            self.gummi_llaser = c_uint(int.from_bytes(data[0xBF61:0xBF65:-1]))
+            self.difficulty = c_uint(int.from_bytes(data[0x1642C:0x16430:-1]))
 
     def __save_characters(self):
         i = 0
