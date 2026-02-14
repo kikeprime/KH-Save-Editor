@@ -6,12 +6,14 @@ import kh1_src.kh1_utils as utils
     Input("JournalCharactersTabs", "value"),
 )
 def __create_journal_characters_tabs(tab):
-    if tab == "Characters 1 & 2":
-        return __create_characters_12()
+    if tab == "Characters 1":
+        return __create_characters_1()
+    if tab == "Characters 2":
+        return __create_characters_2()
     if tab == "The Heartless":
         return __create_the_heartless()
 
-def __create_characters_12():
+def __create_characters_1():
     kh1 = utils.kh1
     chars1 = html.Div([
         dcc.Checklist(
@@ -21,7 +23,13 @@ def __create_characters_12():
             value=[kh1.journal_chars[v // 16] & (1 << v % 16)],
             id={"type": "Journal Character Entry", "index": v},
         ) for k, v in kh1.journal_chars_1_dict.items()
-    ])
+    ],
+        style={"margin-top": 20},
+    )
+    return chars1
+
+def __create_characters_2():
+    kh1 = utils.kh1
     chars2 = html.Div([
         dcc.Checklist(
             options=[
@@ -30,13 +38,10 @@ def __create_characters_12():
             value=[kh1.journal_chars[v // 16] & (1 << v % 16)],
             id={"type": "Journal Character Entry", "index": v},
         ) for k, v in kh1.journal_chars_2_dict.items()
-    ])
-    return html.Div([
-        html.H3("Characters 1:"),
-        chars1,
-        html.H3("Characters 2:"),
-        chars2,
-    ])
+    ],
+        style={"margin-top": 20},
+    )
+    return chars2
 
 def __create_the_heartless():
     kh1 = utils.kh1
@@ -74,9 +79,10 @@ def __create_the_heartless():
     ])
 
 def create_journal_characters():
-    jctabs = dcc.Tabs(id="JournalCharactersTabs", value="Characters 1 & 2")
+    jctabs = dcc.Tabs(id="JournalCharactersTabs", value="Characters 1")
     jctabs.children = [
-        dcc.Tab(label="Characters 1 & 2", value="Characters 1 & 2"),
+        dcc.Tab(label="Characters 1", value="Characters 1"),
+        dcc.Tab(label="Characters 2", value="Characters 2"),
         dcc.Tab(label="The Heartless", value="The Heartless"),
     ]
     return html.Div([
@@ -111,3 +117,4 @@ def journal_characters_callback(values, ids):
             kh1.journal_chars[v // 16] |= (1 << v % 16)
         else:
             kh1.journal_chars[v // 16] &= ~(1 << v % 16)
+    
