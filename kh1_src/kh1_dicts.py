@@ -1,5 +1,6 @@
 def dicts(obj):
     trinity_dicts(obj)
+    minigame_dicts(obj)
     gummi_dicts(obj)
     obj.character_dict = {
         "Sora": 0,
@@ -834,6 +835,163 @@ def trinity_dicts(obj):
             "Hollow Bastion: Rising Falls": 0xF7,
         },
     ]
+
+def minigame_dicts(obj):
+    # All of tbem are times
+    # Values are the indices where the ints start in KH1.oc_minigames
+    """
+        "Training": {
+            "Easy": 0x14,
+            "Advanced": 0x18,
+        },
+    """
+    obj.oc_minigame_dict = {
+        "Phil Cup": {
+            "1st Place": 0x00,
+            "2nd Place": 0x20,
+            "3rd Place": 0x24,
+            "4th Place": 0x28,
+            "5th Place": 0x2C,
+        },
+        "Pegasus Cup": {
+            "1st Place": 0x04,
+            "2nd Place": 0x30,
+            "3rd Place": 0x34,
+            "4th Place": 0x38,
+            "5th Place": 0x3C,
+        },
+        "Hercules Cup": {
+            "1st Place": 0x08,
+            "2nd Place": 0x40,
+            "3rd Place": 0x44,
+            "4th Place": 0x48,
+            "5th Place": 0x4C,
+        },
+        "Hades Cup": {
+            "1st Place": 0x0C,
+            "2nd Place": 0x50,
+            "3rd Place": 0x54,
+            "4th Place": 0x58,
+            "5th Place": 0x5C,
+        },
+    }
+    # Keys are the tab/journal entry names
+    # Here indices refer to KH1.minigames
+    obj.minigame_dict = {
+        "Jungle Slider": {
+            "Green Serpent": {
+                "1st Place": 0x00,
+                "2nd Place": 0x04,
+                "3rd Place": 0x08,
+                "4th Place": 0x0C,
+                "5th Place": 0x10,
+            },
+            "Splash Tunnel": {
+                "1st Place": 0x14,
+                "2nd Place": 0x18,
+                "3rd Place": 0x1C,
+                "4th Place": 0x20,
+                "5th Place": 0x24,
+            },
+            "Jade Spiral": {
+                "1st Place": 0x28,
+                "2nd Place": 0x2C,
+                "3rd Place": 0x30,
+                "4th Place": 0x34,
+                "5th Place": 0x38,
+            },
+            "Panic Fall": {
+                "1st Place": 0x3C,
+                "2nd Place": 0x40,
+                "3rd Place": 0x44,
+                "4th Place": 0x48,
+                "5th Place": 0x4C,
+            },
+            "Shadow Cavern": {
+                "1st Place": 0x50,
+                "2nd Place": 0x54,
+                "3rd Place": 0x58,
+                "4th Place": 0x5C,
+                "5th Place": 0x60,
+            },
+        },
+        "Vine Jump": {
+            "Jump Course": {
+                "1st Place": 0x64,
+                "2nd Place": 0x68,
+                "3rd Place": 0x6C,
+                "4th Place": 0x70,
+                "5th Place": 0x74,
+            },
+            "Trap Course": {
+                "1st Place": 0x78,
+                "2nd Place": 0x7C,
+                "3rd Place": 0x80,
+                "4th Place": 0x84,
+                "5th Place": 0x88,
+            },
+            "Acrobatic Course": {
+                "1st Place": 0x8C,
+                "2nd Place": 0x90,
+                "3rd Place": 0x94,
+                "4th Place": 0x98,
+                "5th Place": 0x9C,
+            },
+            "Expert Course": {
+                "1st Place": 0xA0,
+                "2nd Place": 0xA4,
+                "3rd Place": 0xA8,
+                "4th Place": 0xAC,
+                "5th Place": 0xB0,
+            },
+        },
+        "Pooh's Hunny Hunt": {
+            "1st Place": 0xB4,
+            "2nd Place": 0xB8,
+            "3rd Place": 0xBC,
+            "4th Place": 0xC0,
+            "5th Place": 0xC4,
+        },
+        "Block Tigger": {
+            "1st Place": 0xC8,
+            "2nd Place": 0xCC,
+            "3rd Place": 0xD0,
+            "4th Place": 0xD4,
+            "5th Place": 0xD8,
+        },
+        "Pooh's Swing": {
+            "1st Place": 0xDC,
+            "2nd Place": 0xE0,
+            "3rd Place": 0xE4,
+            "4th Place": 0xE8,
+            "5th Place": 0xEC,
+        },
+        "Tigger's Giant Pot": {
+            "1st Place": 0xF0,
+            "2nd Place": 0xF4,
+            "3rd Place": 0xF8,
+            "4th Place": 0xFC,
+            "5th Place": 0x100,
+        },
+        "Pooh's Muddy Path": {
+            "1st Place": 0x104,
+            "2nd Place": 0x108,
+            "3rd Place": 0x10C,
+            "4th Place": 0x110,
+            "5th Place": 0x114,
+        },
+    }
+    obj.minigames_with_sub = {
+        "Jungle Slider",
+        "Vine Jump",
+        # Not needed since special case
+        "Olympus Coliseum",
+    }
+    obj.minigames_with_scores = {
+        "Pooh's Hunny Hunt": "licks",
+        "Block Tigger": "points",
+        "Pooh's Swing": "yd.",
+    }
 
 def gummi_dicts(obj):
     obj.gummi_block_cockpit_dict = {
