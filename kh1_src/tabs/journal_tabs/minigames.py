@@ -60,11 +60,15 @@ def __create_minigames_tabs(tab):
                                 disabled=True,
                                 style={"width": 50},
                             ),
-                            html.Button(
-                                "Unset",
-                                id={"type": "Uninitializer OC", "index": t},
-                                n_clicks=0,
-                                style={"width": 100, "margin-top": 20},
+                            html.Div([
+                                html.Button(
+                                    "Unset",
+                                    id={"type": "Uninitializer OC", "index": t},
+                                    n_clicks=0,
+                                    style={"width": 100},
+                                ),
+                            ],
+                                style={"margin-top": 15},
                             ),
                         ]) if kh1.oc_minigames[t//4] >= 0 else\
                         html.Div([
@@ -133,11 +137,15 @@ def __create_minigames_tabs(tab):
                                 disabled=True,
                                 style={"width": 50},
                             ),
-                            html.Button(
-                                "Unset",
-                                id={"type": "Uninitializer", "index": t},
-                                n_clicks=0,
-                                style={"width": 100, "margin-top": 20},
+                            html.Div([
+                                html.Button(
+                                    "Unset",
+                                    id={"type": "Uninitializer", "index": t},
+                                    n_clicks=0,
+                                    style={"width": 100},
+                                ),
+                            ],
+                                style={"margin-top": 15},
                             ),
                         ]) if kh1.minigames[t//4] >= 0 else\
                         html.Div([
@@ -205,11 +213,15 @@ def __create_minigames_tabs(tab):
                                 disabled=True,
                                 style={"width": 50},
                             ),
-                            html.Button(
-                                "Unset",
-                                id={"type": "Uninitializer", "index": t},
-                                n_clicks=0,
-                                style={"width": 100, "margin-top": 20},
+                            html.Div([
+                                html.Button(
+                                    "Unset",
+                                    id={"type": "Uninitializer", "index": t},
+                                    n_clicks=0,
+                                    style={"width": 100},
+                                ),
+                            ],
+                                style={"margin-top": 15},
                             ),
                         ]) if kh1.minigames[t//4] >= 0 else\
                         html.Div([
