@@ -6,7 +6,8 @@ def __create_worlds():
     kh1 = utils.kh1
     return html.Div([
         html.Div([
-            dcc.Markdown(w),
+            html.H3(w),
+            dcc.Markdown("World Status:"),
             dcc.Dropdown(
                 options=[{"label": k, "value": v} for k, v in kh1.world_status_dict.items()],
                 value=kh1.world_statuses[lp[0]],
@@ -15,6 +16,7 @@ def __create_worlds():
                 searchable=False,
                 clearable=False,
             ),
+            dcc.Markdown("Landing Points:") if len(lp) > 1 else None,
             dcc.Checklist(
                 options=[{"label": lp[i+1], "value": (1 << i)} for i in range(len(lp)-1)],
                 value=[kh1.landingpoints[lp[0]] & (1 << i) for i in range(8)],
