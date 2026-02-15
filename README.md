@@ -19,7 +19,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - No memory card file support. Use folder type memory card and put the save slot's folder into the repo's files folder that YOU need to create.
 - PCSX2 attach.
 
-## Features
+## KH1 features
 - Support for both vanilla and Final Mix save files.
 - Playtime: Hours, minutes, seconds and the modulo 60 since it's stored in frames which are seconds $\cdot$ 60 (in NTSC builds; I haven't tested any PAL versions).
 - Most of what Kingdom Save Editor is capable of.
