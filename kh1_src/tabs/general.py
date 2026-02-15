@@ -57,6 +57,17 @@ def create_general():
                 step=1,
                 style={"width": 50},
             ),
+            html.Label(" 100th: "),
+            dcc.Input(
+                id="100th",
+                type="number",
+                value=fraction * 100 // 60,
+                min=0,
+                max=99,
+                step=1,
+                disabled=True,
+                style={"width": 30},
+            ),
         ])
     curve = dcc.Dropdown(
         options=[
@@ -176,6 +187,7 @@ def create_general():
     ])
 
 @callback(
+    Output("100th", "value"),
     Input("Hours", "value"),
     Input("Minutes", "value"),
     Input("Seconds", "value"),
@@ -188,7 +200,11 @@ def playtime_callback(
     fraction
 ):
     kh1 = utils.kh1
-    kh1.playtime.value = calculate_playtime(hours, minutes, seconds, fraction)
+    try:
+        kh1.playtime.value = calculate_playtime(hours, minutes, seconds, fraction)
+        return fraction * 100 // 60
+    except:
+        return 0
 
 @callback(
     Input("Curve", "value"),
