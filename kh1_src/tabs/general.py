@@ -2,15 +2,13 @@ from dash import Dash, html, dcc, callback, Input, Output, State, ALL
 import kh1_src.kh1_utils as utils
 
 
-def get_playtime():
-    kh1 = utils.kh1
-    if kh1 is not None and kh1.sysdata is not None:
-        playtime = kh1.playtime.value // 60
-        hours = playtime // 3600
-        minutes = (playtime % 3600) // 60
-        seconds = (playtime % 3600) % 60
-        fraction = kh1.playtime.value % 60
-        return hours, minutes, seconds, fraction
+def get_playtime(playtime):
+    time = playtime.value // 60
+    hours = time // 3600
+    minutes = (time % 3600) // 60
+    seconds = (time % 3600) % 60
+    fraction = playtime.value % 60
+    return hours, minutes, seconds, fraction
 
 def calculate_playtime(hours, minutes, seconds, fraction):
     return (hours * 3600 + minutes * 60 + seconds) * 60 + fraction
@@ -18,7 +16,7 @@ def calculate_playtime(hours, minutes, seconds, fraction):
 def create_general():
     kh1 = utils.kh1
     if kh1.sysdata is not None:
-        hours, minutes, seconds, fraction = get_playtime()
+        hours, minutes, seconds, fraction = get_playtime(self.playtime)
         playtime = html.Div([
             dcc.Input(
                 id="Hours",
@@ -170,7 +168,8 @@ def create_general():
         html.Div([
             html.Div([dcc.Markdown("Room:"), room]),
             html.Div([dcc.Markdown("Flag:"), flag]),
-        ], style={"display": "flex", "gap": 20},
+        ],
+            style={"display": "flex", "gap": 20},
         ),
         html.Div([dcc.Markdown("Party:"), leader, friend1, friend2, friend3]),
         html.Div([dcc.Markdown("Munny:"), munny]),
@@ -229,4 +228,3 @@ def general_callbacks(
         kh1.munny.value = munny
     except:
         pass
-    
