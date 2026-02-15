@@ -130,6 +130,9 @@ class KH1:
         self.pegasuscup = c_ubyte(data[0x0F37])
         self.herculescup = c_ubyte(data[0x0F38])
         self.hadescup = c_ubyte(data[0x0F39])
+        # oc_minigames[0x10:0x14] and oc_minigames[0x1C:0x20] aren't used for minigame times
+        self.oc_minigames = (c_int*0x18)(*struct.unpack("<24i", bytearray(data[0x0F4C:0x0FAC])))
+        # oc_minigames[0x1E] anyway
         self.platinummatch = c_ubyte(data[0x0F6A])
 
         self.tiduswins = c_ubyte(data[0x101B])
@@ -152,7 +155,8 @@ class KH1:
         # self.boss_journal = (c_ubyte*4)(*data[0x16F6:0x16FA])
         # data[0x16FA:0x1703] is unknown
         self.dalmatians = (c_ubyte*13)(*data[0x1703:0x1710])
-        
+        # needs to be signed because no record is -1
+        self.minigames = (c_int*0x46)(*struct.unpack("<70i", bytearray(data[0x1728:0x1840])))
         self.chronicles = (c_ubyte*10)(*data[0x1997:0x19BF:4])
         self.reports = (c_ubyte*2)(*data[0x19C0:0x19C2])
         self.journal_unlock = c_ubyte(data[0x19C4]) # bit index 3, 0x1F for completed game so needs further investigation
