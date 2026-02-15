@@ -33,7 +33,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - Heartless kill counts
 - 99 Puppies unlock flags
 - Everything Trinity related
-- Mini Game records. (Uninitialized time fields will be editable in the future)
+- Mini Game records.
 - Config menu options. It reflects the PS2 versions' options. Some of them are repurposed in Remix versions. PS3 and PC differs in that PC repurposes more options.
 - World statuses and landing point flags
 - Gummi Inventory including Final Mix exclusives
