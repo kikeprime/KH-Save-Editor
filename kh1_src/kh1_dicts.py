@@ -1,7 +1,13 @@
 def dicts(obj):
+    main_dicts(obj)
+    inventory_dicts(obj)
+    world_dicts(obj)
+    journal_dicts(obj)
     trinity_dicts(obj)
     minigame_dicts(obj)
     gummi_dicts(obj)
+
+def main_dicts(obj):
     obj.character_dict = {
         "Sora": 0,
         "Donald": 1,
@@ -85,6 +91,21 @@ def dicts(obj):
         "EXP Zero": 0x40,
         "Combo Master": 0x41
     }
+    obj.magicnames = ["Fire", "Blizzard", "Thunder", "Cure", "Gravity", "Stop", "Aero"]
+    obj.magicnames2 = ["Fira", "Blizzara", "Thundara", "Cura", "Gravira", "Stopra", "Aerora"]
+    obj.magicnames3 = ["Firaga", "Blizzaga", "Thundaga", "Curaga", "Graviga", "Stopga", "Aeroga"]
+    obj.summon_dict = {
+        "Empty": 0xFF,
+        "Dumbo": 0x00,
+        "Bambi": 0x01,
+        "Genie": 0x02,
+        "Tinker Bell": 0x03,
+        "Mushu": 0x04,
+        "Simba": 0x05,
+        "Bahamut": 0x06
+    }
+
+def inventory_dicts(obj):
     obj.item1_dict = {
         "Empty": 0x00,
         "Potion": 0x01,
@@ -352,6 +373,8 @@ def dicts(obj):
         "Orichalcum": 0xFF
     }
     obj.item_dict = obj.item1_dict | obj.accessory_dict | obj.weapon_dict | obj.item2_dict
+
+def world_dicts(obj):
     obj.world_dict = {
         0x00: "Dive to the Heart",
         0x01: "Destiny Islands",
@@ -455,9 +478,113 @@ def dicts(obj):
             0x0B,
         ],
     }
-    obj.magicnames = ["Fire", "Blizzard", "Thunder", "Cure", "Gravity", "Stop", "Aero"]
-    obj.magicnames2 = ["Fira", "Blizzara", "Thundara", "Cura", "Gravira", "Stopra", "Aerora"]
-    obj.magicnames3 = ["Firaga", "Blizzaga", "Thundaga", "Curaga", "Graviga", "Stopga", "Aeroga"]
+    # Oh boy, I had to stitch together
+    # the vanilla and FM RA code notes for this
+    # They don't seem to be bit flags
+    obj.world_progress_dict = {
+        "Gummi Path": {},
+        "Dive to the Heart": {
+            "Start": 0x00,
+            "Before 1st Dream Weapon": 0x04,
+            "Before 2nd Dream Weapon": 0x07,
+            "After Dream Weapon selection": 0x0A,
+        },
+        "Destiny Islands": {
+            "Start": 0x00,
+            "Start 2": 0x14,
+            "Cave cutscene": 0x21,
+            "Day 2 ended": 0x17,
+            "Shadows swarm the island": 0x1E,
+            "Kingdom Key obtained": 0x24,
+        },
+        "Disney Castle": {
+            "Start": 0x00,
+            "Start 2": 0x01,
+            "Donald & Goofy cutscene": 0x04,
+        },
+        "Traverse Town": {
+            "Start": 0x00,
+            "After waking up": 0x01,
+            "After Leon fight": 0x1A,
+            "After ?": 0x23,
+            "Guard Armor fight": 0x28,
+            "After Guard Armor": 0x2A,
+            "1st visit complete": 0x3C,
+            "Earthshine obtained": 0x3E,
+            "Old book obtained": 0x42,
+            "Old book delivered": 0x4A,
+            "Maleficent & Riku cutscene": 0x4E,
+            "Neverland Navi-G to Cid": 0x5C,
+            "Kairi's grandmother flashback": 0x5E,
+            "After the flashback": 0x60,
+            "Transform-G obtained": 0x64,
+            "After Hollow Bastion": 0x6E,
+            "Navi-G in the Secret Waterway": 0x78,
+            "Oathkeeper obtained": 0x8C,
+            "Navi-G installed": 0x96,
+        },
+        "Deep Jungle": {
+            "Start": 0x00,
+            "Arrived": 0x01,
+            "1st cutscene": 0x0A,
+            "Sabor defeated": 0x0D,
+            "Tarzan to the rescue": 0x10,
+            "Donald & Goofy cutscene": 0x12,
+            "Regain control": 0x14,
+            "Donald & Goofy joins": 0x17,
+            "Talk to Jane after all slides obtained": 0x1A,
+            "All slides watched, enter Clayton": 0x20,
+            "Tarzan & Kerchak cutscene": 0x23,
+            "Clayton scared by Donald": 0x28,
+            "Clayton leaves": 0x2B,
+            "Heartless attack": 0x32,
+            "All gorillas rescued": 0x35,
+            "Enter tent after all gorillas rescued": 0x37,
+            "Leave tent after all gorillas rescued": 0x39,
+            "Sabor attacks again": 0x3C,
+            "2nd Sabor fight start": 0x3F,
+            "Sabor 2 defeated": 0x42,
+            "Jane gets kidnapped": 0x44,
+            "Rescue Jane fight start": 0x46,
+            "Rescue Jane fight end": 0x47,
+            "Jane rescued": 0x48,
+            "Before Clayton phase 1": 0x50,
+            "Before Clayton phase 2": 0x53,
+            "Clayton & Stealth Sneak defeated": 0x56,
+            "Tarzan yeets Sora": 0x59,
+            "Keyhole sealed": 0x5C,
+            "Maleficent cutscene": 0x5F,
+            "Red Trinity learned; Visit complete": 0x6E,
+        },
+        "Olympus Coliseum": {
+            "Start": 0x00,
+            "Arrived": 0x01,
+            "Talk to Phil": 0x04,
+            "Talk to Phil after pushing the pillar": 0x07,
+            "Training complete": 0x0A,
+            "Thunder obtained": 0x0D,
+            "Entry Pass obtained": 0x10,
+            "Talk to Phil with Entry Pass": 0x13,
+            "After Preliminaries 1": 0x16,
+            "After Preliminaries 3": 0x19,
+            "Hades & Cloud cutscene": 0x1C,
+            "Cloud defeated": 0x22,
+            "Cerberus defeated": 0x25,
+            "Hero License obtained": 0x28,
+            "Sonic Blade obtained": 0x32,
+        },
+        "Wonderland": {},
+        "Agrabah": {},
+        "Monstro": {},
+        "Atlantica": {},
+        "Unknown": {},
+        "Halloween Town": {},
+        "Neverland": {},
+        "Hollow Bastion": {},
+        "End of the World": {},
+    }
+
+def journal_dicts(obj):
     obj.heartlessnames = [
         "Soldier", "Shadow",
         "Powerwild", "Bouncywild",
@@ -585,16 +712,6 @@ def dicts(obj):
         "Unused 38": 0x25,
         "Unused 39": 0x26,
         "Unused 47": 0x2E,
-    }
-    obj.summon_dict = {
-        "Empty": 0xFF,
-        "Dumbo": 0x00,
-        "Bambi": 0x01,
-        "Genie": 0x02,
-        "Tinker Bell": 0x03,
-        "Mushu": 0x04,
-        "Simba": 0x05,
-        "Bahamut": 0x06
     }
     # The value is the number of parts.
     obj.chronicles_dict = {
