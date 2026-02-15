@@ -16,7 +16,6 @@ def __create_minigames_tabs(tab):
             html.Div([
                 html.H3(k + ":"),
                 html.Div([
-                    # TODO: Buttons to set them to -1.
                     html.Div([
                         dcc.Markdown(p + ":"),
                         html.Div([
@@ -61,10 +60,22 @@ def __create_minigames_tabs(tab):
                                 disabled=True,
                                 style={"width": 50},
                             ),
+                            html.Button(
+                                "Unset",
+                                id={"type": "Uninitializer OC", "index": t},
+                                n_clicks=0,
+                                style={"width": 100, "margin-top": 20},
+                            ),
                         ]) if kh1.oc_minigames[t//4] >= 0 else\
                         html.Div([
-                            # TODO: Initializer buttons to set them to 0.
-                        ])
+                            html.Label("Unset record. "),
+                            html.Button(
+                                "Initialize",
+                                id={"type": "Initializer OC", "index": t},
+                                n_clicks=0,
+                                style={"width": 100},
+                            ),
+                        ]),
                     ],
                         style={"margin-top": 20, "gap": 10},
                     )\
@@ -78,7 +89,6 @@ def __create_minigames_tabs(tab):
             html.Div([
                 html.H3(k + ":"),
                 html.Div([
-                    # TODO: Buttons to set them to -1.
                     html.Div([
                         dcc.Markdown(p + ":"),
                         html.Div([
@@ -123,10 +133,22 @@ def __create_minigames_tabs(tab):
                                 disabled=True,
                                 style={"width": 50},
                             ),
+                            html.Button(
+                                "Unset",
+                                id={"type": "Uninitializer", "index": t},
+                                n_clicks=0,
+                                style={"width": 100, "margin-top": 20},
+                            ),
                         ]) if kh1.minigames[t//4] >= 0 else\
                         html.Div([
-                            # TODO: Initializer buttons to set them to 0.
-                        ])
+                            html.Label("Unset record. "),
+                            html.Button(
+                                "Initialize",
+                                id={"type": "Initializer", "index": t},
+                                n_clicks=0,
+                                style={"width": 100},
+                            ),
+                        ]),
                     ],
                         style={"margin-top": 20, "gap": 10},
                     )\
@@ -139,7 +161,6 @@ def __create_minigames_tabs(tab):
         minigame = html.Div([
             html.Div([
                 html.Div([
-                    # TODO: Buttons to set them to -1.
                     html.Div([
                         dcc.Markdown(p + ":"),
                         html.Div([
@@ -184,10 +205,22 @@ def __create_minigames_tabs(tab):
                                 disabled=True,
                                 style={"width": 50},
                             ),
+                            html.Button(
+                                "Unset",
+                                id={"type": "Uninitializer", "index": t},
+                                n_clicks=0,
+                                style={"width": 100, "margin-top": 20},
+                            ),
                         ]) if kh1.minigames[t//4] >= 0 else\
                         html.Div([
-                            # TODO: Initializer buttons to set them to 0.
-                        ])
+                            html.Label("Unset record. "),
+                            html.Button(
+                                "Initialize",
+                                id={"type": "Initializer", "index": t},
+                                n_clicks=0,
+                                style={"width": 100},
+                            ),
+                        ]),
                     ],
                         style={"margin-top": 20, "gap": 10},
                     ) if tab not in kh1.minigames_with_scores.keys() else\
@@ -227,6 +260,60 @@ def create_minigames():
         mgtabs,
         html.Div(id="MiniGamesDiv"),
     ])
+
+@callback(
+    Output("MiniGamesTabs", "value"),
+    Input({"type": "Initializer OC", "index": ALL}, "n_clicks"),
+    Input({"type": "Initializer OC", "index": ALL}, "id"),
+    Input({"type": "Initializer", "index": ALL}, "n_clicks"),
+    Input({"type": "Initializer", "index": ALL}, "id"),
+    Input({"type": "Uninitializer OC", "index": ALL}, "n_clicks"),
+    Input({"type": "Uninitializer OC", "index": ALL}, "id"),
+    Input({"type": "Uninitializer", "index": ALL}, "n_clicks"),
+    Input({"type": "Uninitializer", "index": ALL}, "id"),
+    State("MiniGamesTabs", "value"),
+)
+def initialize_callback(n_clicks_oc, ids_oc, n_clicks, ids, n_clicks_oc_u, ids_oc_u, n_clicks_u, ids_u, tab):
+    kh1 = utils.kh1
+    if n_clicks_oc != []:
+        for n_click, id in zip(n_clicks_oc, ids_oc):
+            if n_click > 0:
+                idx = id["index"] // 4
+                kh1.oc_minigames[idx] = 0
+    if n_clicks != []:
+        for n_click, id in zip(n_clicks, ids):
+            if n_click > 0:
+                idx = id["index"] // 4
+                kh1.minigames[idx] = 0
+    if n_clicks_oc_u != []:
+        for n_click, id in zip(n_clicks_oc_u, ids_oc_u):
+            if n_click > 0:
+                idx = id["index"] // 4
+                kh1.oc_minigames[idx] = -1
+    if n_clicks_u != []:
+        for n_click, id in zip(n_clicks_u, ids_u):
+            if n_click > 0:
+                idx = id["index"] // 4
+                kh1.minigames[idx] = -1
+    return tab
+
+"""
+@callback(
+    Output("MiniGamesTabs", "value"),
+    Input({"type": "Uninitializer OC", "index": ALL}, "n_clicks"),
+    Input({"type": "Uninitializer OC", "index": ALL}, "id"),
+    Input({"type": "Uninitializer", "index": ALL}, "n_clicks"),
+    Input({"type": "Uninitializer", "index": ALL}, "id"),
+    State("MiniGamesTabs", "value"),
+)
+def uninitialize_callback(n_clicks_oc, ids_oc, n_clicks, ids, tab):
+    kh1 = utils.kh1
+    for n_click, id in zip(n_clicks, ids):
+        if n_click > 0:
+            idx = id["index"] // 4
+            kh1.oc_minigames[idx] = -1
+    return tab
+"""
 
 @callback(
     Input({"type": "Score", "index": ALL}, "value"),
