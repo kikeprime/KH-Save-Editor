@@ -256,10 +256,13 @@ class KH1:
         self.data[0x048E:0x0492] = bytearray(self.party)
         self.data[0x0499:0x0599] = bytearray(self.inventory)
         self.data[0x0599:0x05C9] = bytearray(self.shared_abilities)
-
+        
+        self.data[0x0F4C:0x0FAC] = bytearray(self.oc_minigames)
+        self.data[0x0F6A] = self.platinummatch
+        
         self.data[0x1036:0x1038] = bytearray(self.sorawins)
         self.data[0x1038:0x103A] = bytearray(self.rikuwins)
-
+        
         self.data[0x1207:0x120D] = bytearray(self.slides)
         self.data[0x1212] = self.slides_watched
         
@@ -269,7 +272,7 @@ class KH1:
         
         self.data[0x16E3:0x16FA] = bytearray(self.journal_chars)
         self.data[0x1703:0x1710] = bytearray(self.dalmatians)
-        
+        self.data[0x1728:0x1840] = bytearray(self.minigames)
         self.data[0x1997:0x19BF:4] = bytearray(self.chronicles)
         self.data[0x19C0:0x19C2] = bytearray(self.reports)
         self.data[0x19C4] = self.journal_unlock
