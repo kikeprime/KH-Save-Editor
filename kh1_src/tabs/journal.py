@@ -9,6 +9,8 @@ from kh1_src.tabs.journal_tabs import *
     Input("JournalTabs", "value"),
 )
 def __create_journal(tab):
+    if tab == "Journal Flags":
+        return create_flags()
     if tab == "Chronicles":
         return create_chronicles()
     if tab == "Ansem's Report":
@@ -19,6 +21,8 @@ def __create_journal(tab):
         return create_dalmatians()
     if tab == "Trinity List":
         return create_trinity()
+    if tab == "Mini Games":
+        return create_minigames()
 
 def create_journal():
     jtabs = dcc.Tabs(id="JournalTabs", value="Journal Flags")
