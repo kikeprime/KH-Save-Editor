@@ -16,7 +16,7 @@ def calculate_playtime(hours, minutes, seconds, fraction):
 def create_general():
     kh1 = utils.kh1
     if kh1.sysdata is not None:
-        hours, minutes, seconds, fraction = get_playtime(self.playtime)
+        hours, minutes, seconds, fraction = get_playtime(kh1.playtime)
         playtime = html.Div([
             dcc.Input(
                 id="Hours",
