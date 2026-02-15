@@ -370,6 +370,90 @@ def dicts(obj):
         0x0F: "Hollow Bastion",
         0x10: "End of the World"
     }
+    obj.world_status_dict = {
+        "Undiscovered": 0,
+        "Hidden": 1,
+        "Unknown": 2,
+        "Discovered": 3,
+        "Completed": 4,
+    }
+    obj.landingpoints_dict = {
+        "Traverse Town": [
+            0x00,
+            "1st District",
+            "Accessory Shop",
+            "Magician's Study",
+        ],
+        "Wonderland": [
+            0x01,
+            "Rabbit Hole",
+            "Queen's Castle",
+        ],
+        "Olympus Coliseum": [
+            0x02,
+            "Coliseum Gates",
+        ],
+        "Deep Jungle": [
+            0x03,
+            "Camp: Tent",
+            "Jungle: Tunnel",
+            "Jungle: Vines",
+        ],
+        "Agrabah": [
+            0x04,
+            "Agrabah: Main Street",
+            "Agrabah: Storage",
+            "Aladdin's House",
+            "Treasure Room",
+            "Dark Chamber",
+        ],
+        "Monstro": [
+            0x0A,
+        ],
+        "Atlantica": [
+            0x06,
+            "Tranquil Grotto",
+            "Cavern Nook",
+            "Triton's Throne",
+        ],
+        "Halloween Town": [
+            0x05,
+            "Guillotine Gate",
+        ],
+        "Neverland": [
+            0x07,
+            "Ship: Hold",
+            "Ship: Cabin",
+            "Clock Tower",
+            "Clock Tower",
+        ],
+        "Hollow Bastion": [
+            0x08,
+            "Rising Falls",
+            "Library",
+            "Waterway",
+            "Castle Chapel",
+        ],
+        "End of the World": [
+            0x09,
+            "Gate to the Dark",
+            "World Terminus",
+            "Final Rest",
+            "Final Rest",
+        ],
+        "Blue Warp Hole": [
+            0x0C,
+        ],
+        "Orange Warp Hole": [
+            0x0D,
+        ],
+        "Purple Warp Hole": [
+            0x0E,
+        ],
+        "Pirate Ship": [
+            0x0B,
+        ],
+    }
     obj.magicnames = ["Fire", "Blizzard", "Thunder", "Cure", "Gravity", "Stop", "Aero"]
     obj.magicnames2 = ["Fira", "Blizzara", "Thundara", "Cura", "Gravira", "Stopra", "Aerora"]
     obj.magicnames3 = ["Firaga", "Blizzaga", "Thundaga", "Curaga", "Graviga", "Stopga", "Aeroga"]
@@ -694,7 +778,7 @@ def trinity_dicts(obj):
     obj.trinity_dict_list = [
         {
             "Traverse Town: 1st District: At the World Exit": 0x06,
-            "Traverse Town: 1st District: On the balcony": 0x05,
+            "Traverse Town: 1st District: Below the balcony": 0x05,
             "Traverse Town: Magician's Study": 0x450,
             "Traverse Town: 3rd District": 0x473,
             "Wonderland: Lotus Forest: 1": 0x25,
@@ -732,7 +816,7 @@ def trinity_dicts(obj):
         },
         {
             "Traverse Town: Mystical House": 0x16,
-            # Has special treatment since its out of bounds.
+            # Has special treatment since it's out of bounds.
             "Olympus Coliseum: Coliseum: Lobby": 0x1A40,
             "Agrabah: Cave: Hall": 0x84,
             "Neverland: Ship: Hold": 0xE1,
