@@ -135,9 +135,10 @@ def tab_switch(tab, encoding):
             return create_journal()
         if tab == "Config":
             return create_config(encoding)
+        if tab == "Misc":
+            return create_misc()
         if tab == "Gummi Ships":
             return create_gummi()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8080", debug=True)
-
