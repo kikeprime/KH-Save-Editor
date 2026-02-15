@@ -4,3 +4,4 @@ from .characters import *
 from .dalmatians import *
 from .trinity import *
 from .minigames import *
+from .flags import *
