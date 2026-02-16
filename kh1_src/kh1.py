@@ -202,8 +202,9 @@ class KH1:
         self.sound = c_uint(int.from_bytes(data[0x16414:0x16418][::-1]))
         self.datainstall = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # JP/FM
         self.difficulty = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # USA/EU
-        
         self.munny = c_uint(int.from_bytes(data[0x1641C:0x16420][::-1]))
+        # 4 bytes for each party member; I've found the rule so I'll update the dicts later
+        self.customize = data[0x16804:0x16828]
 
         # Final Mix stuff
         if self.fm:
