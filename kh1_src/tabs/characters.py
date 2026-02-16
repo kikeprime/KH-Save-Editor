@@ -316,11 +316,30 @@ def __create_customize_sora(c):
         html.Div([dcc.Markdown("Summons:"), summons]),
     ])
 
+def __create_customize_party(c):
+    kh1 = utils.kh1
+    return html.Div([
+        html.Div([
+            dcc.Markdown(t + ":"),
+            dcc.Dropdown(
+                options=[
+                    {"label": k, "value": v} for k, v in kh1.customize_list[d["dict"]].items()
+                ],
+                value=(kh1.data[d["offset"]] >> d["bit"]) & 3,
+                id={"type": "Customize", "index": d["offset"] * 0x10 + d["bit"]},
+                searchable=False,
+                clearable=False,
+                style={"width": 200},
+            ),
+        ])\
+        for t, d in kh1.customize_dict[c.name].items()
+    ])
+
 def __create_customize(c):
     if c.name == "Sora":
         return __create_customize_sora(c)
     else:
-        pass
+        return __create_customize_party(c)
 
 def __create_shared_abilities():
     kh1 = utils.kh1
@@ -461,6 +480,18 @@ def customize_sora_callback(circle, triangle, square, magiclevels, summons):
     for i in range(7):
         kh1.magiclevels[i] = magiclevels[i]
         kh1.summons[i] = summons[i]
+
+@callback(
+    Input({"type": "Customize", "index": ALL}, "value"),
+    Input({"type": "Customize", "index": ALL}, "id"),
+)
+def customize_party_callback(values, ids):
+    kh1 = utils.kh1
+    for v, id in zip(values, ids):
+        offset = id["index"] // 16
+        bit = id["index"] % 16
+        kh1.data[offset] &= ~(3  << bit)
+        kh1.data[offset] |= (v  << bit)
 
 @callback(
     Input({"type": "SharedAbilityCheck", "index": ALL}, "value"),
