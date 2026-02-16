@@ -104,6 +104,331 @@ def main_dicts(obj):
         "Simba": 0x05,
         "Bahamut": 0x06
     }
+    obj.customize_dict = {
+        "Donald": {
+            "Regular Attacks": {
+                "offset": 0x16804,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Offensive Magic": {
+                "offset": 0x16804,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Defensive Magic": {
+                "offset": 0x16805,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Advanced Magic": {
+                "offset": 0x16805,
+                "bit": 2,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x16804,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x16804,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Goofy": {
+            "Regular Attacks": {
+                "offset": 0x16808,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Support Actions": {
+                "offset": 0x16809,
+                "bit": 4,
+                "dict": 0,
+            },
+            "Shield Techniques": {
+                "offset": 0x16809,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x1680A,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x16808,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x16808,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Tarzan": {
+            "Regular Attacks": {
+                "offset": 0x1680C,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Defensive Moves": {
+                "offset": 0x1680D,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x1680E,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x1680C,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x1680C,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Winnie the Pooh": {
+            "Regular Attacks": {
+                "offset": 0x16810,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Offensive Magic": {
+                "offset": 0x16810,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Defensive Magic": {
+                "offset": 0x16811,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Advanced Magic": {
+                "offset": 0x16811,
+                "bit": 2,
+                "dict": 0,
+            },
+            "Support Actions": {
+                "offset": 0x16811,
+                "bit": 4,
+                "dict": 0,
+            },
+            "Defensive Moves": {
+                "offset": 0x16811,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x16812,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x16810,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x16810,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Aladdin": {
+            "Regular Attacks": {
+                "offset": 0x16814,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x16816,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x16814,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x16814,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Ariel": {
+            "Regular Attacks": {
+                "offset": 0x16818,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Defensive Moves": {
+                "offset": 0x16819,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x1681A,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x16818,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x16818,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Jack Skellington": {
+            "Regular Attacks": {
+                "offset": 0x1681C,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x1681E,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x1681C,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x1681C,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Peter Pan": {
+            "Regular Attacks": {
+                "offset": 0x16820,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Defensive Moves": {
+                "offset": 0x16821,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x16822,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x16820,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x16820,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        "Beast": {
+            "Regular Attacks": {
+                "offset": 0x16824,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 0x16826,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0x16824,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0x16824,
+                "bit": 4,
+                "dict": 1,
+            },
+        },
+        # Possible pattern template
+        "Character": {
+            "Regular Attacks": {
+                "offset": 0,
+                "bit": 0,
+                "dict": 0,
+            },
+            "HP items": {
+                "offset": 0,
+                "bit": 2,
+                "dict": 1,
+            },
+            "MP items": {
+                "offset": 0,
+                "bit": 4,
+                "dict": 1,
+            },
+            "Offensive Magic": {
+                "offset": 0,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Defensive Magic": {
+                "offset": 1,
+                "bit": 0,
+                "dict": 0,
+            },
+            "Advanced Magic": {
+                "offset": 1,
+                "bit": 2,
+                "dict": 0,
+            },
+            "Support Actions": {
+                "offset": 1,
+                "bit": 4,
+                "dict": 0,
+            },
+            "Shield Techniques": {
+                "offset": 1,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Defensive Moves": {
+                "offset": 1,
+                "bit": 6,
+                "dict": 0,
+            },
+            "Special Attacks": {
+                "offset": 2,
+                "bit": 0,
+                "dict": 0,
+            },
+        },
+    }
+    obj.customize_list = [
+        {
+            "Constantly": 2,
+            "Frequently": 1,
+            "Occasionally": 0,
+        },
+        {
+            "Immediately": 2,
+            "Frequently": 1,
+            "Only in emergency": 0,
+        },
+    ]
 
 def inventory_dicts(obj):
     obj.item1_dict = {
