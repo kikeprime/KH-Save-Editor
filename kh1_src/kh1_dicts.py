@@ -904,8 +904,9 @@ def world_dicts(obj):
             "Cloud defeated": 0x22,
             "Cerberus defeated": 0x25,
             "Hero License obtained": 0x28,
-            "Sonic Blade obtained": 0x32,
-            # The rest is missing from RA
+            "Hades & Maleficent cutscene": 0x32,
+            # This is missing from RA
+            "Keyhole sealed": 0x3C,
         },
         "Wonderland": {
             "index": 0x07,
