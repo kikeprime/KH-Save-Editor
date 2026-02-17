@@ -142,6 +142,8 @@ class KH1:
         self.sorawins = c_ushort(int.from_bytes(data[0x1036:0x1038][::-1]))
         self.rikuwins = c_ushort(int.from_bytes(data[0x1038:0x103A][::-1]))
 
+        self.weapon_backup = c_ubyte(data[0x1114])
+        
         self.slides = (c_ubyte*6)(*data[0x1207:0x120D])
         self.slides_watched = c_ubyte(data[0x1212])
 
