@@ -7,12 +7,12 @@ def create_chronicles():
     chronicles = [
         html.Div([
             dcc.Markdown(list(kh1.chronicles_dict.keys())[i]),
-            dcc.Checklist(
+            dcc.RadioItems(
                 options=[
                     {"label": f"Part {j+1}", "value": (1 << 7 - j)}\
                     for j in range(list(kh1.chronicles_dict.values())[i])
                 ],
-                value=[kh1.chronicles[i] & (1 << j) for j in range(8)],
+                value=kh1.chronicles[i],
                 id={"type": "Chronicle", "index": i},
             )
         ]) for i in range(len(kh1.chronicles))
@@ -25,4 +25,4 @@ def create_chronicles():
 def chronicles_callback(values):
     kh1 = utils.kh1
     for i in range(len(kh1.chronicles)):
-        kh1.chronicles[i] = sum(values[i])
+        kh1.chronicles[i] = values[i]
