@@ -57,7 +57,7 @@ def create_general():
                 step=1,
                 style={"width": 50},
             ),
-            html.Label(" 100th: "),
+            html.Label(" : "),
             dcc.Input(
                 id="100th",
                 type="number",
@@ -66,7 +66,7 @@ def create_general():
                 max=99,
                 step=1,
                 disabled=True,
-                style={"width": 30},
+                style={"width": 50},
             ),
         ])
     curve = dcc.Dropdown(
