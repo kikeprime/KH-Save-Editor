@@ -68,15 +68,30 @@ def create_worlds():
     kh1 = utils.kh1
     world_list = list(kh1.world_dict.values())
     world_list += [k for k in kh1.landingpoints_dict.keys() if k not in world_list]
-    wtabs = dcc.Tabs(id="WorldsTabs", value="Dive to the Heart")
-    wtabs.children = [
-        dcc.Tab(label=k, value=k)\
-        for k in world_list
-    ]
+    wtabs = dcc.Dropdown(
+        options=[{"label": k, "value": k} for k in world_list],
+        value="Dive to the Heart",
+        id="WorldsTabs",
+        style={"margin-bottom": 10, "width": 200},
+        searchable=False,
+        clearable=False,
+    )
     return html.Div([
+        dcc.Markdown("World:"),
         wtabs,
         html.Div(id="WorldsDiv"),
     ])
+
+@callback(
+    Input({"type": "World Progress", "index": ALL}, "value"),
+    Input({"type": "World Progress", "index": ALL}, "id"),
+)
+def world_progresses_callback(progresses, ids):
+    kh1 = utils.kh1
+    for progress, id in zip(progresses, ids):
+        idx = id["index"]
+        if progress is not None:
+            kh1.world_progresses[idx] = progress
 
 @callback(
     Input({"type": "World Status", "index": ALL}, "value"),
