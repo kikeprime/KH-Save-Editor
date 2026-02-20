@@ -23,6 +23,8 @@ def __create_journal(tab):
         return create_trinity()
     if tab == "Mini Games":
         return create_minigames()
+    if tab == "—Battle Record—":
+        return create_battle_record()
 
 def create_journal():
     jtabs = dcc.Tabs(id="JournalTabs", value="Journal Flags")
@@ -34,6 +36,7 @@ def create_journal():
         dcc.Tab(label="101 Dalmatians", value="101 Dalmatians"),
         dcc.Tab(label="Trinity List", value="Trinity List"),
         dcc.Tab(label="Mini Games", value="Mini Games"),
+        dcc.Tab(label="—Battle Record—", value="—Battle Record—"),
         dcc.Tab(label="Treasures", value="Treasures"),
     ]
     return html.Div([
