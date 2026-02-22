@@ -217,8 +217,8 @@ class KH1:
             self.deflected = c_ushort(int.from_bytes(data[0x085C:0x085E][::-1]))
             self.item_usage = c_ushort(int.from_bytes(data[0x0860:0x0862][::-1]))
             self.hits = c_ushort(int.from_bytes(data[0x0862:0x0864][::-1]))
-            self.friend_ko = c_ushort(int.from_bytes(data[0x0864:0x0868][::-1]))
-            self.deaths = c_ushort(int.from_bytes(data[0x0868:0x086A][::-1]))
+            self.friend_ko = c_ushort(int.from_bytes(data[0x0864:0x0866][::-1]))
+            self.deaths = c_ushort(int.from_bytes(data[0x0866:0x0868][::-1]))
             self.xemnas = c_ubyte(data[0x1118])
             self.gummiblocks = (c_ubyte*160)(*data[0xBE78:0xBF18]) # 144 bytes until last Design Gummi
             self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF41:0xBF45][::-1]))
@@ -255,45 +255,38 @@ class KH1:
             i += 1
         
     def __save_shared(self):
+        self.data[0x048C] = self.path
         self.data[0x048D] = self.curve
         self.data[0x048E:0x0492] = bytearray(self.party)
+        self.data[0x0492:0x0499] = bytearray(self.magiclevels)
         self.data[0x0499:0x0599] = bytearray(self.inventory)
         self.data[0x0599:0x05C9] = bytearray(self.shared_abilities)
-        
+        self.data[0x07D0:0x07D7] = bytearray(self.summons)
         self.data[0x0F4C:0x0FAC] = bytearray(self.oc_minigames)
         self.data[0x0F6A] = self.platinummatch
-        
         self.data[0x1036:0x1038] = bytearray(self.sorawins)
         self.data[0x1038:0x103A] = bytearray(self.rikuwins)
-        
         self.data[0x1207:0x120D] = bytearray(self.slides)
         self.data[0x1212] = self.slides_watched
-        
+        self.data[0x1114] = self.weapon_backup
         self.data[0x1500:0x1514] = bytearray(self.world_progresses)
-        
         self.data[0x16D1:0x16DB] = self.raft
-        
         self.data[0x16E3:0x16FA] = bytearray(self.journal_chars)
         self.data[0x1703:0x1710] = bytearray(self.dalmatians)
         self.data[0x1728:0x1840] = bytearray(self.minigames)
         self.data[0x1997:0x19BF:4] = bytearray(self.chronicles)
         self.data[0x19C0:0x19C2] = bytearray(self.reports)
         self.data[0x19C4] = self.journal_unlock
-        
         self.data[0x1C1B] = self.trinity_unlock
         self.data[0x1C66:0x1C6C] = bytearray(self.trinity_count)
         self.data[0x1C6C:0x1CB4] = bytearray(self.trinity_flags)
-        
         self.data[0x1EF0:0x1EFF] = bytearray(self.world_statuses)
         self.data[0x1EFF:0x1F0E] = bytearray(self.landingpoints)
-        
         self.data[0x2040:0x2044] = bytearray(self.world)
         self.data[0x2044:0x2048] = bytearray(self.room)
         self.data[0x2048:0x204C] = bytearray(self.flag)
-        
         self.data[0x2405] = self.gummi_tutorial
         self.data[0x2410] = self.selectedship
-        
         self.data[0x16400:0x16404] = bytearray(self.autolock)
         self.data[0x16404:0x16408] = bytearray(self.targetlock)
         self.data[0x16408:0x1640C] = bytearray(self.camera)
@@ -301,10 +294,18 @@ class KH1:
         self.data[0x16414:0x16418] = bytearray(self.sound)
         self.data[0x16418:0x1641C] = bytearray(self.datainstall)
         self.data[0x1641C:0x16420] = bytearray(self.munny)
+        self.data[0x16804:0x16828] = bytearray(self.customize)
 
     def __save_vanilla(self):
         self.data[0x07D8:0x0820] = bytearray(self.heartless)
         self.data[0x082C:0x082F] = bytearray(self.shortcuts)
+        self.data[0x0836:0x0838] = bytearray(self.cure_on_friends)
+        self.data[0x083E:0x0840] = bytearray(self.heartless_killed)
+        self.data[0x0844:0x0846] = bytearray(self.deflected)
+        self.data[0x0848:0x084A] = bytearray(self.item_usage)
+        self.data[0x084A:0x084C] = bytearray(self.hits)
+        self.data[0x084C:0x084E] = bytearray(self.friend_ko)
+        self.data[0x084E:0x0850] = bytearray(self.deaths)
         self.data[0xBE78:0xBEE4] = bytearray(self.gummiblocks)
         self.data[0xBF01:0xBF05] = bytearray(self.gummi_decelerate)
         self.data[0xBF05:0xBF09] = bytearray(self.gummi_accelerate)
@@ -319,9 +320,14 @@ class KH1:
     def __save_fm(self):
         self.data[0x07D8:0x083E] = bytearray(self.heartless)
         self.data[0x0844:0x0847] = bytearray(self.shortcuts)
-        
+        self.data[0x084E:0x0850] = bytearray(self.cure_on_friends)
+        self.data[0x0856:0x0858] = bytearray(self.heartless_killed)
+        self.data[0x085C:0x085E] = bytearray(self.deflected)
+        self.data[0x0860:0x0862] = bytearray(self.item_usage)
+        self.data[0x0862:0x0864] = bytearray(self.hits)
+        self.data[0x0864:0x0868] = bytearray(self.friend_ko)
+        self.data[0x0868:0x086A] = bytearray(self.deaths)
         self.data[0x1118] = self.xemnas
-
         self.data[0xBE78:0xBF18] = bytearray(self.gummiblocks)
         self.data[0xBF41:0xBF45] = bytearray(self.gummi_decelerate)
         self.data[0xBF45:0xBF49] = bytearray(self.gummi_accelerate)
@@ -332,7 +338,6 @@ class KH1:
         self.data[0xBF59:0xBF5D] = bytearray(self.gummi_slaser)
         self.data[0xBF5D:0xBF61] = bytearray(self.gummi_mlaser)
         self.data[0xBF61:0xBF65] = bytearray(self.gummi_llaser)
-
         self.data[0x1642C:0x16430] = bytearray(self.difficulty)
 
     def save(self):
