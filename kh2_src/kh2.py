@@ -386,6 +386,7 @@ class KH2:
         with open(os.path.join("saved", self.filename, self.filename), "wb") as file:
             file.write(self.data)
         if self.sysdata is not None:
+            os.makedirs("saved/" + self.filename[:-2]+"SYS", exist_ok=True)
             with open(os.path.join("saved", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
                 sysfile.write(self.sysdata)
     
