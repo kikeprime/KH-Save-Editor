@@ -386,7 +386,7 @@ class KH2:
         with open(os.path.join("saved", self.filename, self.filename), "wb") as file:
             file.write(self.data)
         if self.sysdata is not None:
-            with open(os.path.join("saved", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "rb") as sysfile:
+            with open(os.path.join("saved", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
                 sysfile.write(self.sysdata)
     
     @staticmethod
