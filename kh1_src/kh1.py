@@ -351,13 +351,9 @@ class KH1:
         else:
             self.__save_vanilla()
 
-        if os.path.exists(os.path.join("files", self.filename, self.filename)):
-            os.makedirs("saved/" + self.filename, exist_ok=True)
-            with open(os.path.join("saved", self.filename, self.filename), "wb") as file:
-                file.write(self.data)
-        else:
-            with open("saved/" + self.filename, "wb") as file:
-                file.write(self.data)
+        os.makedirs("saved/" + self.filename, exist_ok=True)
+        with open(os.path.join("saved", self.filename, self.filename), "wb") as file:
+            file.write(self.data)
         if self.sysdata is not None:
             with open(os.path.join("saved", self.filename, "system.bin"), "wb") as sysfile:
                 sysfile.write(self.sysdata)
