@@ -3,11 +3,11 @@ import kh1_src.kh1_utils as utils
 
 
 def get_playtime(playtime):
-    time = playtime.value // 60
+    time = playtime // 60
     hours = time // 3600
     minutes = (time % 3600) // 60
     seconds = (time % 3600) % 60
-    fraction = playtime.value % 60
+    fraction = playtime % 60
     return hours, minutes, seconds, fraction
 
 def calculate_playtime(hours, minutes, seconds, fraction):
@@ -16,7 +16,7 @@ def calculate_playtime(hours, minutes, seconds, fraction):
 def create_general():
     kh1 = utils.kh1
     if kh1.sysdata is not None:
-        hours, minutes, seconds, fraction = get_playtime(kh1.playtime)
+        hours, minutes, seconds, fraction = get_playtime(kh1.playtime.value)
         playtime = html.Div([
             dcc.Input(
                 id="Hours",
