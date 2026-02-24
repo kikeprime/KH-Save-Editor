@@ -23,7 +23,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Minutes OC", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.oc_minigames[t//4]))[1],
+                                value=get_playtime(kh1.oc_minigames[t//4])[1],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -33,7 +33,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Seconds OC", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.oc_minigames[t//4]))[2],
+                                value=get_playtime(kh1.oc_minigames[t//4])[2],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -43,7 +43,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Fraction OC", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.oc_minigames[t//4]))[3],
+                                value=get_playtime(kh1.oc_minigames[t//4])[3],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -53,7 +53,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "100th OC", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.oc_minigames[t//4]))[3] * 100 // 60,
+                                value=get_playtime(kh1.oc_minigames[t//4])[3] * 100 // 60,
                                 min=0,
                                 max=99,
                                 step=1,
@@ -100,7 +100,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Minutes", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[1],
+                                value=get_playtime(kh1.minigames[t//4])[1],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -110,7 +110,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Seconds", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[2],
+                                value=get_playtime(kh1.minigames[t//4])[2],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -120,7 +120,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Fraction", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[3],
+                                value=get_playtime(kh1.minigames[t//4])[3],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -130,7 +130,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "100th", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[3] * 100 // 60,
+                                value=get_playtime(kh1.minigames[t//4])[3] * 100 // 60,
                                 min=0,
                                 max=99,
                                 step=1,
@@ -176,7 +176,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Minutes", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[1],
+                                value=get_playtime(kh1.minigames[t//4])[1],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -186,7 +186,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Seconds", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[2],
+                                value=get_playtime(kh1.minigames[t//4])[2],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -196,7 +196,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "Fraction", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[3],
+                                value=get_playtime(kh1.minigames[t//4])[3],
                                 min=0,
                                 max=59,
                                 step=1,
@@ -206,7 +206,7 @@ def __create_minigames_tabs(tab):
                             dcc.Input(
                                 id={"type": "100th", "index": t},
                                 type="number",
-                                value=get_playtime(c_uint(kh1.minigames[t//4]))[3] * 100 // 60,
+                                value=get_playtime(kh1.minigames[t//4])[3] * 100 // 60,
                                 min=0,
                                 max=99,
                                 step=1,
