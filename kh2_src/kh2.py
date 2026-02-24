@@ -350,6 +350,10 @@ class KH2:
         self.data[0x2684:0x2688] = bytearray(self.exp)
         self.data[0x269C:0x26A4] = bytearray(self.shortcuts)
         self.data[0x26A4:0x26A8] = bytearray(self.bonuslevel)
+        self.data[0x26EC:0x27A8] = bytearray(self.heartless)
+        self.data[0x286C:0x289C] = bytearray(self.nobodies)
+        self.data[0x28EE:0x294E] = bytearray(self.rc_usage)
+        self.data[0x2CEC:0x2D16] = bytearray(self.limit_usage)
     
     def __save_vanilla_usa(self):
         self.data[0x1600:0x1604] = bytearray(self.munny)
