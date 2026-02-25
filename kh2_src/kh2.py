@@ -308,7 +308,7 @@ class KH2:
             KH2FMCharacter(k, characters[v*0x114:(v+1)*0x114])\
             for k, v in self.character_dict.items()
         ]
-        self.path = c_ubyte(data[0x24FE]) # One of Sora's unknown values?
+        self.path = c_ubyte(data[0x24FE]) # One of Sora's unknown values
         forms = data[0x32F4:0x3524]
         self.forms = [
             KH2FMDriveForm(k, forms[v*0x38:(v+1)*0x38])\
@@ -372,7 +372,21 @@ class KH2:
         self.data[0x2C50:0x2C7A] = bytearray(self.limit_usage)
     
     def __save_fm(self):
-        pass
+        self.data[0x2440:0x2444] = bytearray(self.munny)
+        self.data[0x2444:0x2498] = bytearray(self.playtimes)
+        self.data[0x2498] = self.difficulty
+        self.data[0x24FE] = self.path
+        self.data[0x3524] = self.current_form
+        self.data[0x3525] = self.current_summon
+        self.data[0x3580:0x36B8] = bytearray(self.inventory)
+        self.data[0x36E0:0x36E4] = bytearray(self.exp)
+        self.data[0x36F8:0x3700] = bytearray(self.shortcuts)
+        self.data[0x3700:0x3704] = bytearray(self.bonuslevel)
+        self.data[0x3748:0x3868] = bytearray(self.heartless)
+        self.data[0x38C8:0x38F8] = bytearray(self.nobodies)
+        self.data[0x394A:0x39AA] = bytearray(self.rc_usage)
+        self.data[0x3D48:0x3D72] = bytearray(self.limit_usage)
+        self.data[0x3FEA:0x3FEC] = bytearray(self.weapon_backup)
 
     def save(self):
         self.__save_shared()
