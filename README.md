@@ -68,5 +68,5 @@ For now, kh1_src/kh1.py and kh2_src/kh2.py double as save file documentations fo
 
 ## Known issues
 - It's heavily work in progress so expect issues.
-- Some fields aren't saved yet. KH2FM only saves the world, room and flag.
+- Some fields aren't saved yet though the fields editable through the GUI should be.
 - There are placeholder tabs that won't show anything. This isn't a bug, they just aren't implemented yet.
