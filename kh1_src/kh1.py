@@ -107,7 +107,7 @@ class KH1:
         self.shared_abilities = (c_ubyte*48)(*data[0x0599:0x05C9])
         # data[0x05C9:0x05CC] is unknown.
         self.di_chest_flag = c_ubyte(data[0x05CC])
-        
+        self.treasures = (c_ubyte*0x01FD)(*data[0x05CC:0x07C9])
         self.summons = (c_ubyte*7)(*data[0x07D0:0x07D7])
         # data[0x07D7:0x07D8] is unknown.
         self.heartless = (c_ushort*36)(*struct.unpack("<36H", bytearray(data[0x07D8:0x0820])))
@@ -141,6 +141,10 @@ class KH1:
 
         self.sorawins = c_ushort(int.from_bytes(data[0x1036:0x1038][::-1]))
         self.rikuwins = c_ushort(int.from_bytes(data[0x1038:0x103A][::-1]))
+
+        self.tidus_beaten = c_ubyte(data[0x105C])
+        self.wakka_beaten = c_ubyte(data[0x105D])
+        self.selphie_beaten = c_ubyte(data[0x105E])
 
         self.weapon_backup = c_ubyte(data[0x1114])
         
@@ -205,6 +209,7 @@ class KH1:
         self.datainstall = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # JP/FM
         self.difficulty = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # USA/EU
         self.munny = c_uint(int.from_bytes(data[0x1641C:0x16420][::-1]))
+        self.journal_complete = c_ubyte(data[0x16474]) # 0x0A if complete
         # 4 bytes for each party member; I've found the rule so I'll update the dicts later
         self.customize = data[0x16804:0x16828]
 
@@ -261,6 +266,7 @@ class KH1:
         self.data[0x0492:0x0499] = bytearray(self.magiclevels)
         self.data[0x0499:0x0599] = bytearray(self.inventory)
         self.data[0x0599:0x05C9] = bytearray(self.shared_abilities)
+        self.data[0x05CC:0x07C9] = bytearray(self.treasures)
         self.data[0x07D0:0x07D7] = bytearray(self.summons)
         self.data[0x0F4C:0x0FAC] = bytearray(self.oc_minigames)
         self.data[0x0F6A] = self.platinummatch
