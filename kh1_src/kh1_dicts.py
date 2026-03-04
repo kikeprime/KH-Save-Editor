@@ -6,6 +6,7 @@ def dicts(obj):
     trinity_dicts(obj)
     minigame_dicts(obj)
     gummi_dicts(obj)
+    treasure_dicts(obj)
 
 def main_dicts(obj):
     obj.character_dict = {
@@ -1849,3 +1850,40 @@ def gummi_dicts(obj):
         1, 1, 1,
         # All blueprints have 1 max.
     ]
+
+# Courtesy of the KH1FM Randomizer team
+def treasure_dicts(obj):
+    # For now it reflects FM
+    # I havw to research vanilla differences
+    obj.treasure_dicts = {
+        "Destiny Islands": {
+            "Protect Chain Chest": 0x0000,
+        },
+        "Traverse Town": {
+            "Candle Puzzle: Defense Up": 0x0140,
+            "Accessory Shop's Roof: Postcard": 0x0141,
+            "Boots and Shoes Awning: Postcard": 0x0142,
+            "2nd District Rooftop: Mythril Shard": 0x0143,
+            "Gizmo Shop Facade: Mega-Potion": 0x0180,
+            "Alleyway Balcony: Potion": 0x0181,
+            "Alleyway Blue Room Awning: Pretty Stone": 0x0182,
+            "Alleyway Corner: Potion": 0x0183,
+            # "Unused": 0x01C0,
+            "Green Room Clock Puzzle: Mythril": 0x01C1,
+            "Green Room Table: Elixir": 0x01C2,
+            "Red Room: Pretty Stone": 0x01C3,
+            "Mystical House Yellow Trinity: AP Up": 0x0200,
+            "Accessory Shop: Mythril Shard": 0x0201,
+            "Secret Waterway White Trinity: Orichalcum": 0x0202,
+            "Geppetto's House: Wishing Star": 0x0203,
+            "Item Workshop Right: Mythril Shard": 0x0240,
+            "1st District Blue Trinity Balcony: Postcard": 0x0280,
+            "Mystical House Glide: Dalmatians 1, 2, 3": 0x0580,
+            "Alleyway Behind Crates: Dalmatians 4, 5, 6": 0x581,
+            "Item Workshop Left: Dalmatians 7, 8, 9": 0x0582,
+            "Secret Waterway Stairs: Dalmatians 10, 11, 12": 0x0583,
+        },
+        "Wonderland": {
+            
+        },
+    }
