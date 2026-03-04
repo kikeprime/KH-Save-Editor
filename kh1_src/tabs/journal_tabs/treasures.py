@@ -40,3 +40,16 @@ def create_treasures():
         html.Div([html.H3("World:"), tabs]),
         html.Div(id="TreasuresDiv", style={"margin-top": 20}),
     ])
+
+@callback(
+    Input({"type": "Treasure", "index": ALL}, "value"),
+    State({"type": "Treasure", "index": ALL}, "id"),
+)
+def journal_treasures_callback(values, ids):
+    kh1 = utils.kh1
+    for i in range(len(values)):
+        v = ids[i]["index"]
+        if (1 << v % 16) in values[i]:
+            kh1.treasures[v // 16] |= (1 << v % 16)
+        else:
+            kh1.treasures[v // 16] &= ~(1 << v % 16)
