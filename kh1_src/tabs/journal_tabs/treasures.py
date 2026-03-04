@@ -14,6 +14,7 @@ def __create_treasures(tab):
                 options=[{"label": k, "value": (1 << v % 16)}],
                 value=[kh1.treasures[v//16] & (1 << v % 16)],
                 id={"type": "Treasure", "index": v},
+                style={"margin-top": 10},
             )
         ])\
         for k, v in kh1.treasure_dicts[tab].items()
