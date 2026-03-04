@@ -25,6 +25,8 @@ def __create_journal(tab):
         return create_minigames()
     if tab == "—Battle Record—":
         return create_battle_record()
+    if tab == "Treasures":
+        return create_treasures()
 
 def create_journal():
     jtabs = dcc.Tabs(id="JournalTabs", value="Journal Flags")
