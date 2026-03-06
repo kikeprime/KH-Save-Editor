@@ -8,7 +8,7 @@ def create_chronicles():
         html.Div([
             dcc.Markdown(list(kh1.chronicles_dict.keys())[i]),
             dcc.RadioItems(
-                options=[
+                options=[{"label": "Locked", "value": 0}] + [
                     {"label": f"Part {j+1}", "value": (1 << 7 - j)}\
                     for j in range(list(kh1.chronicles_dict.values())[i])
                 ],
