@@ -9,17 +9,36 @@ import kh1_src.kh1_utils as utils
 def __create_treasures(tab):
     kh1 = utils.kh1
     treasures = html.Div([
+        html.H3("Treasure Chests:"),
         html.Div([
-            dcc.Checklist(
-                options=[{"label": k, "value": (1 << v % 16)}],
-                value=[kh1.treasures[v//16] & (1 << v % 16)],
-                id={"type": "Treasure", "index": v},
-                style={"margin-top": 10},
-            )
-        ])\
-        for k, v in kh1.treasure_dicts[tab].items()
+            html.Div([
+                dcc.Checklist(
+                    options=[{"label": k, "value": (1 << v % 16)}],
+                    value=[kh1.treasures[v//16] & (1 << v % 16)],
+                    id={"type": "Treasure", "index": v},
+                    style={"margin-top": 10},
+                )
+            ])\
+            for k, v in kh1.treasure_dicts[tab].items()
+        ])
     ])
     unique = None
+    if tab == "Atlantica":
+        clams = html.Div([
+            html.Div([
+                dcc.Checklist(
+                    options=[{"label": k, "value": (1 << v % 16)}],
+                    value=[kh1.clams[v//16] & (1 << v % 16)],
+                    id={"type": "Clam", "index": v},
+                    style={"margin-top": 10},
+                )
+            ])\
+            for k, v in kh1.clam_dict.items()
+        ])
+        unique = html.Div([
+            html.H3("Clams:"),
+            clams,
+        ])
     return html.Div([
         treasures,
         unique,
@@ -54,3 +73,16 @@ def journal_treasures_callback(values, ids):
             kh1.treasures[v // 16] |= (1 << v % 16)
         else:
             kh1.treasures[v // 16] &= ~(1 << v % 16)
+
+@callback(
+    Input({"type": "Clam", "index": ALL}, "value"),
+    State({"type": "Clam", "index": ALL}, "id"),
+)
+def journal_treasures_clams_callback(values, ids):
+    kh1 = utils.kh1
+    for i in range(len(values)):
+        v = ids[i]["index"]
+        if (1 << v % 16) in values[i]:
+            kh1.clams[v // 16] |= (1 << v % 16)
+        else:
+            kh1.clams[v // 16] &= ~(1 << v % 16)
