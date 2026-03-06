@@ -34,6 +34,8 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - 99 Puppies unlock flags
 - Everything Trinity related
 - Mini Game records.
+- Battle Report (—Battle Record—)
+- Treasure Chest and Atlantica Clam flags. (Under construction)
 - Config menu options. It reflects the PS2 versions' options. Some of them are repurposed in Remix versions. PS3 and PC differs in that PC repurposes more options.
 - World statuses and landing point flags
 - Gummi Inventory including Final Mix exclusives
@@ -68,5 +70,5 @@ For now, kh1_src/kh1.py and kh2_src/kh2.py double as save file documentations fo
 
 ## Known issues
 - It's heavily work in progress so expect issues.
-- Some fields aren't saved yet though the fields editable through the GUI should be.
+- Some fields aren't saved yet. KH2FM only saves the world, room and flag.
 - There are placeholder tabs that won't show anything. This isn't a bug, they just aren't implemented yet.
