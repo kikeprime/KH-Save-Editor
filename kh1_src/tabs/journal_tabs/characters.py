@@ -29,7 +29,7 @@ def __create_characters_1():
         html.Div([
             dcc.Markdown(k+":"),
             dcc.RadioItems(
-                options=[
+                options=[{"label": "Locked", "value": 0}] + [
                     # This works because multipart entries always on different bits.
                     {"label": l, "value": (1 << p % 16)}\
                     for l, p in v.items()
