@@ -173,13 +173,16 @@ class KH1:
         # The OC Lobby Push isn't here but at 0x1E10 bit index 0.
         self.trinity_flags = (c_ubyte*0x48)(*data[0x1C6C:0x1CB4])
         
+        self.clams = (c_ubyte*2)(*data[0x1DA9:0x1DAB])
+        self.large_chest_state = c_ubyte(data[0x1DAB])
+        
         self.world_statuses = (c_ubyte*15)(*data[0x1EF0:0x1EFF])
         self.landingpoints = (c_ubyte*15)(*data[0x1EFF:0x1F0E])
         
         self.world = c_uint(int.from_bytes(data[0x2040:0x2044][::-1]))
         self.room = c_uint(int.from_bytes(data[0x2044:0x2048][::-1]))
         self.flag = c_uint(int.from_bytes(data[0x2048:0x204C][::-1]))
-
+        
         self.GUMI = bytearray(data[0x2400:0x2404]).decode() # ASCII string "GUMI"
         # data[0x2404] seems to be a version code, 0 for vanilla and 1 for FM, needs further investigation.
         self.gummi_tutorial = c_ubyte(data[0x2405]) # might be an int # reseting wipes gummi data
@@ -225,7 +228,7 @@ class KH1:
             self.friend_ko = c_ushort(int.from_bytes(data[0x0864:0x0866][::-1]))
             self.deaths = c_ushort(int.from_bytes(data[0x0866:0x0868][::-1]))
             self.xemnas = c_ubyte(data[0x1118])
-            self.gummiblocks = (c_ubyte*160)(*data[0xBE78:0xBF18]) # 144 bytes until last Design Gummi
+            self.gummiblocks = (c_ubyte*160)(*data[0xBE78:0xBF18]) # 144 bytes until the last Design Gummi
             self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF41:0xBF45][::-1]))
             self.gummi_accelerate = c_uint(int.from_bytes(data[0xBF45:0xBF49][::-1]))
             self.gummi_transform = c_uint(int.from_bytes(data[0xBF49:0xBF4D][::-1]))
@@ -286,6 +289,8 @@ class KH1:
         self.data[0x1C1B] = self.trinity_unlock
         self.data[0x1C66:0x1C6C] = bytearray(self.trinity_count)
         self.data[0x1C6C:0x1CB4] = bytearray(self.trinity_flags)
+        self.data[0x1DA9:0x1DAB] = bytearray(self.clams)
+        self.data[0x1DAB] = self.large_chest_state
         self.data[0x1EF0:0x1EFF] = bytearray(self.world_statuses)
         self.data[0x1EFF:0x1F0E] = bytearray(self.landingpoints)
         self.data[0x2040:0x2044] = bytearray(self.world)
