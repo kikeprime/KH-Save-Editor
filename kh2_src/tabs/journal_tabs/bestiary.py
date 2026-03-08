@@ -81,7 +81,7 @@ def __create_rcs():
                     style={"margin-top": 20, "gap": 10},
                 ) for rc in v
             ]),
-        ]) for k, v in kh2.rc_list_dict.items()
+        ]) for k, v in kh2.rc_list_dict.items() if kh2.rc_dict[v[0]] < len(kh2.rc_usage)
     ])
     return html.Div([
         rcs,
