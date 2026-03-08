@@ -70,7 +70,7 @@ class KH2Character:
         obj.data[offset+0x54+2*len(self.abilities)+8:offset+0x54+2*len(self.abilities)+8+4] = bytearray(self.abilitystyles)
 
     def __repr__(self):
-        inventory_dicts(self)
+        dicts(self)
         return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.item_dict.keys())[self.weapon.value]})"
 
 
@@ -112,10 +112,11 @@ class KH2DriveForm:
         obj.data[offset+0x08:offset+0x08+2*len(self.abilities)] = bytearray(self.abilities)
 
     def __repr__(self):
+        dicts(self)
         if self.name != "Antiform":
-            return f"{self.name}(Level: {self.level.value}, Weapon: {self.weapon.value}, EXP: {self.exp.value})"
+            return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.item_dict.keys())[self.weapon.value]}, EXP: {self.exp.value})"
         else:
-            return f"{self.name}(Level: {self.level.value}, Weapon: {self.weapon.value}, Antipoints: {self.exp.value})"
+            return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.item_dict.keys())[self.weapon.value]}, Antipoints: {self.exp.value})"
 
 
 class KH2FMDriveForm(KH2DriveForm):
@@ -151,6 +152,33 @@ class KH2FMPlaceScript:
     
     def __repr__(self):
         return f"KH2FMPlaceScript({self.map}, {self.map2}, {self.battle}, {self.battle2}, {self.event}, {self.event2})"
+
+
+class KH2Minigame:
+    def __init__(self, name, data):
+        self.name = name
+        self.type = c_uint(int.from_bytes(data[0:4][::-1]))
+        self.score = c_uint(int.from_bytes(data[4:8][::-1]))
+    
+    @property
+    def value(self):
+        if self.type.value == 0:
+            return f"No Score ({self.score.value})"
+        if self.type.value == 2:
+            return f"Round {self.score.value}"
+        if self.type.value == 3:
+            return f"{self.score.value} Points"
+        if self.type.value == 4:
+            m = self.score.value // 3600
+            s = (self.score.value % 3600) // 60
+            f = ((self.score.value % 3600) % 60) * 100 // 60
+            return f"Time: {m:02d}'{s:02d}''{f:02d}"
+        if self.type.value == 6:
+            return f"{self.score.value} Swings"
+        return f"{self.score.value} Points, Type: {self.type.value}"
+    
+    def __repr__(self):
+        return f"{self.name}: {self.value}"
 
 
 class KH2GummiBlock:
@@ -242,6 +270,9 @@ class KH2:
         self.nobodies = (c_uint*0x0C)(*struct.unpack("<12I", bytearray(data[0x286C:0x289C])))
         self.rc_usage = (c_ushort*0x30)(*struct.unpack("<48H", bytearray(data[0x28EE:0x294E])))
         self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x2CEC:0x2D16])))
+        
+        minigames = data[0x2E5C:0x2F3C]
+        self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
     
     def __parse_data_vanilla_usa(self, data):
         placescripts = data[0x10:0x0E50]
@@ -281,6 +312,9 @@ class KH2:
         self.nobodies = (c_uint*0x0C)(*struct.unpack("<12I", bytearray(data[0x27D0:0x2800])))
         self.rc_usage = (c_ushort*0x30)(*struct.unpack("<48H", bytearray(data[0x2852:0x28B2])))
         self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x2C50:0x2C7A])))
+        
+        minigames = data[0x2DC0:0x2EA0]
+        self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
         
         self.synthesis_creations = (c_ubyte*5)(*data[0x3741:0x3746])
         self.synthesis_exp = c_uint(int.from_bytes(data[0x3758:0x375C][::-1]))
@@ -328,6 +362,8 @@ class KH2:
         self.nobodies = (c_uint*0x0C)(*struct.unpack("<12I", bytearray(data[0x38C8:0x38F8])))
         self.rc_usage = (c_ushort*0x33)(*struct.unpack("<51H", bytearray(data[0x394A:0x39B0])))
         self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x3D48:0x3D72])))
+        minigames = data[0x3DB4:0x3EF4]
+        self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
         self.weapon_backup = c_ushort(int.from_bytes(data[0x3FEA:0x3FEC]))
     
     def __save_shared(self):
