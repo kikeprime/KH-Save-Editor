@@ -67,7 +67,7 @@ def treasure_dicts(obj):
             "Triton's Palace White Trinity: Orichalcum": 0x1040,
         },
         "Neverland": {
-            
+            "Deck White Trinity: ": 0x1781,
         },
         "Hollow Bastion": {
             
@@ -93,4 +93,18 @@ def treasure_dicts(obj):
         "Triton's Palace Below Deck Clam": 0x15,
         "Triton's Palace Undersea Garden Clam": 0x16,
         "Triton's Palace Undersea Cave Clam": 0x17,
+    }
+    obj.bigben_dict = {
+        "01:00 Door": 0x07,
+        "02:00 Door": 0x06,
+        "03:00 Door": 0x05,
+        "04:00 Door": 0x04,
+        "05:00 Door": 0x03,
+        "06:00 Door": 0x02,
+        "07:00 Door": 0x01,
+        "08:00 Door": 0x00,
+        "09:00 Door": 0x17,
+        "10:00 Door": 0x16,
+        "11:00 Door": 0x15,
+        "12:00 Door": 0x14,
     }
