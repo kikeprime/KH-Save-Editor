@@ -326,7 +326,7 @@ class KH2:
         self.bonuslevel = c_uint(int.from_bytes(data[0x3700:0x3704][::-1]))
         self.heartless = (c_uint*0x48)(*struct.unpack("<72I", bytearray(data[0x3748:0x3868])))
         self.nobodies = (c_uint*0x0C)(*struct.unpack("<12I", bytearray(data[0x38C8:0x38F8])))
-        self.rc_usage = (c_ushort*0x30)(*struct.unpack("<48H", bytearray(data[0x394A:0x39AA])))
+        self.rc_usage = (c_ushort*0x33)(*struct.unpack("<51H", bytearray(data[0x394A:0x39B0])))
         self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x3D48:0x3D72])))
         self.weapon_backup = c_ushort(int.from_bytes(data[0x3FEA:0x3FEC]))
     
@@ -384,7 +384,7 @@ class KH2:
         self.data[0x3700:0x3704] = bytearray(self.bonuslevel)
         self.data[0x3748:0x3868] = bytearray(self.heartless)
         self.data[0x38C8:0x38F8] = bytearray(self.nobodies)
-        self.data[0x394A:0x39AA] = bytearray(self.rc_usage)
+        self.data[0x394A:0x39B0] = bytearray(self.rc_usage)
         self.data[0x3D48:0x3D72] = bytearray(self.limit_usage)
         self.data[0x3FEA:0x3FEC] = bytearray(self.weapon_backup)
 
