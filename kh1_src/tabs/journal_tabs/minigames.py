@@ -346,8 +346,9 @@ def minigame_score_callback(scores, ids):
     Input({"type": "Seconds", "index": ALL}, "value"),
     Input({"type": "Fraction", "index": ALL}, "value"),
     Input({"type": "Minutes", "index": ALL}, "id"),
+    State({"type": "100th", "index": ALL}, "value"),
 )
-def minigame_time_callback(minutes, seconds, fractions, ids):
+def minigame_time_callback(minutes, seconds, fractions, ids, csecs):
     kh1 = utils.kh1
     try:
         l = []
@@ -357,7 +358,7 @@ def minigame_time_callback(minutes, seconds, fractions, ids):
             l.append(fraction * 100 // 60)
         return l
     except:
-        return [0 for i in range(len(minutes))]
+        return csecs
 
 @callback(
     Output({"type": "100th OC", "index": ALL}, "value"),
