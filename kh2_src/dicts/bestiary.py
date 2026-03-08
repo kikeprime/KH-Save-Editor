@@ -203,6 +203,9 @@ rc_dict = {
     "Release 1": 0x2D,
     "Fail-Safe": 0x2E,
     "Release 2": 0x2F,
+    "Air Twister FM": 0x30,
+    "Bat Cry FM": 0x31,
+    "Lance Tug FM": 0x32,
 }
 rc_list_dict = {
     "Soldier": [
@@ -288,6 +291,15 @@ rc_list_dict = {
     ],
     "Neoshadow": [
         "Wind Dance",
+    ],
+    "Aerial Viking": [
+        "Air Twister FM",
+    ],
+    "Beffudler": [
+        "Bat Cry FM",
+    ],
+    "Lance Warrior": [
+        "Lance Tug FM",
     ],
     "Dusk": [
         "Reversal",
