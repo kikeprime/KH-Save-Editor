@@ -176,6 +176,8 @@ class KH1:
         self.clams = (c_ubyte*2)(*data[0x1DA9:0x1DAB])
         self.large_chest_state = c_ubyte(data[0x1DAB])
         
+        self.bigben = (c_ubyte*2)(*data[0x1E61:0x1E63]) # Neverland Aero Upgrade Chest flag is here
+        
         self.world_statuses = (c_ubyte*15)(*data[0x1EF0:0x1EFF])
         self.landingpoints = (c_ubyte*15)(*data[0x1EFF:0x1F0E])
         
@@ -291,6 +293,7 @@ class KH1:
         self.data[0x1C6C:0x1CB4] = bytearray(self.trinity_flags)
         self.data[0x1DA9:0x1DAB] = bytearray(self.clams)
         self.data[0x1DAB] = self.large_chest_state
+        self.data[0x1EA1:0x1EA3] = bytearray(self.bigben)
         self.data[0x1EF0:0x1EFF] = bytearray(self.world_statuses)
         self.data[0x1EFF:0x1F0E] = bytearray(self.landingpoints)
         self.data[0x2040:0x2044] = bytearray(self.world)
