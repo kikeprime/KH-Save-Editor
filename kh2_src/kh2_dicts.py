@@ -7,6 +7,7 @@ def dicts(obj):
     command_dicts(obj)
     world_dicts(obj)
     bestiary_dicts(obj)
+    minigame_dicts(obj)
 
 def main_dicts(obj):
     obj.character_dict = {
@@ -146,3 +147,6 @@ def bestiary_dicts(obj):
     obj.rc_list_dict = rc_list_dict
     obj.limit_dict = limit_dict
     obj.limit_list = limit_list
+
+def minigame_dicts(obj):
+    obj.minigame_list = minigame_list
