@@ -1,5 +1,5 @@
-# Kingdom Heart Save Editor
-For now only KH1, KH1FM, vanilla JP KH2, vanilla USA/EU KH2 and KH2FM are supported. Any other KH game is a very longterm goal.
+# Kingdom Hearts Save Editor
+For now only Kingdom Hearts 1, Kingdom Hearts Final Mix, vanilla JP Kingdom Hearts II, vanilla USA/EU KH2 and Kingdom Hearts II Final Mix are supported. Any other KH game is a very longterm goal.
 
 The idea to write my own save editor came from the fact that Kingdom Save Editor is abandoned and it is very barebones in terms of knowledge and it can't be run on Android. For a university assignment I had to work with the ipywidgets Python package so I thought I could use it for my save editor. It turned out that it's not optimized for small screens so I was looking for GUI packages. I mostly stayed with Python since it can be easily used on Android. So after multiple restarts and a second university class influence I landed on Dash.
 
