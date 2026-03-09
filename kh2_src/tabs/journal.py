@@ -15,6 +15,8 @@ def __create_journal(tab):
         return create_character_files()
     if tab == "Bestiary":
         return create_bestiary()
+    if tab == "Minigames":
+        return create_minigames()
 
 def create_journal():
     jtabs = dcc.Tabs(id="JournalTabs", value="Journal Flags")
