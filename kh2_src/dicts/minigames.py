@@ -40,3 +40,78 @@ minigame_list = [
     "Mushroom XIII: No. 11",
     "Mushroom XIII: No. 12",
 ]
+
+minigame_list_dict = {
+    "Twilight Town": [
+        "Mail Delivery",
+        "Cargo Climb",
+        "Grandstander",
+        "Poster Duty",
+        "Bumble Buster",
+        "Junk Sweep",
+        "SB Street Rave",
+        "Mushroom XIII: No. 7",
+        "Mushroom XIII: No. 8",
+        "Mushroom XIII: No. 12",
+    ],
+    "Radiant Garden": [
+        "SB Freestyle",
+        "Mushroom XIII: No. 9",
+    ],
+    "Olympus Coliseum": [
+        "Phil's Training",
+        "Pain and Panic Cup",
+        "Cerberus Cup",
+        "Titan Cup",
+        "Goddess of Fate Cup",
+        "Pain and Panic Paradox Cup",
+        "Cerberus Paradox Cup",
+        "Titan Paradox Cup",
+        "Hades Paradox Cup",
+        "Mushroom XIII: No. 6",
+    ],
+    "Hundred Acre Woods": [
+        "A Blustery Rescue",
+        "Hunny Slider",
+        "Balloon Bounce",
+        "The Expotition",
+        "The Hunny Pot",
+    ],
+    "Agrabah": [
+        "Magic Carpet",
+        "SB Sand Slider",
+        "Mushroom XIII: No. 5",
+    ],
+    "Halloween Town": [
+        "Gift Wrapping",
+        "SB Workshop Rave",
+        "Mushroom XIII: No. 2",
+    ],
+    "Port Royal": [
+        "SB Time Attack",
+        "Mushroom XIII: No. 10",
+    ],
+    "Space Paranoids": [
+        "Light Cycle",
+    ],
+    "Beast's Castle": [
+        "Mushroom XIII: No. 3",
+    ],
+    "The Land of Dragons": [
+        "Mushroom XIII: No. 4",
+    ],
+    "Timeless River": [
+        "Mushroom XIII: No. 11",
+    ],
+    "The World That Never Was": [
+        "Mushroom XIII: No. 1",
+    ],
+}
+minigame_type_dict = {
+    0x00: "No Score",
+    0x02: "Round",
+    0x03: "Points",
+    0x04: "Time",
+    0x05: "Points (Pooh)",
+    0x06: "Swings",
+}
