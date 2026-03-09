@@ -1,5 +1,5 @@
 # Kingdom Hearts Save Editor
-For now only Kingdom Hearts 1, Kingdom Hearts Final Mix, vanilla JP Kingdom Hearts II, vanilla USA/EU KH2 and Kingdom Hearts II Final Mix are supported. Any other KH game is a very longterm goal.
+For now only Kingdom Hearts 1, Kingdom Hearts Final Mix, vanilla JP Kingdom Hearts II, vanilla USA/EU Kingdom Hearts II and Kingdom Hearts II Final Mix are supported. Any other KH game is a very longterm goal.
 
 The idea to write my own save editor came from the fact that Kingdom Save Editor is abandoned and it is very barebones in terms of knowledge and it can't be run on Android. For a university assignment I had to work with the ipywidgets Python package so I thought I could use it for my save editor. It turned out that it's not optimized for small screens so I was looking for GUI packages. I mostly stayed with Python since it can be easily used on Android. So after multiple restarts and a second university class influence I landed on Dash.
 
@@ -61,7 +61,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - Drive Forms
 - Inventory
 - Heartless and Nobody kill counts
-- Reaction Command counters. The FM only ones aren't discovered yet but the vanilla ones are in FM too.
+- Reaction Command counters.
 - Limit max scores
 - Difficulty
 
@@ -72,3 +72,4 @@ For now, kh1_src/kh1.py and kh2_src/kh2.py double as save file documentations fo
 - It's heavily work in progress so expect issues.
 - Some fields aren't saved yet. KH2FM only saves the world, room and flag.
 - There are placeholder tabs that won't show anything. This isn't a bug, they just aren't implemented yet.
+- The KH1 minigame records can shift up if you unset then set a record. The method I use for KH2 might solve this when I port it back.
