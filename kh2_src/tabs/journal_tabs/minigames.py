@@ -1,6 +1,6 @@
 from dash import Dash, html, dcc, callback, Input, Output, State, ALL
 import kh2_src.kh2_utils as utils
-from kh2_src.tabs.general import get_playtime
+from kh2_src.tabs.general import get_playtime, calculate_playtime
 
 
 @callback(
@@ -57,7 +57,9 @@ def __create_minigame(mg_types, ids):
                         disabled=True,
                         style={"width": 30},
                     ),
-                ], style={"margin": 5})
+                ],
+                    style={"margin": 5}
+                )
             )
         else:
             mgs.append(
@@ -73,7 +75,7 @@ def __create_minigame(mg_types, ids):
                     ),
                 ])
             )
-            kh2.minigames[idx].type.value = t
+        kh2.minigames[idx].type.value = t
     return mgs
 
 def create_minigames():
@@ -83,21 +85,55 @@ def create_minigames():
             html.H3(w),
             html.Div([
                 html.Div([
-                    html.Div(id={"type": "Minigame Div", "index": mg}),
-                    dcc.Dropdown(
-                        options=[
-                            {"label": v, "value": k}\
-                            for k, v in kh2.minigame_type_dict.items()
-                        ],
-                        value=kh2.minigames[kh2.minigame_list.index(mg)].type.value,
-                        id={"type": "Minigame Type", "index": mg},
-                        searchable=False,
-                        clearable=False,
-                        style={"width": 150},
+                    dcc.Markdown(mg+":"),
+                    html.Div([
+                        html.Div(id={"type": "Minigame Div", "index": mg}),
+                        dcc.Dropdown(
+                            options=[
+                                {"label": v, "value": k}\
+                                for k, v in kh2.minigame_type_dict.items()
+                            ],
+                            value=kh2.minigames[kh2.minigame_list.index(mg)].type.value,
+                            id={"type": "Minigame Type", "index": mg},
+                            searchable=False,
+                            clearable=False,
+                            style={"width": 150},
+                        ),
+                    ],
+                        style={"display": "flex", "margin-bottom": 20}
                     ),
-                ], style={"display": "flex", "margin-bottom": 20})\
+                ])\
                 for mg in mgs if kh2.minigame_list.index(mg) < len(kh2.minigames)
             ]),
         ])\
         for w, mgs in kh2.minigame_list_dict.items()
     ])
+
+@callback(
+    Input({"type": "Minigame", "index": ALL}, "value"),
+    Input({"type": "Minigame", "index": ALL}, "id"),
+)
+def minigame_callback(scores, ids):
+    kh2 = utils.kh2
+    for score, id in zip(scores, ids):
+        idx = id["index"]
+        kh2.minigames[idx].score.value = score
+
+@callback(
+    Output({"type": "MG 100th", "index": ALL}, "value"),
+    Input({"type": "MG Minutes", "index": ALL}, "value"),
+    Input({"type": "MG Seconds", "index": ALL}, "value"),
+    Input({"type": "MG Fraction", "index": ALL}, "value"),
+    Input({"type": "MG Minutes", "index": ALL}, "id"),
+)
+def minigame_time_callback(minutes, seconds, fraction, ids):
+    kh2 = utils.kh2
+    centis = []
+    for m, s, f, id in zip(minutes, seconds, fraction, ids):
+        try:
+            idx = id["index"]
+            kh2.minigames[idx].score.value = calculate_playtime(0, m, s, f)
+            centis.append(f * 100 // 60)
+        except:
+            centis.append(0)
+    return centis
