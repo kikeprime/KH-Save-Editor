@@ -177,6 +177,16 @@ class KH2Minigame:
             return f"{self.score.value} Swings"
         return f"{self.score.value} Points, Type: {self.type.value}"
     
+    def save(self, obj):
+        i = obj.minigame_list.index(self.name)
+        offset = 0x2E5C + i * 8
+        if obj.version == 1:
+            offset = 0x2DC0 + i * 8
+        if obj.fm:
+            offset = 0x3DB4 + i * 8
+        obj.data[offset:offset+4] = bytearray(self.type)
+        obj.data[offset+4:offset+8] = bytearray(self.score)
+    
     def __repr__(self):
         return f"{self.name}: {self.value}"
 
@@ -374,6 +384,8 @@ class KH2:
             c.save(self)
         for f in self.forms:
             f.save(self)
+        for mg in self.minigames:
+            mg.save(self)
     
     def __save_vanilla_jp(self):
         self.data[0x1600:0x1604] = bytearray(self.munny)
