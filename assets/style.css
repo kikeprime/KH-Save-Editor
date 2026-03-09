@@ -1,0 +1,20 @@
+h1, h2, h3, h4, h5, h6 {
+    color: #0088CE;
+}
+
+.dash-dropdown {
+    color: #0088CE;
+}
+
+.dash-input-container {
+    height: inherit;
+    margin: 0px;
+    padding: 0px;
+}
+
+.dash-input-element {
+    height: auto;
+    margin: 0px;
+    margin-left: 3px;
+    padding: 0px;
+}
