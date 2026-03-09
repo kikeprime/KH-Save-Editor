@@ -1,9 +1,15 @@
+import mimetypes
+
 from dash import Dash, html, dcc, callback, Input, Output, State, ALL
 
 from kh2_src.kh2 import *
 from kh2_src.tabs import *
 import kh2_src.kh2_utils as utils
 
+
+# Windows fix
+if "text/css" not in mimetypes.guess_type("style.css"):
+    mimetypes.add_type("text/css", ".css")
 
 kh2 = None
 app = Dash("KH2 Save Editor", suppress_callback_exceptions=True)
@@ -23,46 +29,42 @@ menu = html.Div([
         html.Button(
             "Load", id="Load", n_clicks=0, style={"width": 100}
         ),
-    ],
-        style={"display": "inline-block"},
-    ),
-    html.Div([
-        html.Label("Slot: "),
-        dcc.Input(
-            id="Slot",
-            type="number",
-            value=1,
-            min=1,
-            max=99,
-            step=1,
-            style={"width": 50},
-        ),
-    ],
-        style={"display": "inline-block", "margin-left": 5},
-    ),
-    html.Div([
-        html.Label("Version:"),
         html.Div([
-            dcc.Dropdown(
-                [
-                    {"label": "Vanilla JP", "value": 0},
-                    {"label": "Vanilla USA", "value": 1},
-                    {"label": "Final Mix", "value": 2},
-                ],
+            html.Label("Slot: "),
+            dcc.Input(
+                id="Slot",
+                type="number",
                 value=1,
-                id="Version",
-                style={"margin-left": 5, "width": 200},
-                searchable=False,
-                clearable=False,
+                min=1,
+                max=99,
+                step=1,
+                style={"width": 50},
             ),
         ],
-            style={"display": "inline-block", "height": 25},
-        )
+            style={"margin-left": 10},
+        ),
     ],
-        style={"display": "inline-block", "margin-top": 10, "margin-bottom": 10},
+        style={"display": "flex", "margin-bottom": 10},
     ),
     html.Div([
-        html.Label("Encoding:"),
+        html.Label("Version:", style={"margin-top": 8}),
+        dcc.Dropdown(
+            [
+                {"label": "Vanilla JP", "value": 0},
+                {"label": "Vanilla USA", "value": 1},
+                {"label": "Final Mix", "value": 2},
+            ],
+            value=1,
+            id="Version",
+            style={"margin-left": 5, "width": 200},
+            searchable=False,
+            clearable=False,
+        ),
+    ],
+        style={"display": "flex", "margin-bottom": 10},
+    ),
+    html.Div([
+        html.Label("Encoding:", style={"margin-top": 8}),
         html.Div([
             dcc.Dropdown(
                 ["Japanese", "International"],
@@ -72,15 +74,13 @@ menu = html.Div([
                 searchable=False,
                 clearable=False,
             ),
-        ],
-            style={"display": "inline-block", "height": 25},
-        ),
-    ]),
+        ]),
+    ],
+        style={"display": "flex", "margin-bottom": 10},
+    ),
     html.Div([
         html.Button("Save", id="Save", n_clicks=0, style={"width": 100})
-    ],
-        style={"display": "inline-block", "margin-top": 10},
-    ),
+    ]),
 ],
     style={"margin-bottom": 20},
 )
