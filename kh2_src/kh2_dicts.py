@@ -150,3 +150,5 @@ def bestiary_dicts(obj):
 
 def minigame_dicts(obj):
     obj.minigame_list = minigame_list
+    obj.minigame_list_dict = minigame_list_dict
+    obj.minigame_type_dict = minigame_type_dict
