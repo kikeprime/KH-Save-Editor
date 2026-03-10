@@ -21,7 +21,7 @@ class KH1Character:
         self.maxap = c_ubyte(data[5])
         self.strength = c_ubyte(data[6])
         self.defense = c_ubyte(data[7])
-        # data[0x08:0x18] is unknown, full of 0x64
+        self.resistances = (c_ubyte*16)(*data[0x08:0x18])
         self.accessoryslots = c_ubyte(data[0x18])
         self.accessories = (c_ubyte*8)(*data[0x19:0x21])
         self.itemslots = c_ubyte(data[0x21])
@@ -253,6 +253,7 @@ class KH1:
             self.data[0x04+i*0x74+0x05] = c.maxap
             self.data[0x04+i*0x74+0x06] = c.strength
             self.data[0x04+i*0x74+0x07] = c.defense
+            self.data[0x04+i*0x74+0x08:0x04+i*0x74+0x18] = bytearray(c.resistances)
             self.data[0x04+i*0x74+0x18] = c.accessoryslots
             self.data[0x04+i*0x74+0x19:0x04+i*0x74+0x21] = bytearray(c.accessories)
             self.data[0x04+i*0x74+0x21] = c.itemslots
