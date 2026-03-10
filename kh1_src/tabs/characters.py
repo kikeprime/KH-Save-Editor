@@ -143,12 +143,28 @@ def __create_stats(c):
         id={"type": "Magic", "index": c.name},
         style={"margin-bottom": 10},
     )
+    resistances = html.Div([
+        html.Div([
+            dcc.Markdown(k+":"),
+            dcc.Input(
+                id={"type": f"Resistance", "index": c.name + ":" + k},
+                type="number",
+                value=100 - c.resistances[v],
+                min=-100,
+                max=100,
+                step=1,
+                style={"width": 50},
+            ),
+            html.Label(" %"),
+        ]) for k, v in kh1.resistance_dict.items()
+    ])
     return html.Div([
         html.Div([
             html.Div([
                 html.Div([dcc.Markdown("EXP:"), exp]),
                 html.Div([dcc.Markdown("Level:"), level]),
-            ], style={"display": "flex", "gap": 20},
+            ],
+                style={"display": "flex", "gap": 20},
             ),
             html.Div([dcc.Markdown("HP:"), hp]),
             html.Div([dcc.Markdown("MP:"), mp]),
@@ -157,8 +173,10 @@ def __create_stats(c):
             html.Div([
                 html.Div([dcc.Markdown("Strength:"), strength]),
                 html.Div([dcc.Markdown("Defense:"), defense]),
-            ], style={"display": "flex", "gap": 20},
-            )
+            ],
+                style={"display": "flex", "gap": 20},
+            ),
+            html.Div([html.H3("Resistances:"), resistances]),
         ]),
         html.Div([dcc.Markdown("Spells:"), magic], style={"margin-left": 50}),
     ],
@@ -504,3 +522,17 @@ def shared_ability_callback(checks, abilities):
         if (len(checks[i]) == 0 or checks[i][-1] == 128):
             check = 128
         kh1.shared_abilities[i] = check + abilities[i]
+
+@callback(
+    Input({"type": "Resistance", "index": ALL}, "value"),
+    Input({"type": "Resistance", "index": ALL}, "id"),
+)
+def resistances_callback(values, ids):
+    kh1 = utils.kh1
+    for value, id in zip(values, ids):
+        try:
+            name, resistance = id["index"].split(":")
+            idx = kh1.resistance_dict[resistance]
+            kh1.characters[kh1.character_dict[name]].resistances[idx] = 100 - value
+        except:
+            pass
