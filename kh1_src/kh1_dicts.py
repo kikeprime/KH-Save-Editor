@@ -96,6 +96,13 @@ def main_dicts(obj):
         "EXP Zero": 0x40,
         "Combo Master": 0x41
     }
+    obj.resistance_dict = {
+        "Physical": 0x00,
+        "Fire": 0x02,
+        "Blizzard": 0x03,
+        "Thunder": 0x04,
+        "Dark": 0x05,
+    }
 
 def customize_dicts(obj):
     obj.magicnames = ["Fire", "Blizzard", "Thunder", "Cure", "Gravity", "Stop", "Aero"]
