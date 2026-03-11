@@ -101,7 +101,7 @@ def create_general():
         id="World",
         searchable=False,
         clearable=False,
-        style={"display": "inline-block", "width": 200},
+        style={"width": 200},
     )
     room = dcc.Input(
         id="Room",
@@ -130,7 +130,7 @@ def create_general():
         disabled=True,
         searchable=False,
         clearable=False,
-        style={"display": "inline-block", "width": 200},
+        style={"width": 200},
     )
     friend1 = dcc.Dropdown(
         options=[
@@ -140,7 +140,7 @@ def create_general():
         id="Friend1",
         searchable=False,
         clearable=False,
-        style={"display": "inline-block", "width": 200},
+        style={"width": 200},
     )
     friend2 = dcc.Dropdown(
         options=[
@@ -150,7 +150,7 @@ def create_general():
         id="Friend2",
         searchable=False,
         clearable=False,
-        style={"display": "inline-block", "width": 200},
+        style={"width": 200},
     )
     friend3 = dcc.Dropdown(
         options=[
@@ -160,7 +160,7 @@ def create_general():
         id="Friend3",
         searchable=False,
         clearable=False,
-        style={"display": "inline-block", "width": 200},
+        style={"width": 200},
     )
     munny = dcc.Input(
         id="Munny",
