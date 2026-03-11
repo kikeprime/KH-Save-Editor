@@ -272,6 +272,10 @@ class KH2:
         ]
         self.current_form = c_ubyte(data[0x24C8])
         self.current_summon = c_ubyte(data[0x24C9])
+        self.summon_level = c_ubyte(data[0x24CA])
+        self.drive_gauge = c_ubyte(data[0x24CC])
+        self.drive = c_ubyte(data[0x24CD])
+        self.maxdrive = c_ubyte(data[0x24CE])
         self.inventory = (c_ubyte*0x118)(*data[0x2524:0x263C])
         self.exp = c_uint(int.from_bytes(data[0x2684:0x2688][::-1]))
         self.shortcuts = (c_ushort*4)(*struct.unpack("<4H", bytearray(data[0x269C:0x26A4])))
@@ -312,6 +316,10 @@ class KH2:
         ]
         self.current_form = c_ubyte(data[0x242C])
         self.current_summon = c_ubyte(data[0x242D])
+        self.summon_level = c_ubyte(data[0x242E])
+        self.drive_gauge = c_ubyte(data[0x2430])
+        self.drive = c_ubyte(data[0x2431])
+        self.maxdrive = c_ubyte(data[0x2432])
         self.inventory = (c_ubyte*0x118)(*data[0x2488:0x25A0])
         self.exp = c_uint(int.from_bytes(data[0x25E8:0x25EC][::-1]))
         
@@ -360,6 +368,11 @@ class KH2:
         ]
         self.current_form = c_ubyte(data[0x3524])
         self.current_summon = c_ubyte(data[0x3525])
+        self.summon_level = c_ubyte(data[0x3526])
+        self.drive_gauge = c_ubyte(data[0x3528])
+        self.drive = c_ubyte(data[0x3529])
+        self.maxdrive = c_ubyte(data[0x352A])
+        self.party = (c_ubyte*(19*4))(*data[0x3534:0x3580])
         self.inventory = (c_ubyte*0x138)(*data[0x3580:0x36B8])
         self.form_unlock = c_ubyte(data[0x36C0])
         self.summon_unlock = c_ubyte(data[0x36C4])
@@ -374,6 +387,7 @@ class KH2:
         self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x3D48:0x3D72])))
         minigames = data[0x3DB4:0x3EF4]
         self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
+        self.form_usage = (c_ushort*0x0A)(*struct.unpack("<10H", bytearray(data[0x3FD6:0x3FEA])))
         self.weapon_backup = c_ushort(int.from_bytes(data[0x3FEA:0x3FEC]))
     
     def __save_shared(self):
@@ -394,6 +408,10 @@ class KH2:
         self.data[0x166E] = self.path
         self.data[0x24C8] = self.current_form
         self.data[0x24C9] = self.current_summon
+        self.data[0x24CA] = self.summon_level
+        self.data[0x24CC] = self.drive_gauge
+        self.data[0x24CD] = self.drive
+        self.data[0x24CE] = self.maxdrive
         self.data[0x2524:0x263C] = bytearray(self.inventory)
         self.data[0x2684:0x2688] = bytearray(self.exp)
         self.data[0x269C:0x26A4] = bytearray(self.shortcuts)
@@ -410,6 +428,10 @@ class KH2:
         self.data[0x166E] = self.path
         self.data[0x242C] = self.current_form
         self.data[0x242D] = self.current_summon
+        self.data[0x242E] = self.summon_level
+        self.data[0x2430] = self.drive_gauge
+        self.data[0x2431] = self.drive
+        self.data[0x2432] = self.maxdrive
         self.data[0x2488:0x25A0] = bytearray(self.inventory)
         self.data[0x25E8:0x25EC] = bytearray(self.exp)
         self.data[0x2600:0x2608] = bytearray(self.shortcuts)
@@ -426,6 +448,11 @@ class KH2:
         self.data[0x24FE] = self.path
         self.data[0x3524] = self.current_form
         self.data[0x3525] = self.current_summon
+        self.data[0x3526] = self.summon_level
+        self.data[0x3528] = self.drive_gauge
+        self.data[0x3529] = self.drive
+        self.data[0x352A] = self.maxdrive
+        self.data[0x3534:0x3580] = bytearray(self.party)
         self.data[0x3580:0x36B8] = bytearray(self.inventory)
         self.data[0x36E0:0x36E4] = bytearray(self.exp)
         self.data[0x36F8:0x3700] = bytearray(self.shortcuts)
@@ -434,6 +461,7 @@ class KH2:
         self.data[0x38C8:0x38F8] = bytearray(self.nobodies)
         self.data[0x394A:0x39B0] = bytearray(self.rc_usage)
         self.data[0x3D48:0x3D72] = bytearray(self.limit_usage)
+        self.data[0x3FD6:0x3FEA] = bytearray(self.form_usage)
         self.data[0x3FEA:0x3FEC] = bytearray(self.weapon_backup)
 
     def save(self):
