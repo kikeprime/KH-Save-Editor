@@ -109,7 +109,7 @@ class KH1:
         self.di_chest_flag = c_ubyte(data[0x05CC])
         self.treasures = (c_ubyte*0x01FD)(*data[0x05CC:0x07C9])
         self.summons = (c_ubyte*7)(*data[0x07D0:0x07D7])
-        # data[0x07D7:0x07D8] is unknown.
+        # data[0x07D7] is unknown.
         self.heartless = (c_ushort*36)(*struct.unpack("<36H", bytearray(data[0x07D8:0x0820])))
         # data[0x0820:0x082C] is unknown.
         self.shortcuts = (c_ubyte*3)(*data[0x082C:0x082F])
