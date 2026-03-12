@@ -74,7 +74,7 @@ inventory_dict = {
     "Buster Band": 0x46,
     "Protect Belt": 0x47,
     "Sword of the Ancestor (FAKE)": 0x48,
-    "Kingdom Key W": 0x49,
+    "Kingdom Key D": 0x49,
     "Gaia Belt": 0x4A,
     "Unused 0x4B": 0x4B,
     "Unused 0x4C": 0x4C,
