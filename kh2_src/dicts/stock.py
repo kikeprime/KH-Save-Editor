@@ -230,7 +230,7 @@ stock_dict = {
         "Ultimate Mushroom",
         "Detection Shield",
         "Test the King",
-        "Kingdom Key W",
+        "Kingdom Key D",
         "Battlefields of War",
         "Sword of the Ancestor",
         "Sword of the Ancestor (FAKE)",
