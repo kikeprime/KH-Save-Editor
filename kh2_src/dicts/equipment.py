@@ -83,7 +83,7 @@ weapon_dict = {
     ],
     "Guest": [
         "Empty",
-        "Kingdom Key W",
+        "Kingdom Key D",
         "Battlefields of War",
         "Sword of the Ancestor",
         "Sword of the Ancestor (FAKE)",
