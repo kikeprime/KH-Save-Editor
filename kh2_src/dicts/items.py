@@ -80,7 +80,7 @@ item_dict = {
     "Protect Belt": 0x4E,
     "Gaia Belt": 0x4F,
     "Sword of the Ancestor (FAKE)": 0x50,
-    "Kingdom Key W": 0x51,
+    "Kingdom Key D": 0x51,
     "Guard": 0x52,
     "Unused 0x53": 0x53,
     "Unused 0x54": 0x54,
