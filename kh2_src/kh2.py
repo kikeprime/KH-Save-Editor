@@ -256,6 +256,8 @@ class KH2:
         }
         # with open("saved/KH2PlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
+        progress = data[0x0E50:0x10B0]
+        self.progress = {w: (c_ubyte*0x20)(*progress[i*0x20:(i+1)*0x20]) for i, w in self.world_dict.items()}
         self.munny = c_uint(int.from_bytes(data[0x1600:0x1604][::-1]))
         self.playtimes = (c_uint*0x15)(*struct.unpack("<21I", bytearray(data[0x1604:0x1658])))
         self.difficulty = c_ubyte(data[0x1658])
@@ -299,6 +301,8 @@ class KH2:
         }
         # with open("saved/KH2PlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
+        progress = data[0x0E50:0x10B0]
+        self.progress = {w: (c_ubyte*0x20)(*progress[i*0x20:(i+1)*0x20]) for i, w in self.world_dict.items()}
         self.munny = c_uint(int.from_bytes(data[0x1600:0x1604][::-1]))
         self.playtimes = (c_uint*0x15)(*struct.unpack("<21I", bytearray(data[0x1604:0x1658])))
         self.difficulty = c_ubyte(data[0x1658])
@@ -351,6 +355,8 @@ class KH2:
         }
         # with open("saved/KH2FMPlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
+        progress = data[0x1C90:0x2150]
+        self.progress = {w: (c_ubyte*0x20)(*progress[i*0x20:(i+1)*0x20]) for i, w in self.world_dict.items()}
         self.munny = c_uint(int.from_bytes(data[0x2440:0x2444][::-1]))
         self.playtimes = (c_uint*0x15)(*struct.unpack("<21I", bytearray(data[0x2444:0x2498])))
         self.difficulty = c_ubyte(data[0x2498])
@@ -402,6 +408,9 @@ class KH2:
             mg.save(self)
     
     def __save_vanilla_jp(self):
+        for i, w in self.world_dict.items():
+            for j in range(len(self.progress[w])):
+                self.data[0x0E50+i*0x20+j] = self.progress[w][j]
         self.data[0x1600:0x1604] = bytearray(self.munny)
         self.data[0x1604:0x1658] = bytearray(self.playtimes)
         self.data[0x1658] = self.difficulty
@@ -422,6 +431,9 @@ class KH2:
         self.data[0x2CEC:0x2D16] = bytearray(self.limit_usage)
     
     def __save_vanilla_usa(self):
+        for i, w in self.world_dict.items():
+            for j in range(len(self.progress[w])):
+                self.data[0x0E50+i*0x20+j] = self.progress[w][j]
         self.data[0x1600:0x1604] = bytearray(self.munny)
         self.data[0x1604:0x1658] = bytearray(self.playtimes)
         self.data[0x1658] = self.difficulty
@@ -442,6 +454,9 @@ class KH2:
         self.data[0x2C50:0x2C7A] = bytearray(self.limit_usage)
     
     def __save_fm(self):
+        for i, w in self.world_dict.items():
+            for j in range(len(self.progress[w])):
+                self.data[0x1C90+i*0x20+j] = self.progress[w][j]
         self.data[0x2440:0x2444] = bytearray(self.munny)
         self.data[0x2444:0x2498] = bytearray(self.playtimes)
         self.data[0x2498] = self.difficulty
