@@ -2,94 +2,124 @@
 def treasure_dicts(obj):
     # For now it reflects FM
     # I havw to research vanilla differences
-    obj.treasure_dicts = {
-        "Dive to the Heart": {
-            # Ironically on the last byte of the array and the highest used bit
-            "Awakening: Potion": 0x1FC2,
-        },
-        "Destiny Islands": {
-            "Protect Chain Chest": 0x0000,
-        },
-        "Traverse Town": {
-            "Candle Puzzle: Defense Up": 0x0140,
-            "Accessory Shop's Roof: Postcard": 0x0141,
-            "Boots and Shoes Awning: Postcard": 0x0142,
-            "2nd District Rooftop: Mythril Shard": 0x0143,
-            "Gizmo Shop Facade: Mega-Potion": 0x0180,
-            "Alleyway Balcony: Potion": 0x0181,
-            "Alleyway Blue Room Awning: Pretty Stone": 0x0182,
-            "Alleyway Corner: Potion": 0x0183,
-            "Green Room Clock Puzzle: Mythril": 0x01C1,
-            "Green Room Table: Elixir": 0x01C2,
-            "Red Room: Pretty Stone": 0x01C3,
-            "Mystical House Yellow Trinity: AP Up": 0x0200,
-            "Accessory Shop: Mythril Shard": 0x0201,
-            "Secret Waterway White Trinity: Orichalcum": 0x0202,
-            "Geppetto's House: Wishing Star": 0x0203,
-            "Item Workshop Right: Mythril Shard": 0x0240,
-            "1st District Blue Trinity Balcony: Postcard": 0x0280,
-            "Mystical House Glide: Dalmatians 1, 2, 3": 0x0580,
-            "Alleyway Behind Crates: Dalmatians 4, 5, 6": 0x581,
-            "Item Workshop Left: Dalmatians 7, 8, 9": 0x0582,
-            "Secret Waterway Stairs: Dalmatians 10, 11, 12": 0x0583,
-        },
-        "Wonderland": {
-            "Rabbit Hole Green Trinity: Elixir": 0x05C0,
-            "Rabbit Hole Heartless Wave 1: Camping Set": 0x05C1,
-            "Rabbit Hole Heartless Wave 2: Mega-Potion": 0x05C2,
-            "Rabbit Hole Heartless Wave 3: Megalixir": 0x05C3,
-            "Bizarre Room Green Trinity: Mythril Shard": 0x0600,
-            "Queen's Castle Left Red Chest: Thundara-G": 0x0640,
-            "Queen's Castle Right Blue Chest: Dalmatians 13, 14, 15": 0x0641,
-            "Queen's Castle Right Red Chest: Meteor-G": 0x0642,
-            "Lotus Forest Thunder Plant: Thundara-G": 0x0643,
-            "Lotus Forest Painting Thunder Plant: Dalmatians 58, 59, 60": 0x0680,
-            "Lotus Forest With Glide: Orichalcum": 0x0681,
-            "Lotus Forest Nut: Dalmatians 16, 17, 18": 0x0682,
-            "Lotus Forest Corner: Scan-G": 0x0683,
-            "Bizarre Room Lamp: Defense Up": 0x06C0,
-            "Tea Party Garden Left: Flare-G": 0x06C2,
-            "Tea Party Garden Right: Dalmatians 19, 20, 21": 0x06C3,
-            "Tea Party Garden Balcony: Dark Matter": 0x0700,
-            "Tea Party Garden Corner: Mythril": 0x0701,
-            "Lotus Forest White Trinity: Lady Luck": 0x0702,
-        },
-        "Deep Jungle": {
-            
-        },
-        "Hundred Acre Woods": {
-            "Meadow Inside Log: Mythril Shard": 0x0A43,
-            "Bouncing Spot Cliff: Mythril Shard": 0x0A80,
-            "Bouncing Spot Tree Alcove: Dark Matter": 0x0A80,
-            "Bouncing Spot Giant Pot: AP Up": 0x0A80,
-        },
-        "Agrabah": {
-            
-        },
-        "Monstro": {
-            "Mouth Boat Deck: High Jump": 0x1583,
-        },
-        "Atlantica": {
-            "Sunken Ship In Flipped Boat: Elixir": 0x0FC0,
-            "Sunken Ship Seabed: Mythril Shard": 0x0FC1,
-            "Below Deck: Mythril Shard": 0x0FC2,
-            "Ariel's Grotto High: Torn Page": 0x0FC3,
-            "Ariel's Grotto Middle: Cottage": 0x1000,
-            "Ariel's Grotto Low: Mega-Potion": 0x1001,
-            "Ursula's Lair: Mythril": 0x1002,
-            "Large Chest: Orichalcum": 0x1003,
-            "Triton's Palace White Trinity: Orichalcum": 0x1040,
-        },
-        "Neverland": {
-            "Deck White Trinity: Dalmatians 43, 44, 45": 0x1781,
-        },
-        "Hollow Bastion": {
-            
-        },
-        "End of the World": {
-            
-        },
-    }
+    @property
+    def treasure_chests(self):
+        item_0783 = "Protera Chain"
+        if hasattr(self, "fm") and self.fm:
+            item_0783 = "Protect Chain"
+        return {
+            "Dive to the Heart": {
+                # Ironically on the last byte of the array and the highest used bit
+                "Awakening: Potion": 0x1FC2,
+            },
+            "Destiny Islands": {
+                "Protect Chain Chest": 0x0000,
+            },
+            "Traverse Town": {
+                "Candle Puzzle: Defense Up": 0x0140,
+                "Accessory Shop's Roof: Postcard": 0x0141,
+                "Boots and Shoes Awning: Postcard": 0x0142,
+                "2nd District Rooftop: Mythril Shard": 0x0143,
+                "Gizmo Shop Facade: Mega-Potion": 0x0180,
+                "Alleyway Balcony: Potion": 0x0181,
+                "Alleyway Blue Room Awning: Pretty Stone": 0x0182,
+                "Alleyway Corner: Potion": 0x0183,
+                "Green Room Clock Puzzle: Mythril": 0x01C1,
+                "Green Room Table: Elixir": 0x01C2,
+                "Red Room: Pretty Stone": 0x01C3,
+                "Mystical House Yellow Trinity: AP Up": 0x0200,
+                "Accessory Shop: Mythril Shard": 0x0201,
+                "Secret Waterway White Trinity: Orichalcum": 0x0202,
+                "Geppetto's House: Wishing Star": 0x0203,
+                "Item Workshop Right: Mythril Shard": 0x0240,
+                "1st District Blue Trinity Balcony: Postcard": 0x0280,
+                "Mystical House Glide: Dalmatians 1, 2, 3": 0x0580,
+                "Alleyway Behind Crates: Dalmatians 4, 5, 6": 0x581,
+                "Item Workshop Left: Dalmatians 7, 8, 9": 0x0582,
+                "Secret Waterway Stairs: Dalmatians 10, 11, 12": 0x0583,
+            },
+            "Wonderland": {
+                "Rabbit Hole Green Trinity: Elixir": 0x05C0,
+                "Rabbit Hole Heartless Wave 1: Camping Set": 0x05C1,
+                "Rabbit Hole Heartless Wave 2: Mega-Potion": 0x05C2,
+                "Rabbit Hole Heartless Wave 3: Megalixir": 0x05C3,
+                "Bizarre Room Green Trinity: Mythril Shard": 0x0600,
+                "Queen's Castle Left Red Chest: Thundara-G": 0x0640,
+                "Queen's Castle Right Blue Chest: Dalmatians 13, 14, 15": 0x0641,
+                "Queen's Castle Right Red Chest: Meteor-G": 0x0642,
+                "Lotus Forest Thunder Plant: Thundara-G": 0x0643,
+                "Lotus Forest Painting Thunder Plant: Dalmatians 58, 59, 60": 0x0680,
+                "Lotus Forest With Glide: Orichalcum": 0x0681,
+                "Lotus Forest Nut: Dalmatians 16, 17, 18": 0x0682,
+                "Lotus Forest Corner: Scan-G": 0x0683,
+                "Bizarre Room Lamp: Defense Up": 0x06C0,
+                "Tea Party Garden Left: Flare-G": 0x06C2,
+                "Tea Party Garden Right: Dalmatians 19, 20, 21": 0x06C3,
+                "Tea Party Garden Balcony: Dark Matter": 0x0700,
+                "Tea Party Garden Corner: Mythril": 0x0701,
+                "Lotus Forest White Trinity: Lady Luck": 0x0702,
+            },
+            "Deep Jungle": {
+                "Tree House Beneath Tree House: Mega-Potion": 0x0782,
+                f"Tree House Rooftop: {item_0783}": 0x0783,
+                "Hippo's Lagoon Center: Dalmatians 25, 26, 27": 0x07C0,
+                "Hippo's Lagoon Left: Mega-Potion": 0x07C1,
+                "Hippo's Lagoon Right: Meteor-G": 0x07C2,
+                "Vines: Dalmatians 28, 29, 30": 0x0800,
+                "Vines 2: Mythril": 0x0801,
+                "Climbing Trees Blue Trinity: Thundara-G": 0x0802,
+                "Tunnel: Mega-Ether": 0x0840,
+                "Cavern of Hearts White Trinity: Orichalcum": 0x0841,
+                "Camp Blue Trinity: Dalmatians 34, 35, 36": 0x0842,
+                "Tent: Mythril Shard": 0x0843,
+                "Waterfall Cavern Low: Mythril Shard": 0x0880,
+                "Waterfall Cavern Middle: Dalmatians 31, 32, 33": 0x0881,
+                "Waterfall Cavern High Wall: Mythril": 0x0882,
+                "Waterfall Cavern High Middle: Orichalcum": 0x0883,
+                "Cliff Left: Mega-Potion": 0x08C0,
+                "Cliff Right: Mythril Shard": 0x08C1,
+                "Tree House Suspended Boat: Mythril": 0x08C2,
+            },
+            "Hundred Acre Woods": {
+                "Meadow Inside Log: Mythril Shard": 0x0A43,
+                "Bouncing Spot Cliff: Mythril Shard": 0x0A80,
+                "Bouncing Spot Tree Alcove: Dark Matter": 0x0A80,
+                "Bouncing Spot Giant Pot: AP Up": 0x0A80,
+            },
+            "Agrabah": {
+                
+            },
+            "Atlantica": {
+                "Sunken Ship In Flipped Boat: Elixir": 0x0FC0,
+                "Sunken Ship Seabed: Mythril Shard": 0x0FC1,
+                "Below Deck: Mythril Shard": 0x0FC2,
+                "Ariel's Grotto High: Torn Page": 0x0FC3,
+                "Ariel's Grotto Middle: Cottage": 0x1000,
+                "Ariel's Grotto Low: Mega-Potion": 0x1001,
+                "Ursula's Lair: Mythril": 0x1002,
+                "Large Chest: Orichalcum": 0x1003,
+                "Triton's Palace White Trinity: Orichalcum": 0x1040,
+            },
+            "Halloween Town": {
+                
+            },
+            "Olympus Coliseum": {
+                
+            },
+            "Monstro": {
+                "Mouth Boat Deck: High Jump": 0x1583,
+            },
+            "Neverland": {
+                "Deck White Trinity: Dalmatians 43, 44, 45": 0x1781,
+            },
+            "Hollow Bastion": {
+                
+            },
+            "End of the World": {
+                
+            },
+        }
+    type(obj).treasure_dicts = treasure_chests
     obj.clam_dict = {
         "Undersea Gorge Blizzard Clam": 0x00,
         "Undersea Gorge Ocean Floor Clam": 0x01,
