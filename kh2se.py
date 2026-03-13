@@ -92,6 +92,7 @@ forms = dcc.Tab(label="Drive Forms", value="Drive Forms")
 inventory = dcc.Tab(label="Inventory", value="Inventory")
 journal = dcc.Tab(label="Jiminy's Journal", value="Journal")
 config = dcc.Tab(label="Config", value="Config")
+worlds = dcc.Tab(label="Worlds", value="Worlds")
 misc = dcc.Tab(label="Misc", value="Misc")
 gummi = dcc.Tab(label="Gummi Ships", value="Gummi Ships")
 tabs.children = [
@@ -101,6 +102,7 @@ tabs.children = [
     inventory,
     journal,
     config,
+    worlds,
     misc,
     gummi,
 ]
@@ -153,9 +155,10 @@ def tab_switch(tab, encoding):
             return create_journal()
         if tab == "Config":
             return create_config(encoding)
+        if tab == "Worlds":
+            return create_worlds()
         if tab == "Gummi Ships":
             return create_gummi()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8080", debug=True)
-
