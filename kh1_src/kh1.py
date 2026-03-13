@@ -340,8 +340,8 @@ class KH1:
         self.data[0x085C:0x085E] = bytearray(self.deflected)
         self.data[0x0860:0x0862] = bytearray(self.item_usage)
         self.data[0x0862:0x0864] = bytearray(self.hits)
-        self.data[0x0864:0x0868] = bytearray(self.friend_ko)
-        self.data[0x0868:0x086A] = bytearray(self.deaths)
+        self.data[0x0864:0x0866] = bytearray(self.friend_ko)
+        self.data[0x0866:0x0868] = bytearray(self.deaths)
         self.data[0x1118] = self.xemnas
         self.data[0xBE78:0xBF18] = bytearray(self.gummiblocks)
         self.data[0xBF41:0xBF45] = bytearray(self.gummi_decelerate)
