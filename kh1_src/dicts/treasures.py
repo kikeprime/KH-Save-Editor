@@ -19,7 +19,6 @@ def treasure_dicts(obj):
             "Alleyway Balcony: Potion": 0x0181,
             "Alleyway Blue Room Awning: Pretty Stone": 0x0182,
             "Alleyway Corner: Potion": 0x0183,
-            # "Unused": 0x01C0,
             "Green Room Clock Puzzle: Mythril": 0x01C1,
             "Green Room Table: Elixir": 0x01C2,
             "Red Room: Pretty Stone": 0x01C3,
@@ -35,19 +34,34 @@ def treasure_dicts(obj):
             "Secret Waterway Stairs: Dalmatians 10, 11, 12": 0x0583,
         },
         "Wonderland": {
-            "Rabbit Hole Green Trinity: ": 0x05C0,
-            "Rabbit Hole Heartless Wave 1: ": 0x05C1,
-            "Rabbit Hole Heartless Wave 2: ": 0x05C2,
-            "Rabbit Hole Heartless Wave 3: ": 0x05C3,
+            "Rabbit Hole Green Trinity: Elixir": 0x05C0,
+            "Rabbit Hole Heartless Wave 1: Camping Set": 0x05C1,
+            "Rabbit Hole Heartless Wave 2: Mega-Potion": 0x05C2,
+            "Rabbit Hole Heartless Wave 3: Megalixir": 0x05C3,
+            "Bizarre Room Green Trinity: Mythril Shard": 0x0600,
+            "Queen's Castle Left Red Chest: Thundara-G": 0x0640,
+            "Queen's Castle Right Blue Chest: Dalmatians 13, 14, 15": 0x0641,
+            "Queen's Castle Right Red Chest: Meteor-G": 0x0642,
+            "Lotus Forest Thunder Plant: Thundara-G": 0x0643,
+            "Lotus Forest Painting Thunder Plant: Dalmatians 58, 59, 60": 0x0680,
+            "Lotus Forest With Glide: Orichalcum": 0x0681,
+            "Lotus Forest Nut: Dalmatians 16, 17, 18": 0x0682,
+            "Lotus Forest Corner: Scan-G": 0x0683,
+            "Bizarre Room Lamp: Defense Up": 0x06C0,
+            "Tea Party Garden Left: Flare-G": 0x06C2,
+            "Tea Party Garden Right: Dalmatians 19, 20, 21": 0x06C3,
+            "Tea Party Garden Balcony: Dark Matter": 0x0700,
+            "Tea Party Garden Corner: Mythril": 0x0701,
+            "Lotus Forest White Trinity: Lady Luck": 0x0702,
         },
         "Deep Jungle": {
             
         },
         "Hundred Acre Woods": {
-            "Meadow Inside Log: ": 0x0A43,
-            "Bouncing Spot Cliff: ": 0x0A80,
-            "Bouncing Spot Tree Alcove: ": 0x0A80,
-            "Bouncing Spot Giant Pot: ": 0x0A80,
+            "Meadow Inside Log: Mythril Shard": 0x0A43,
+            "Bouncing Spot Cliff: Mythril Shard": 0x0A80,
+            "Bouncing Spot Tree Alcove: Dark Matter": 0x0A80,
+            "Bouncing Spot Giant Pot: AP Up": 0x0A80,
         },
         "Agrabah": {
             
@@ -67,7 +81,7 @@ def treasure_dicts(obj):
             "Triton's Palace White Trinity: Orichalcum": 0x1040,
         },
         "Neverland": {
-            "Deck White Trinity: ": 0x1781,
+            "Deck White Trinity: Dalmatians 43, 44, 45": 0x1781,
         },
         "Hollow Bastion": {
             
