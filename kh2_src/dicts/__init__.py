@@ -6,3 +6,4 @@ from .equipment import *
 from .stock import *
 from .bestiary import *
 from .minigames import *
+from .worlds import *
