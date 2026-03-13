@@ -114,30 +114,6 @@ def command_dicts(obj):
         "Master Form", "Final Form", "Antiform",
     ]
 
-def world_dicts(obj):
-    obj.WorldCount = 19
-    obj.world_dict = {
-        0x00: "World ZZ",
-        0x01: "End of Sea",
-        0x02: "Twilight Town",
-        0x03: "Destiny Islands",
-        0x04: "Hollow Bastion",
-        0x05: "Beast's Castle",
-        0x06: "Olympus Coliseum",
-        0x07: "Agrabah",
-        0x08: "The Land of Dragons",
-        0x09: "Hundred Acre Woods",
-        0x0A: "Pride Lands",
-        0x0B: "Atlantica",
-        0x0C: "Disney Castle",
-        0x0D: "Timeless River",
-        0x0E: "Halloween Town",
-        0x0F: "World Map",
-        0x10: "Port Royal",
-        0x11: "Space Paranoids",
-        0x12: "The World That Never Was",
-    }
-
 def bestiary_dicts(obj):
     obj.heartless_dict = heartless_dict
     obj.heartless_list = heartless_list
