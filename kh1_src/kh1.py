@@ -38,11 +38,27 @@ class KH1Character:
 
 
 class KH1GummiBlock:
+    """
+    Class for representing the Gummi Blocks of Gummi Ships.
+    The structure is 0x0C bytes long.
+    """
     def __init__(self, data):
-        pass
+        self.x = data[0] % 16
+        self.y = data[1]
+        self.z = data[0] // 16
+        self.id = data[4]
+        self.color = data[8]
+    
+    def __repr__(self):
+        dicts(self)
+        return f"{self.gummi_block_dict[self.id]}(X={self.x}, Y={self.y}, Z={self.z}, Color={self.color})"
 
 
 class KH1GummiShip:
+    """
+    Class for representing the Gummi Ships.
+    The structure is 0x0F70 bytes long.
+    """
     def __init__(self, data):
         self.blockcount = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
         self.x = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
@@ -50,6 +66,8 @@ class KH1GummiShip:
         self.z = c_ushort(int.from_bytes(data[0x06:0x08][::-1]))
         self.transformpair = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
         self.name = bytearray(data[0x4C:0x56])
+        blocks = data[0x6C:0x09CC]
+        self.blocks = [KH1GummiBlock(blocks[i*0x0C:(i+1)*0x0C]) for i in range(200)]
 
 
 class KH1:
