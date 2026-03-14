@@ -1,6 +1,51 @@
 from dash import Dash, html, dcc, callback, Input, Output, State, ALL
 import kh1_src.kh1_utils as utils
+from kh1_src.kh1_gummi_viewer import *
 
+
+def __create_gummi_ships(encoding):
+    kh1 = utils.kh1
+    codec = "kh1us" if encoding == "International" else "kh1jp"
+    selected = dcc.Dropdown(
+        options=[{"label": f"Gummi Ship {i+1}", "value": i} for i in range(len(kh1.gummiships))],
+        value=kh1.selectedship.value,
+        id="SelectedShip",
+        style={"margin-bottom": 10, "width": 200},
+        searchable=False,
+        clearable=False,
+    )
+    gshtabs = dcc.Dropdown(
+        options=[{"label": kh1.gummiships[i].name.decode(codec), "value": i} for i in range(len(kh1.gummiships))],
+        value=0,
+        id="ShipTabs",
+        style={"margin-bottom": 10, "width": 200},
+        searchable=False,
+        clearable=False,
+    )
+    viewerb = html.Button(
+        "Gummi Ship Viewer",
+        id="ViewerButton",
+        n_clicks=0,
+        style={"margin": 20, "width": 200},
+    )
+    return html.Div([
+        dcc.Markdown("Selected Gummi Ship:"),
+        selected,
+        dcc.Markdown("Ship:"),
+        gshtabs,
+        html.Div(id="ShipDiv", style={"margin-bottom": 20}),
+        viewerb,
+        html.Div(id="ViewerDiv", style={"margin-bottom": 20}),
+    ])
+
+@callback(
+    Output("ViewerDiv", "children"),
+    Input("ViewerButton", "n_clicks"),
+    Input("ShipTabs", "value")
+)
+def viewerb_callback(n_clicks, idx):
+    if n_clicks % 2 == 1:
+        return create_gummi_ship_viewer(idx)
 
 def __create_gummi_inventory():
     kh1 = utils.kh1
@@ -193,21 +238,25 @@ def __create_gummi_inventory():
     return inventory
 
 @callback(
-    Output("GummiInventoryDiv", "children"),
-    Input("GummiInventoryTabs", "value"),
+    Output("GummiDiv", "children"),
+    Input("GummiTabs", "value"),
+    Input("Encoding", "value"),
 )
-def __create_gummi(tab):
+def __create_gummi(tab, encoding):
+    if tab == "Ships":
+        return __create_gummi_ships(encoding)
     if tab == "Gummi Inventory":
         return __create_gummi_inventory()
 
 def create_gummi():
-    gtabs = dcc.Tabs(id="GummiInventoryTabs", value="Gummi Inventory")
+    gtabs = dcc.Tabs(id="GummiTabs", value="Ships")
     gtabs.children = [
+        dcc.Tab(label="Ships", value="Ships"),
         dcc.Tab(label="Gummi Inventory", value="Gummi Inventory"),
     ]
     return html.Div([
         gtabs,
-        html.Div(id="GummiInventoryDiv"),
+        html.Div(id="GummiDiv"),
     ])
 
 @callback(
