@@ -154,6 +154,13 @@ def gummi_dicts(obj):
         "Caterpillar-G 1": 0x8E,
         "Caterpillar-G 2": 0x8F,
     }
+    gummi_block_dict = obj.gummi_block_cockpit_dict |\
+                       obj.gummi_block_engine_dict |\
+                       obj.gummi_block_armor_dict |\
+                       obj.gummi_block_wing_dict |\
+                       obj.gummi_block_special_dict |\
+                       obj.gummi_block_weapon_dict
+    obj.gummi_block_dict = {0: "Empty"} | {v+1: k for k, v in gummi_block_dict.items()}
     obj.gummi_max_list = [
         # Cockpits
         1, 1,
