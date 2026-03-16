@@ -46,12 +46,13 @@ class KH1GummiBlock:
         self.x = data[0] % 16
         self.y = data[1]
         self.z = data[0] // 16
+        self.r = c_ushort(int.from_bytes(data[2:4])).value
         self.id = data[4]
         self.color = data[8]
     
     def __repr__(self):
         dicts(self)
-        return f"{self.gummi_block_dict[self.id]}(X={self.x}, Y={self.y}, Z={self.z}, Color={self.color})"
+        return f"{self.gummi_block_dict[self.id]}(X={self.x}, Y={self.y}, Z={self.z}, R={self.r:04X}, C={self.color})"
 
 
 class KH1GummiShip:
