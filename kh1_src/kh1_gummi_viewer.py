@@ -12,6 +12,51 @@ def obj_to_mesh3d(d):
             df = pd.read_csv(f"assets/gummi/gumi-s0-{i}.obj", header=None, delimiter=" ")
             v = df[df[0] == "v"][[1, 2, 3]].astype(float).to_numpy() / 200 + (n[i] if i in n else 0.5)
             f = df[df[0] == "f"][[1, 2, 3]].map(lambda x: int(x.split("/")[0])).astype(int).to_numpy() - 1
+            r = np.identity(3)
+            b = 0
+            if i == 0x04:
+                r = np.array([
+                    [0, -1, 0],
+                    [-1, 0, 0],
+                    [0, 0, 1]
+                ])
+                b = np.array([1, 1, 0])
+            if i == 0x0A or i == 0x0B:
+                r = np.array([
+                    [0, 0, -1],
+                    [0, 1, 0],
+                    [1, 0, 0],
+                ])
+                b = np.array([1, 0, 0])
+            if i == 0x21 or i == 0x22:
+                r = np.array([
+                    [0, 1, 0],
+                    [-1, 0, 0],
+                    [0, 0, 1]
+                ])
+                b = np.array([0, 1, 0])
+            if i == 0x29:
+                r = np.array([
+                    [0, 1, 0],
+                    [-1, 0, 0],
+                    [0, 0, 1]
+                ])
+                b = np.array([0, 1, 0])
+            if i == 0x2A:
+                r = np.array([
+                    [0, 1, 0],
+                    [-1, 0, 0],
+                    [0, 0, 1]
+                ])
+                b = np.array([0, 1, 0])
+            if i == 0x3A:
+                r = np.array([
+                    [0, 1, 0],
+                    [-1, 0, 0],
+                    [0, 0, 1]
+                ])
+                b = np.array([-1, 2, 0])
+            v = v @ r.T + b
             d[i+1] = {"v": v, "f": f}
         except:
             continue
@@ -24,26 +69,128 @@ def viewer_callback(idx):
     for i in range(kh1.gummiships[idx].blockcount.value):
         block = kh1.gummiships[idx].blocks[i]
         color = ["lightgray", "yellow", "orange", "red"][block.color]
-        fig.add_trace(
-            go.Mesh3d(
-                x=d[block.id]["v"][:,0]+block.x,
-                y=d[block.id]["v"][:,1]+block.y,
-                z=d[block.id]["v"][:,2]+block.z,
-                i=d[block.id]["f"][:,0],
-                j=d[block.id]["f"][:,1],
-                k=d[block.id]["f"][:,2],
-                color=color,
-            ) if block.id in d else\
-            go.Mesh3d(
-                x=np.array([0,1,0,0,1,1,0,1])+block.x,
-                y=np.array([0,0,1,0,1,0,1,1])+block.y,
-                z=np.array([0,0,0,1,0,1,1,1])+block.z,
-                i=[0,0,1,1,0,2,1,5,2,2,3,3],
-                j=[1,1,2,3,2,3,4,4,4,6,5,6],
-                k=[2,3,4,5,3,6,5,7,7,7,7,7],
-                color=color,
+        if block.id in d:
+            r = np.identity(3)
+            b = 0
+            if block.r == 0x1214:
+                r = np.array([
+                    [0, 0, 1],
+                    [0, 1, 0],
+                    [-1, 0, 0]
+                ])
+                b = np.array([0, 0, 1])
+            if block.r == 0x2411:
+                r = np.array([
+                    [0, 0, 1],
+                    [0, 1, 0],
+                    [-1, 0, 0]
+                ])
+                b = np.array([0, 0, 1])
+            if block.r == 0x1413:
+                r = np.array([
+                    [-1, 0, 0],
+                    [0, 1, 0],
+                    [0, 0, -1]
+                ])
+                b = np.array([1, 0, 1])
+            if block.r == 0x0513:
+                r = np.array([
+                    [0, 0, -1],
+                    [0, 1, 0],
+                    [1, 0, 0]
+                ])
+                b = np.array([1, 0, 0])
+            if block.r == 0x3114:
+                r = np.array([
+                    [-1, 0, 0],
+                    [0, 1, 0],
+                    [0, 0, -1]
+                ])
+                b = np.array([1, 0, 1])
+            if block.r == 0x3410:
+                r = np.array([
+                    [0, 0, -1],
+                    [0, 1, 0],
+                    [1, 0, 0]
+                ])
+                b = np.array([1, 0, 0])
+            if block.r == 0x0412:
+                r = np.array([
+                    [0, 0, -1],
+                    [0, 1, 0],
+                    [1, 0, 0]
+                ])
+                r = np.array([
+                    [1, 0, 0],
+                    [0, 0, 1],
+                    [0, -1, 0]
+                ]) @ r
+                b = np.array([1, 0, 1])
+            if block.r == 0x1512:
+                r = np.array([
+                    [0, 0, 1],
+                    [0, 1, 0],
+                    [-1, 0, 0]
+                ])
+                r = np.array([
+                    [1, 0, 0],
+                    [0, 0, 1],
+                    [0, -1, 0]
+                ]) @ r
+                b = np.array([0, 1, 1])
+            if block.r == 0x4112:
+                r = np.array([
+                    [1, 0, 0],
+                    [0, 0, -1],
+                    [0, 1, 0]
+                ])
+                b = np.array([0, 1, 0])
+            if block.r == 0x4210:
+                r = np.array([
+                    [1, 0, 0],
+                    [0, 0, -1],
+                    [0, 1, 0]
+                ])
+                b = np.array([0, 1, 0])
+            if block.r == 0x4311:
+                r = np.array([
+                    [1, 0, 0],
+                    [0, 0, -1],
+                    [0, 1, 0]
+                ])
+                b = np.array([0, 1, 0])
+            if block.r == 0x5310:
+                r = np.array([
+                    [1, 0, 0],
+                    [0, 0, 1],
+                    [0, -1, 0]
+                ])
+                b = np.array([0, 0, 1])
+            v = d[block.id]["v"]
+            v = v @ r.T + b
+            fig.add_trace(
+                go.Mesh3d(
+                    x=v[:,0]+block.x,
+                    y=v[:,1]+block.y,
+                    z=v[:,2]+block.z,
+                    i=d[block.id]["f"][:,0],
+                    j=d[block.id]["f"][:,1],
+                    k=d[block.id]["f"][:,2],
+                    color=color,
+                )
             )
-        )
+        else:
+            fig.add_trace(
+                go.Mesh3d(
+                    x=np.array([0,1,0,0,1,1,0,1])+block.x,
+                    y=np.array([0,0,1,0,1,0,1,1])+block.y,
+                    z=np.array([0,0,0,1,0,1,1,1])+block.z,
+                    i=[0,0,1,1,0,2,1,5,2,2,3,3],
+                    j=[1,1,2,3,2,3,4,4,4,6,5,6],
+                    k=[2,3,4,5,3,6,5,7,7,7,7,7],
+                    color=color,
+                )
+            )
     fig.update_layout(
         scene=dict(
             aspectmode="data",
