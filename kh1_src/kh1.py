@@ -43,16 +43,38 @@ class KH1GummiBlock:
     The structure is 0x0C bytes long.
     """
     def __init__(self, data):
-        self.x = data[0] % 16
-        self.y = data[1]
-        self.z = data[0] // 16
-        self.r = c_ushort(int.from_bytes(data[2:4])).value
-        self.id = data[4]
-        self.color = data[8]
+        self.data = (c_ubyte*12)(*data)
+        self.x = c_ubyte(data[0] % 16)
+        self.y = c_ubyte(data[1])
+        self.z = c_ubyte(data[0] // 16)
+        self.r = c_ushort(int.from_bytes(data[2:4][::-1]))
+        self.id = c_ubyte(data[4])
+        # data[6] is always 0x21
+        self.color = c_ubyte(data[8])
+        # data[0x09:0x0C] seems to be unused
+    
+    colors = [
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "black", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+    ]
+    
+    def save(self):
+        self.data[0] = self.z.value * 16 + self.x.value
+        self.data[1] = self.y
+        self.data[2:4] = bytearray(self.r)
+        self.data[4] = self.id
+        self.data[8] = self.color
+        return self.data
     
     def __repr__(self):
         dicts(self)
-        return f"{self.gummi_block_dict[self.id]}(X={self.x}, Y={self.y}, Z={self.z}, R={self.r:04X}, C={self.color})"
+        return f"{self.gummi_block_dict[self.id.value]}(X={self.x.value}, Y={self.y.value}, Z={self.z.value}, R={self.r.value:04X}, C={self.color.value})"
 
 
 class KH1GummiShip:
@@ -61,6 +83,7 @@ class KH1GummiShip:
     The structure is 0x0F70 bytes long.
     """
     def __init__(self, data):
+        self.data = (c_ubyte*0x0F70)(*data)
         self.blockcount = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
         self.x = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
         self.y = c_ushort(int.from_bytes(data[0x04:0x06][::-1]))
@@ -69,6 +92,17 @@ class KH1GummiShip:
         self.name = bytearray(data[0x4C:0x56])
         blocks = data[0x6C:0x09CC]
         self.blocks = [KH1GummiBlock(blocks[i*0x0C:(i+1)*0x0C]) for i in range(200)]
+    
+    def save(self):
+        self.data[0x00:0x02] = bytearray(self.blockcount)
+        self.data[0x02:0x04] = bytearray(self.x)
+        self.data[0x04:0x06] = bytearray(self.y)
+        self.data[0x06:0x08] = bytearray(self.z)
+        self.data[0x08:0x0A] = bytearray(self.transformpair)
+        self.data[0x4C:0x56] = self.name
+        for i in range(len(self.blocks)):
+            self.data[0x6C+i*0x0C:0x6C+(i+1)*0x0C] = bytearray(self.blocks[i].save())
+        return self.data
 
 
 class KH1:
@@ -321,6 +355,8 @@ class KH1:
         self.data[0x2048:0x204C] = bytearray(self.flag)
         self.data[0x2405] = self.gummi_tutorial
         self.data[0x2410] = self.selectedship
+        for i in range(len(self.gummiships)):
+            self.data[0x241C+i*0x0F70:0x241C+(i+1)*0x0F70] = bytearray(self.gummiships[i].save())
         self.data[0x16400:0x16404] = bytearray(self.autolock)
         self.data[0x16404:0x16408] = bytearray(self.targetlock)
         self.data[0x16408:0x1640C] = bytearray(self.camera)
