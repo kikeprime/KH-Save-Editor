@@ -34,7 +34,14 @@ def obj_to_mesh3d(d):
                     [0, 0, 1]
                 ])
                 b = np.array([1, 1, 0])
-            if i == 0x0A or i == 0x0B:
+            if i == 0x0A:
+                r = np.array([
+                    [0, 1, 0],
+                    [-1, 0, 0],
+                    [0, 0, 1],
+                ])
+                b = np.array([0, 1, 0])
+            if i == 0x0B:
                 r = np.array([
                     [0, 0, -1],
                     [0, 1, 0],
@@ -74,6 +81,172 @@ def obj_to_mesh3d(d):
         except:
             continue
 
+def kh1_rotation(r0):
+    r = np.identity(3)
+    b = 0
+    if r0 == 0x0124: # left
+        r = np.array([
+            [0, -1, 0],
+            [1, 0, 0],
+            [0, 0, 1]
+        ])
+        b = np.array([1, 0, 0])
+    if r0 == 0x0025: # right
+        r = np.array([
+            [0, 1, 0],
+            [-1, 0, 0],
+            [0, 0, 1]
+        ])
+        b = np.array([0, 1, 0])
+    if r0 == 0x0521: # back
+        r = np.array([
+            [-1, 0, 0],
+            [0, -1, 0],
+            [0, 0, 1]
+        ])
+        b = np.array([1, 1, 0])
+    if r0 == 0x0250: # up
+        r = np.array([
+            [1, 0, 0],
+            [0, 0, 1],
+            [0, -1, 0]
+        ])
+        b = np.array([0, 0, 1])
+    if r0 == 0x0340: # down
+        r = np.array([
+            [1, 0, 0],
+            [0, 0, -1],
+            [0, 1, 0]
+        ])
+        b = np.array([0, 1, 0])
+    if r0 == 0x0530: # up up
+        r = np.array([
+            [1, 0, 0],
+            [0, -1, 0],
+            [0, 0, -1]
+        ])
+        b = np.array([0, 1, 1])
+    if r0 == 0x0412: # tilt left
+        r = np.array([
+            [0, 0, 1],
+            [0, 1, 0],
+            [-1, 0, 0]
+        ])
+        b = np.array([0, 0, 1])
+    if r0 == 0x0403: # tilt right
+        r = np.array([
+            [0, 0, -1],
+            [0, 1, 0],
+            [1, 0, 0]
+        ])
+        b = np.array([1, 0, 0])
+    if r0 == 0x0431: # upside down (tilt twice)
+        r = np.array([
+            [-1, 0, 0],
+            [0, 1, 0],
+            [0, 0, -1]
+        ])
+        b = np.array([1, 0, 1])
+    if r0 == 0x0204: # left then up
+        r = np.array([
+            [0, 0, -1],
+            [1, 0, 0],
+            [0, -1, 0]
+        ])
+        b = np.array([1, 0, 1])
+    if r0 == 0x0314: # left then down
+        r = np.array([
+            [0, 0, 1],
+            [1, 0, 0],
+            [0, 1, 0]
+        ])
+        b = 0
+    if r0 == 0x0034: # left then up up
+        r = np.array([
+            [0, 1, 0],
+            [1, 0, 0],
+            [0, 0, -1]
+        ])
+        b = np.array([0, 0, 1])
+    if r0 == 0x0252: # left then tilt left
+        r = np.array([
+            [0, -1, 0],
+            [0, 0, 1],
+            [-1, 0, 0]
+        ])
+        b = np.array([1, 0, 1])
+    if r0 == 0x0143: # left then tilt right
+        r = np.array([
+            [0, -1, 0],
+            [0, 0, -1],
+            [1, 0, 0]
+        ])
+        b = np.array([1, 1, 0])
+    if r0 == 0x0215: # right then up
+        r = np.array([
+            [0, 0, 1],
+            [-1, 0, 0],
+            [0, -1, 0]
+        ])
+        b = np.array([0, 1, 1])
+    if r0 == 0x0305: # right then down
+        r = np.array([
+            [0, 0, -1],
+            [-1, 0, 0],
+            [0, 1, 0]
+        ])
+        b = np.array([1, 1, 0])
+    if r0 == 0x0135: # right then up up
+        r = np.array([
+            [0, -1, 0],
+            [-1, 0, 0],
+            [0, 0, -1]
+        ])
+        b = np.array([1, 1, 1])
+    if r0 == 0x0042: # right then tilt left
+        r = np.array([
+            [0, 1, 0],
+            [0, 0, -1],
+            [-1, 0, 0]
+        ])
+        b = np.array([0, 1, 1])
+    if r0 == 0x0053: # right then tilt right
+        r = np.array([
+            [0, 1, 0],
+            [0, 0, 1],
+            [1, 0, 0]
+        ])
+        b = 0
+    if r0 == 0x0241: # back then up
+        r = np.array([
+            [-1, 0, 0],
+            [0, 0, -1],
+            [0, -1, 0]
+        ])
+        b = np.array([1, 1, 1])
+    if r0 == 0x0351: # back then down
+        r = np.array([
+            [-1, 0, 0],
+            [0, 0, 1],
+            [0, 1, 0]
+        ])
+        b = np.array([1, 0, 0])
+    if r0 == 0x0502: # back then tilt left
+        r = np.array([
+            [0, 0, -1],
+            [0, -1, 0],
+            [-1, 0, 0]
+        ])
+        b = np.array([1, 1, 1])
+    if r0 == 0x0513: # back then tilt right
+        r = np.array([
+            [0, 0, 1],
+            [0, -1, 0],
+            [1, 0, 0]
+        ])
+        b = np.array([0, 1, 0])
+    return r, b
+
 def viewer_callback(idx):
     kh1 = utils.kh1
     rd = {
@@ -91,92 +264,7 @@ def viewer_callback(idx):
         block = kh1.gummiships[idx].blocks[i]
         color = block.colors[block.color.value]
         if block.id.value in d:
-            r = np.identity(3)
-            b = 0
-            if block.r.value & ~0x1000 == 0x0412:
-                r = np.array([
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [-1, 0, 0]
-                ])
-                b = np.array([0, 0, 1])
-            if block.r.value & ~0x1000 == 0x0124:
-                r = np.array([
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [-1, 0, 0]
-                ])
-                b = np.array([0, 0, 1])
-            if block.r.value & ~0x1000 == 0x0314:
-                r = np.array([
-                    [-1, 0, 0],
-                    [0, 1, 0],
-                    [0, 0, -1]
-                ])
-                b = np.array([1, 0, 1])
-            if block.r.value & ~0x1000 == 0x0305:
-                r = np.array([
-                    [0, 0, -1],
-                    [0, 1, 0],
-                    [1, 0, 0]
-                ])
-                b = np.array([1, 0, 0])
-            if block.r.value & ~0x1000 == 0x0431:
-                r = np.array([
-                    [-1, 0, 0],
-                    [0, 1, 0],
-                    [0, 0, -1]
-                ])
-                b = np.array([1, 0, 1])
-            if block.r.value & ~0x1000 == 0x0034:
-                r = np.array([
-                    [0, 0, -1],
-                    [0, 1, 0],
-                    [1, 0, 0]
-                ])
-                b = np.array([1, 0, 0])
-            if block.r.value & ~0x1000 == 0x0204:
-                r = np.array([
-                    [0, 0, -1],
-                    [1, 0, 0],
-                    [0, -1, 0]
-                ])
-                b = np.array([1, 0, 1])
-            if block.r.value & ~0x1000 == 0x0215:
-                r = np.array([
-                    [0, 0, 1],
-                    [-1, 0, 0],
-                    [0, -1, 0]
-                ])
-                b = np.array([0, 1, 1])
-            if block.r.value & ~0x1000 == 0x0241:
-                r = np.array([
-                    [1, 0, 0],
-                    [0, 0, -1],
-                    [0, 1, 0]
-                ])
-                b = np.array([0, 1, 0])
-            if block.r.value & ~0x1000 == 0x0042:
-                r = np.array([
-                    [1, 0, 0],
-                    [0, 0, -1],
-                    [0, 1, 0]
-                ])
-                b = np.array([0, 1, 0])
-            if block.r.value & ~0x1000 == 0x0143:
-                r = np.array([
-                    [1, 0, 0],
-                    [0, 0, -1],
-                    [0, 1, 0]
-                ])
-                b = np.array([0, 1, 0])
-            if block.r.value & ~0x1000 == 0x0053:
-                r = np.array([
-                    [1, 0, 0],
-                    [0, 0, 1],
-                    [0, -1, 0]
-                ])
-                b = np.array([0, 0, 1])
+            r, b = kh1_rotation(block.r.value & ~0x1000)
             v = d[block.id.value]["v"]
             v = v @ r.T + b
             fig.add_trace(
@@ -224,6 +312,7 @@ def create_gummi_ship_viewer(idx):
         viewer_callback(idx),
     ])
 
+# I keep this here for backup
 # 0x20 0x14 normal
 # 0x24 0x11 left
 # 0x25 0x10 right
@@ -237,3 +326,14 @@ def create_gummi_ship_viewer(idx):
 # 0x04 0x12 left then up
 # 0x14 0x13 left then down
 # 0x34 0x10 left then up up or down down
+# 0x52 0x12 left then tilt left
+# 0x43 0x11 left then tilt right
+# 0x15 0x12 right then up
+# 0x05 0x13 right then down
+# 0x35 0x11 right then up up or down down
+# 0x42 0x10 right then tilt left
+# 0x53 0x10 right then tilt right
+# 0x41 0x12 back then up
+# 0x51 0x13 back then down
+# 0x02 0x15 back then tilt left
+# 0x13 0x15 back then tilt right
