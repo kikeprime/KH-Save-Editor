@@ -11,6 +11,7 @@ def obj_to_mesh3d(d):
         1: 1,
         2: 1,
         3: 1,
+        8: np.array([-0.5, 0, 1]),
         58: np.array([1, 1.5, 0.5]),
     }
     for i in range(96):
@@ -34,6 +35,13 @@ def obj_to_mesh3d(d):
                     [0, 0, 1]
                 ])
                 b = np.array([1, 1, 0])
+            if i >= 0x05 and i <= 0x08:
+                r = np.array([
+                    [0, -1, 0],
+                    [1, 0, 0],
+                    [0, 0, 1]
+                ])
+                b = np.array([1, 0, 0])
             if i == 0x0A:
                 r = np.array([
                     [0, 1, 0],
