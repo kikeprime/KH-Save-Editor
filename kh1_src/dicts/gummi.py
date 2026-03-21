@@ -160,7 +160,7 @@ def gummi_dicts(obj):
                        obj.gummi_block_wing_dict |\
                        obj.gummi_block_special_dict |\
                        obj.gummi_block_weapon_dict
-    obj.gummi_block_dict = {0: "Empty"} | {v+1: k for k, v in gummi_block_dict.items()}
+    obj.gummi_block_dict = {0: "None-G"} | {v+1: k for k, v in gummi_block_dict.items()}
     obj.gummi_max_list = [
         # Cockpits
         1, 1,
