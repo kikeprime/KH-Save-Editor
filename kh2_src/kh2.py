@@ -215,16 +215,16 @@ class KH2:
             elif self.version == 2:
                 self.filename = "BISLPM-66675FM-" + f"{slot-1:02d}"
                 self.filesize = 0x10FC0
-            if os.path.exists(os.path.join("files", self.filename, self.filename)):
-                with open(os.path.join("files", self.filename, self.filename), "rb") as file:
+            if os.path.exists(os.path.join("files", "kh2", self.filename, self.filename)):
+                with open(os.path.join("files", "kh2", self.filename, self.filename), "rb") as file:
                     self.data = (c_ubyte*self.filesize)(*file.read())
             else:
-                with open("files/" + self.filename, "rb") as file:
+                with open("files/kh2/" + self.filename, "rb") as file:
                     self.data = (c_ubyte*self.filesize)(*file.read())
             self.__parse_data(self.data)
             self.sysdata = None
-            if os.path.exists(os.path.join("files", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS")):
-                with open(os.path.join("files", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "rb") as sysfile:
+            if os.path.exists(os.path.join("files", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS")):
+                with open(os.path.join("files", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "rb") as sysfile:
                     self.sysdata = (c_ubyte*0x400)(*sysfile.read())
 
     def __parse_data(self, data):
@@ -491,12 +491,12 @@ class KH2:
         self.checksum = KH2.calculate_checksum(self.data)
         self.data[0x08:0x0C] = bytearray(self.checksum)
         
-        os.makedirs("saved/" + self.filename, exist_ok=True)
-        with open(os.path.join("saved", self.filename, self.filename), "wb") as file:
+        os.makedirs("saved/kh2/" + self.filename, exist_ok=True)
+        with open(os.path.join("saved", "kh2", self.filename, self.filename), "wb") as file:
             file.write(self.data)
         if self.sysdata is not None:
-            os.makedirs("saved/" + self.filename[:-2]+"SYS", exist_ok=True)
-            with open(os.path.join("saved", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
+            os.makedirs("saved/kh2/" + self.filename[:-2]+"SYS", exist_ok=True)
+            with open(os.path.join("saved", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
                 sysfile.write(self.sysdata)
     
     @staticmethod
