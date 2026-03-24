@@ -1,3 +1,5 @@
+import mimetypes
+
 from dash import Dash, html, dcc, callback, Input, Output, State, ALL
 
 from kh1_src.kh1 import *
@@ -5,6 +7,10 @@ from kh1_src.tabs import *
 import kh1_src.kh1codec
 import kh1_src.kh1_utils as utils
 
+
+# Windows fix
+if "text/css" not in mimetypes.guess_type("style.css"):
+    mimetypes.add_type("text/css", ".css")
 
 kh1 = None
 app = Dash("KH1 Save Editor", suppress_callback_exceptions=True)
