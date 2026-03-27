@@ -1,0 +1,23 @@
+def character_dicts(obj):
+    obj.character_dict = {
+        "Sora": 0x00,
+        "Sora (The Caribbean)": 0x01,
+        "Sora (Monstropolis)": 0x02,
+        "Sora (Toy Box)": 0x03,
+        "Sora (San Fransokyo)": 0x04,
+        "Sora (KH2)": 0x06,
+        "Riku (KH2)": 0x09,
+        "Mickey": 0x0A,
+        "Donald": 0x0B,
+        "Goofy": 0x0C,
+        "Jack": 0x0D,
+        "Woody": 0x0E,
+        "Buzz": 0x0F,
+        "Hercules": 0x10,
+        "Rapunzel": 0x11,
+        "Eugene": 0x12,
+        "Sully": 0x13,
+        "Mike": 0x14,
+        "Marshmallow": 0x16,
+        "Baymax": 0x17,
+    }
