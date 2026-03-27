@@ -14,6 +14,15 @@ def treasure_dicts(obj):
         item_1501 = "Firaga-G"
         item_1502 = "Holy-G"
         item_17C1 = "Dispel-G"
+        # Hollow Bastion
+        item_1980 = "Dispel-G"
+        item_19C3 = "Holy-G"
+        item_1A41 = "Power Up"
+        item_1AC1 = "Float-G 2"
+        item_1B40 = "Flare-G"
+        item_1B42 = "Float-G 2"
+        item_1B43 = "Float-G 1"
+        item_1BC3 = "Flare-G"
         # End of the World
         item_1C40 = "Power Up"
         item_1C41 = "Defense Up"
@@ -49,6 +58,15 @@ def treasure_dicts(obj):
             item_1501 = "Holy-G"
             item_1502 = "Shiva Belt"
             item_17C1 = "Meteor-G"
+            # Hollow Bastion
+            item_1980 = "Meteor-G"
+            item_19C3 = "Haste2-G"
+            item_1A41 = "AP Up"
+            item_1AC1 = "Royal Crown"
+            item_1B40 = "Dark Matter"
+            item_1B42 = "Ultima-G"
+            item_1B43 = "Thundaga-G"
+            item_1BC3 = "Dark Matter"
             # End of the World
             item_1C40 = "Mythril Shard"
             item_1C41 = "Pretty Stone"
@@ -270,6 +288,43 @@ def treasure_dicts(obj):
             },
             "Hollow Bastion": {
                 "Rising Falls Water's Surface: Life-G": 0x1943,
+                f"Rising Falls Under Water 1st: {item_1980}": 0x1980,
+                "Rising Falls Under Water 2nd: Defense Up": 0x1981,
+                "Rising Falls Platform Near Save Point: Dalmatians 91, 92, 93": 0x1982,
+                "Rising Falls Platform Near Bubble: Blizzara Ring": 0x1983,
+                "Rising Falls High Platform: Megalixir": 0x19C0,
+                "Castle Gates Gravity: Dalmatians 94, 95, 96": 0x19C1,
+                "Castle Gates Freestanding Pillar: Orichalcum": 0x19C2,
+                f"Castle Gates High Pillar: {item_19C3}": 0x19C3,
+                "Great Crest Lower: Orichalcum": 0x1A00,
+                "Great Crest Platform: Thundaga-G": 0x1A01,
+                "High Tower 2nd Gravity: Osmose-G": 0x1A02,
+                "High Tower 1st Gravity: Thundara Ring": 0x1A03,
+                "High Tower Above Sliding Blocks: Megalixir": 0x1A40,
+                f"Entrance Hall Left of Emblem Door: {item_1A41}": 0x1A41,
+                "Library Top of Bookshelf: Ultima-G": 0x1A42,
+                "Library Ground Floor Carousel: Elixir": 0x1A43,
+                "Library Top of Bookshelf Carousel: AP Up": 0x1A80,
+                "Library 1st Floor Carousel 1st: Mythril": 0x1A81,
+                "Library 1st Floor Carousel 2nd: Mega-Potion": 0x1A82,
+                "Lift Stop Gravity 2nd: Ramuh Belt": 0x1A83,
+                "Lift Stop Gravity 1st: Osmose-G": 0x1AC0,
+                f"Lift Stop Under Sliding Blocks: {item_1AC1}": 0x1AC1,
+                "Lift Stop Outside Library Gravity: Dalmatians 97, 98, 99": 0x1AC2,
+                "Lift Stop Heartless Sigil Door Gravity: Orichalcum": 0x1AC3,
+                "Base Level Bubble Under the Wall Platform: Mythril": 0x1B00,
+                "Base Level Platform Near Entrance: Paper-G": 0x1B01,
+                "Base Level Near Crystal Switch: Thundara-G": 0x1B02,
+                "Waterway Near Save Point: Fira Ring": 0x1B03,
+                f"Waterway Blizzard on Bubble: {item_1B40}": 0x1B40,
+                "Waterway Unlock Passage: Thundaga-G": 0x1B41,
+                f"Dungeon By Candles Chest: {item_1B42}": 0x1B42,
+                f"Dungeon Corner Chest: {item_1B43}": 0x1B43,
+                f"Grand Hall Steps Right Side: {item_1BC3}": 0x1BC3,
+                "Grand Hall Oblivion Chest": 0x1C00,
+                "Grand Hall Left of Gate: Dalmatians 61, 62, 63": 0x1C01,
+                "Entrance Hall Push the Statue: Emblem Piece": 0x1C02,
+                "Rising Falls White Trinity: Thundaga-G": 0x1C03,
             },
             "End of the World": {
                 f"Final Dimension 1st: {item_1C40}": 0x1C40,
