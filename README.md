@@ -111,3 +111,11 @@ For now, kh1_src/kh1.py and kh2_src/kh2.py double as save file documentations fo
 - Some fields aren't saved yet.
 - There are placeholder tabs that won't show anything. This isn't a bug, they just aren't implemented yet.
 - The KH1 minigame records can shift up if you unset then set a record. The method I use for KH2 might solve this when I port it back.
+
+# Special thanks
+- Xeeynamo: [Kingdom Save Editor](https://github.com/Xeeynamo/KingdomSaveEditor) the main inspiration of the project
+- [Game Tools Collection](https://github.com/RyudoSynbios/game-tools-collection/blob/master/src/lib/templates/kingdom-hearts-ps2) for an [online PS2 KH1 save editor](https://game-tools-collection.com/kingdom-hearts-ps2/save-editor) that provided lots of used info
+- GICU for providing various [KH1 flags](https://github.com/gaithern/KH1FM-RANDOMIZER/blob/36569375fa6f12074e02f6a2b9b09175e76a53cf/Static%20Files/scripts/1fmRandoSendAPLocations.lua) like the treasure chests and other helps
+- dedede123 & fungualtissue1230 for the PowerShell script to decrypt and encrypt the KH3 PC save files
+- The OpenKH community for various helps including modding the KH games
+- The RetroAchievements community for the Code Notes and the fun sets and not just the KH ones
