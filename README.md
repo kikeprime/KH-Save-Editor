@@ -1,16 +1,17 @@
 # Kingdom Hearts Save Editor
 List of supported games:
-- Kingdom Hearts (all vanilla release)
+- Kingdom Hearts (all vanilla releases)
 - Kingdom Hearts Final Mix (Remix too)
 - Kingdom Hearts II Japan
 - Kingdom Hearts II USA (EU should be the same as this)
 - Kingdom Hearts II Final Mix (Remix too)
+- Kingdom Hearts III + ReMind (PC only)
 
 The idea to write my own save editor came from the fact that Kingdom Save Editor is abandoned and it is very barebones in terms of knowledge and it can't be run on Android. For a university assignment I had to work with the ipywidgets Python package so I thought I could use it for my save editor. It turned out that it's not optimized for small screens so I was looking for GUI packages. I mostly stayed with Python since it can be easily used on Android. So after multiple restarts and a second university class influence I landed on Dash.
 
 So I want to emphasize that the priority is to run the app on smartphones hence the overly vertical alignment.
 
-# How to run
+## How to run
 This is a Plotly Dash app written in Python so you need to have Python installed.
 After then install the dash package via pip install dash.
 
@@ -46,7 +47,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Everything Trinity related
     - Mini Game records.
     - Battle Report (—Battle Record—)
-    - Treasure Chest and Atlantica Clam flags. (Under construction)
+    - Treasure Chest and Atlantica Clam flags. (Vanilla chest contents aren't always correct yet but FM should be 100% correct.)
 - Config menu options. It reflects the PS2 versions' options. Some of them are repurposed in Remix versions. PS3 and PC differs in that PC repurposes more options.
 - World statuses and landing point flags
 - Gummi Ships:
@@ -90,10 +91,22 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Minigame records
 - Difficulty
 
-## Documentation
+## KH3 features
+- Support for both raw encrypted and decrypted save files
+- Proper decryption and encryption
+- You need to provide your account ID if it's not 1638
+- Saving will put out both encrypted and decrypted files
+- Playtime
+- Desire and Power Choices
+- Party (Sora also means empty)
+- Munny
+- EXP
+- Difficulty
+
+# Documentation
 For now, kh1_src/kh1.py and kh2_src/kh2.py double as save file documentations for the respective games. It's another long term goal to create user-friendly documentations.
 
-## Known issues
+# Known issues
 - It's heavily work in progress so expect issues.
 - Some fields aren't saved yet.
 - There are placeholder tabs that won't show anything. This isn't a bug, they just aren't implemented yet.
