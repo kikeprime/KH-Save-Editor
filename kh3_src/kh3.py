@@ -21,13 +21,13 @@ class KH3Character:
 class KH3:
     def __init__(self, slot=0, account=""):
         dicts(self)
+        self.__get_account(account)
+        self.__get_key()
+        self.aes = AES.new(self.key, AES.MODE_ECB)
         if slot != 0:
             self.filename = f"KHIII_slot{slot}.bin"
             with open("files/kh3/" + self.filename, "rb") as file:
                 self.data = bytearray(file.read())
-            self.__get_account(account)
-            self.__get_key()
-            self.aes = AES.new(self.key, AES.MODE_ECB)
             if self.data[:4] != bytearray("S@vE", "utf-8"):
                 self.decrypt()
                 assert(self.data[:4] == bytearray("S@vE", "utf-8"))
