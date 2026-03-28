@@ -19,6 +19,14 @@ Open a terminal in the repo's folder and run the command "python kh1se.py" alter
 
 Create a files and a saved folder in the repo's folder. Put your save files or even better save slot folders into the files folder. The app saves modified files into the saved folder. The output will ALWAYS be a folder slot to avoid issues. I changed this to load save files per game subfolders so KH1 save files or save folders must be in files/kh1 and for KH2 in files/kh2. The output is also put into game specific subfolders.
 
+## Dependencies
+- Python (any version that supports the following packages)
+- Plotly Dash (pip install dash==v3.3.0)
+- Pandas + NumPy (pip install pandas) (NumPy is included with Pandas; the KH1 Gummi Ship viewer needs these)
+- PyCryptodome (pip install pycryptodome) (KH3 needs this for the AES encryption)
+- Jupyter Notebook (more stable launching on Android)
+- Pydroid 3 (Android app I use to run the my apps so on PC you don't need this)
+
 # Features
 ## What not to expect
 - Don't expect support for the PC Remix PNG files, use Kingdom Save Editor for them. I have no reason to copy that functionality.
@@ -98,10 +106,13 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - Saving will put out both encrypted and decrypted files
 - Playtime
 - Desire and Power Choices
-- Party (Sora also means empty)
+- Party
 - Munny
 - EXP
 - Difficulty
+- Advanced general options:
+    - Map Path and Map Spawn
+    - Player Script and Player Pawn
 
 # Documentation
 For now, kh1_src/kh1.py and kh2_src/kh2.py double as save file documentations for the respective games. It's another long term goal to create user-friendly documentations.
