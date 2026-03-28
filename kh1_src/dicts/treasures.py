@@ -10,10 +10,20 @@ def treasure_dicts(obj):
         item_0642 = "Dalmatians 58, 59, 60"
         item_0643 = "Shell-G"
         item_0680 = "Thundara-G"
+        item_0700 = "Aeroga-G 2"
         item_0783 = "Protera Chain"
+        item_0A81 = "Thunder-G"
         item_1501 = "Firaga-G"
         item_1502 = "Holy-G"
-        item_17C1 = "Dispel-G"
+        # Neverland
+        item_1781 = "Meteor-G"
+        item_1782 = "Dispel-G 1"
+        item_17C0 = "Dispel-G 8"
+        item_17C1 = "Dispel-G 4"
+        item_17C2 = "Protega Chain"
+        item_17C3 = "Shell-G 7"
+        item_1903 = "Dalmatians 43, 44, 45"
+        item_1940 = "Dalmatians 82, 83, 84"
         # Hollow Bastion
         item_1980 = "Dispel-G"
         item_19C3 = "Holy-G"
@@ -54,10 +64,20 @@ def treasure_dicts(obj):
             item_0642 = "Meteor-G"
             item_0643 = "Thundara-G"
             item_0680 = "Dalmatians 58, 59, 60"
+            item_0700 = "Dark Matter"
             item_0783 = "Protect Chain"
+            item_0A81 = "Dark Matter"
             item_1501 = "Holy-G"
             item_1502 = "Shiva Belt"
+            # Neverland
+            item_1781 = "Dalmatians 43, 44, 45"
+            item_1782 = "Orichalcum"
+            item_17C0 = "Dark Matter"
             item_17C1 = "Meteor-G"
+            item_17C2 = "Protera Chain"
+            item_17C3 = "Dalmatians 82, 83, 84"
+            item_1903 = "Flare-G"
+            item_1940 = "Paper-G"
             # Hollow Bastion
             item_1980 = "Meteor-G"
             item_19C3 = "Haste2-G"
@@ -139,7 +159,7 @@ def treasure_dicts(obj):
                 "Bizarre Room Lamp: Defense Up": 0x06C0,
                 "Tea Party Garden Left: Flare-G": 0x06C2,
                 "Tea Party Garden Right: Dalmatians 19, 20, 21": 0x06C3,
-                "Tea Party Garden Balcony: Dark Matter": 0x0700,
+                f"Tea Party Garden Balcony: {item_0700}": 0x0700,
                 "Tea Party Garden Corner: Mythril": 0x0701,
                 "Lotus Forest White Trinity: Lady Luck": 0x0702,
             },
@@ -167,8 +187,8 @@ def treasure_dicts(obj):
             "Hundred Acre Woods": {
                 "Meadow Inside Log: Mythril Shard": 0x0A43,
                 "Bouncing Spot Cliff: Mythril Shard": 0x0A80,
-                "Bouncing Spot Tree Alcove: Dark Matter": 0x0A80,
-                "Bouncing Spot Giant Pot: AP Up": 0x0A80,
+                f"Bouncing Spot Tree Alcove: {item_0A81}": 0x0A81,
+                "Bouncing Spot Giant Pot: AP Up": 0x0A82,
             },
             "Agrabah": {
                 "Plaza By Storage: Mega-Potion": 0x0C41,
@@ -274,15 +294,15 @@ def treasure_dicts(obj):
                 "Chamber 6 White Trinity: Dark Matter": 0x1FC1,
             },
             "Neverland": {
-                "Deck White Trinity: Dalmatians 43, 44, 45": 0x1781,
-                "Crow's Nest: Orichalcum": 0x1782,
+                f"Deck White Trinity: {item_1781}": 0x1781,
+                f"Crow's Nest: {item_1782}": 0x1782,
                 "Hold Right Yellow Trinity: Orichalcum": 0x1783,
-                "Hold Left Yellow Trinity: Dark Matter": 0x17C0,
+                f"Hold Left Yellow Trinity: {item_17C0}": 0x17C0,
                 f"Galley: {item_17C1}": 0x17C1,
-                "Cabin: Protera Chain": 0x17C2,
-                "Hold Flight 1st: Dalmatians 82, 83, 84": 0x17C3,
-                "Clock Tower: Flare-G": 0x1903,
-                "Hold Flight 2nd: Paper-G": 0x1940,
+                f"Cabin: {item_17C2}": 0x17C2,
+                f"Hold Flight 1st: {item_17C3}": 0x17C3,
+                f"Clock Tower: {item_1903}": 0x1903,
+                f"Hold Flight 2nd: {item_1940}": 0x1940,
                 "Hold Yellow Trinity Green Chest: Dalmatians 85, 86, 87": 0x1941,
                 "Captain's Cabin: Dalmatians 88, 89, 90": 0x1942,
             },
