@@ -54,6 +54,10 @@ class KH3:
         self.save_icon_dlc = c_ubyte(data[0x68])
         characters = data[0x1880:0xB480]
         self.keychain_upgrades = (c_ubyte*24)(*data[0xBB78:0xBB90])
+        self.map_path = bytearray(data[0xBBA0:0xBCA0])
+        self.map_spawn = bytearray(data[0xBCA0:0xBCE0])
+        self.player_script = bytearray(data[0xBCE0:0xBDE0])
+        self.player_pawn = bytearray(data[0xBDE0:0xBEE0])
     
     def save(self):
         mv = memoryview(self.data)
@@ -66,6 +70,10 @@ class KH3:
         mv[0x30] = self.desire.value
         mv[0x31] = self.power.value
         mv[0x32:0x37] = bytearray(self.party)
+        mv[0xBBA0:0xBCA0] = self.map_path
+        mv[0xBCA0:0xBCE0] = self.map_spawn
+        mv[0xBCE0:0xBDE0] = self.player_script
+        mv[0xBDE0:0xBEE0] = self.player_pawn
         
         # Checksum calculation right before dumping
         self.checksum.value = zlib.crc32(bytearray(self.data[0x10:0x10+self.filesize.value]))
