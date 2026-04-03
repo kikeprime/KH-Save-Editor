@@ -31,7 +31,6 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 ## What not to expect
 - Don't expect support for the PC Remix PNG files, use Kingdom Save Editor for them. I have no reason to copy that functionality.
 - No memory card file support. Use folder type memory card and put the save slot's folder into the repo's files folder that YOU need to create.
-- PCSX2 attach.
 
 ## KH1 features
 - Support for both vanilla and Final Mix save files.
@@ -72,6 +71,10 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Gummi Ship Control Config (PC Remix ignores it but PS3 Remix doesn't)
 - Inventory and Ability dropdowns feature Final Mix exclusives in vanilla mode for modding reasons.
 - The kh1.py file documents more known fields than the current app can edit. You can for example reset the Xemnas fight.
+- PCSX2 attach:
+    - Set slot to 0.
+    - Set if you play vanilla or FM; vanilla means the USA ROM, won't work with other vanilla ROMs
+    - Compatible with BOTH PCSX2 1.6.0 and PCSX2 Qt!
 
 ## KH2 features
 - Support for vanilla Japanese, vanilla USA and Final Mix save files. Vanilla JP is entirely my research because it greatly differs from vanilla USA so I had to rediscover the equivalent fields.
