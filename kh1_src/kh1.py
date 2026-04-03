@@ -106,7 +106,7 @@ class KH1GummiShip:
 
 
 class KH1:
-    def __init__(self, slot=0, fm=False):
+    def __init__(self, slot=0, fm=False, attach=False):
         dicts(self)
         if slot != 0:
             self.fm = fm
@@ -127,7 +127,51 @@ class KH1:
                     self.sysdata = (c_ubyte*0x400)(*sysfile.read())
                 # Playtime in seconds * 60 but possibly in seconds * 50 in PAL versions
                 self.playtime = c_uint(int.from_bytes(self.sysdata[0x10:0x14][::-1]))
+        if attach:
+            self.fm = fm
+            self.__attach()
+            self.__parse_data(self.data)
 
+    def __attach(self):
+        try:
+            import pymem
+            self.pcsx2 = pymem.Pymem("pcsx2.exe")
+            EEmem = 0x20000000
+            self.addr = EEmem + (0x3F8380 if self.fm else 0x3F1C90)
+            self.data = (c_ubyte*0x16C00)(*self.pcsx2.read_bytes(self.addr, 0x16C00))
+            self.sysdata = None
+        except:
+            pass
+        try:
+            import pymem
+            self.pcsx2 = pymem.Pymem("pcsx2-qt.exe")
+            base = self.pcsx2.base_address
+            EEmem = 0
+            dos = self.pcsx2.read_bytes(base, 0x40)  # IMAGE_DOS_HEADER
+            e_lfanew = int.from_bytes(dos[0x3C:0x40], "little")
+            nt = self.pcsx2.read_bytes(base + e_lfanew, 0xF8)  # IMAGE_NT_HEADERS64
+            export_rva = int.from_bytes(nt[0x88:0x8C], "little")
+            export_dir = self.pcsx2.read_bytes(base + export_rva, 0x28)
+            num_names = int.from_bytes(export_dir[0x18:0x1C], "little")
+            names_rva = int.from_bytes(export_dir[0x20:0x24], "little")
+            funcs_rva = int.from_bytes(export_dir[0x1C:0x20], "little")
+            for i in range(num_names):
+                name_rva = self.pcsx2.read_int(base + names_rva + i*4)
+                name = self.pcsx2.read_string(base + name_rva)
+                if name == "EEmem":
+                    fn_rva = self.pcsx2.read_int(base + funcs_rva + i*4)
+                    pointer_addr = base + fn_rva
+                    EEmem = self.pcsx2.read_ulonglong(pointer_addr)
+                    break
+            self.addr = EEmem + (0x3F8380 if self.fm else 0x3F1C90)
+            self.data = (c_ubyte*0x16C00)(*self.pcsx2.read_bytes(self.addr, 0x16C00))
+            self.sysdata = None
+        except:
+            pass
+    
+    def __dump_to_emu(self):
+        self.pcsx2.write_bytes(self.addr, bytes(self.data), 0x16C00)
+    
     def __parse_data(self, data):
         # For FM the currently loaded save file starts at 0x3F8380 in the memory according to the RetroAchievements code notes.
         # For vanilla USA it starts at 0x3F1C90.
@@ -420,10 +464,13 @@ class KH1:
             self.__save_fm()
         else:
             self.__save_vanilla()
-
-        os.makedirs("saved/kh1/" + self.filename, exist_ok=True)
-        with open(os.path.join("saved", "kh1", self.filename, self.filename), "wb") as file:
-            file.write(self.data)
-        if self.sysdata is not None:
-            with open(os.path.join("saved", "kh1", self.filename, "system.bin"), "wb") as sysfile:
-                sysfile.write(self.sysdata)
+        
+        if hasattr(self, "filename"):
+            os.makedirs("saved/kh1/" + self.filename, exist_ok=True)
+            with open(os.path.join("saved", "kh1", self.filename, self.filename), "wb") as file:
+                file.write(self.data)
+            if self.sysdata is not None:
+                with open(os.path.join("saved", "kh1", self.filename, "system.bin"), "wb") as sysfile:
+                    sysfile.write(self.sysdata)
+        else:
+            self.__dump_to_emu()
