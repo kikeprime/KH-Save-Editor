@@ -75,6 +75,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Set slot to 0.
     - Set if you play vanilla or FM; vanilla means the USA ROM, won't work with other vanilla ROMs
     - Compatible with BOTH PCSX2 1.6.0 and PCSX2 Qt!
+    - Windows only
 
 ## KH2 features
 - Support for vanilla Japanese, vanilla USA and Final Mix save files. Vanilla JP is entirely my research because it greatly differs from vanilla USA so I had to rediscover the equivalent fields.
