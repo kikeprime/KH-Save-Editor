@@ -39,7 +39,7 @@ menu = html.Div([
             id="Slot",
             type="number",
             value=1,
-            min=1,
+            min=0,
             max=99,
             step=1,
             style={"width": 50},
@@ -114,7 +114,7 @@ app.layout = [
 def load_file(n_clicks, slot, fm):
     if n_clicks > 0:
         global kh1
-        kh1 = KH1(slot, fm != [])
+        kh1 = KH1(slot, fm != [], slot == 0)
         utils.kh1 = kh1
         return "General"
 
