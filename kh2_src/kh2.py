@@ -3,6 +3,7 @@ import struct
 
 from ctypes import *
 from .kh2_dicts import *
+from kh1_src.pcsx2 import PCSX2
 
 
 class KH2Character:
@@ -202,7 +203,7 @@ class KH2GummiShip:
 
 
 class KH2:
-    def __init__(self, slot=0, version=1):
+    def __init__(self, slot=0, version=1, attach=False):
         dicts(self)
         if slot != 0:
             self.version = version
@@ -226,6 +227,20 @@ class KH2:
             if os.path.exists(os.path.join("files", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS")):
                 with open(os.path.join("files", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "rb") as sysfile:
                     self.sysdata = (c_ubyte*0x400)(*sysfile.read())
+        if attach:
+            self.version = version
+            if self.version == 0:
+                self.addr = 0x33DCE0
+                self.filesize = 0xB830
+            elif self.version == 1:
+                self.addr = 0x33E860
+                self.filesize = 0xB4E0
+            elif self.version == 2:
+                self.addr = 0x32BB30
+                self.filesize = 0x10FC0
+            self.sysdata = None
+            self.pcsx2 = PCSX2(self.addr, self.filesize, self)
+            self.__parse_data(self.data)
 
     def __parse_data(self, data):
         # For FM the currently loaded save file starts at 0x32BB30 in the memory.
@@ -491,14 +506,17 @@ class KH2:
         self.checksum = KH2.calculate_checksum(self.data)
         self.data[0x08:0x0C] = bytearray(self.checksum)
         
-        os.makedirs("saved/kh2/" + self.filename, exist_ok=True)
-        with open(os.path.join("saved", "kh2", self.filename, self.filename), "wb") as file:
-            file.write(self.data)
-        if self.sysdata is not None:
-            os.makedirs("saved/kh2/" + self.filename[:-2]+"SYS", exist_ok=True)
-            with open(os.path.join("saved", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
-                sysfile.write(self.sysdata)
-    
+        if hasattr(self, "filename"):
+            os.makedirs("saved/kh2/" + self.filename, exist_ok=True)
+            with open(os.path.join("saved", "kh2", self.filename, self.filename), "wb") as file:
+                file.write(self.data)
+            if self.sysdata is not None:
+                os.makedirs("saved/kh2/" + self.filename[:-2]+"SYS", exist_ok=True)
+                with open(os.path.join("saved", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
+                    sysfile.write(self.sysdata)
+        else:
+            self.pcsx2.dump_to_emu()
+        
     @staticmethod
     def __calculate_checksum(data, crc_table, offset, length, checksum):
         checksum = c_uint(checksum)
