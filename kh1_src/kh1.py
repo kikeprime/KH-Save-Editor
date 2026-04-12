@@ -3,6 +3,7 @@ import struct
 
 from ctypes import *
 from .kh1_dicts import dicts
+from .pcsx2 import PCSX2
 
 
 class KH1Character:
@@ -129,49 +130,11 @@ class KH1:
                 self.playtime = c_uint(int.from_bytes(self.sysdata[0x10:0x14][::-1]))
         if attach:
             self.fm = fm
-            self.__attach()
+            self.sysdata = None
+            self.addr = 0x3F8380 if self.fm else 0x3F1C90
+            self.pcsx2 = PCSX2(self.addr, 0x16C00, self)
             self.__parse_data(self.data)
 
-    def __attach(self):
-        try:
-            import pymem
-            self.pcsx2 = pymem.Pymem("pcsx2.exe")
-            EEmem = 0x20000000
-            self.addr = EEmem + (0x3F8380 if self.fm else 0x3F1C90)
-            self.data = (c_ubyte*0x16C00)(*self.pcsx2.read_bytes(self.addr, 0x16C00))
-            self.sysdata = None
-        except:
-            pass
-        try:
-            import pymem
-            self.pcsx2 = pymem.Pymem("pcsx2-qt.exe")
-            base = self.pcsx2.base_address
-            EEmem = 0
-            dos = self.pcsx2.read_bytes(base, 0x40)  # IMAGE_DOS_HEADER
-            e_lfanew = int.from_bytes(dos[0x3C:0x40], "little")
-            nt = self.pcsx2.read_bytes(base + e_lfanew, 0xF8)  # IMAGE_NT_HEADERS64
-            export_rva = int.from_bytes(nt[0x88:0x8C], "little")
-            export_dir = self.pcsx2.read_bytes(base + export_rva, 0x28)
-            num_names = int.from_bytes(export_dir[0x18:0x1C], "little")
-            names_rva = int.from_bytes(export_dir[0x20:0x24], "little")
-            funcs_rva = int.from_bytes(export_dir[0x1C:0x20], "little")
-            for i in range(num_names):
-                name_rva = self.pcsx2.read_int(base + names_rva + i*4)
-                name = self.pcsx2.read_string(base + name_rva)
-                if name == "EEmem":
-                    fn_rva = self.pcsx2.read_int(base + funcs_rva + i*4)
-                    pointer_addr = base + fn_rva
-                    EEmem = self.pcsx2.read_ulonglong(pointer_addr)
-                    break
-            self.addr = EEmem + (0x3F8380 if self.fm else 0x3F1C90)
-            self.data = (c_ubyte*0x16C00)(*self.pcsx2.read_bytes(self.addr, 0x16C00))
-            self.sysdata = None
-        except:
-            pass
-    
-    def __dump_to_emu(self):
-        self.pcsx2.write_bytes(self.addr, bytes(self.data), 0x16C00)
-    
     def __parse_data(self, data):
         # For FM the currently loaded save file starts at 0x3F8380 in the memory according to the RetroAchievements code notes.
         # For vanilla USA it starts at 0x3F1C90.
@@ -229,7 +192,8 @@ class KH1:
         self.hadescup = c_ubyte(data[0x0F39])
         # oc_minigames[0x10:0x14] and oc_minigames[0x1C:0x20] aren't used for minigame times
         self.oc_minigames = (c_int*0x18)(*struct.unpack("<24i", bytearray(data[0x0F4C:0x0FAC])))
-        # oc_minigames[0x1E] anyway
+        # oc_minigames[0x1D:0x1F] anyway
+        self.goldmatch = c_ubyte(data[0x0F69])
         self.platinummatch = c_ubyte(data[0x0F6A])
 
         self.tiduswins = c_ubyte(data[0x101B])
@@ -473,4 +437,4 @@ class KH1:
                 with open(os.path.join("saved", "kh1", self.filename, "system.bin"), "wb") as sysfile:
                     sysfile.write(self.sysdata)
         else:
-            self.__dump_to_emu()
+            self.pcsx2.dump_to_emu()
