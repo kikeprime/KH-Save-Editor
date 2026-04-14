@@ -13,19 +13,19 @@ So I want to emphasize that the priority is to run the app on smartphones hence 
 
 ## How to run
 This is a Plotly Dash app written in Python so you need to have Python installed.
-After then install the dash package via pip install dash.
+After then install the dash package via `pip install dash`.
 
-Open a terminal in the repo's folder and run the command "python kh1se.py" alternatively if you have Jupyter Notebook installed you can run the 1st code cell in the ipynb file. I recommend the latter on Android. For KH2 do the same with kh2se.py.
+Open a terminal in the repo's folder and run the command `python kh1se.py` alternatively if you have Jupyter Notebook installed you can run the 1st code cell in the ipynb file. I recommend the latter on Android. For KH2 do the same with kh2se.py.
 
 Create a files and a saved folder in the repo's folder. Put your save files or even better save slot folders into the files folder. The app saves modified files into the saved folder. The output will ALWAYS be a folder slot to avoid issues. I changed this to load save files per game subfolders so KH1 save files or save folders must be in files/kh1 and for KH2 in files/kh2. The output is also put into game specific subfolders.
 
 ## Dependencies
 - Python (any version that supports the following packages)
-- Plotly Dash (pip install dash==v3.3.0)
-- Pandas + NumPy (pip install pandas) (NumPy is included with Pandas; the KH1 Gummi Ship viewer needs these)
-- PyCryptodome (pip install pycryptodome) (KH3 needs this for the AES encryption)
-- Jupyter Notebook (more stable launching on Android)
-- Pydroid 3 (Android app I use to run the my apps so on PC you don't need this)
+- Plotly Dash (`pip install dash==v3.3.0`)
+- Pandas + NumPy (`pip install pandas`) (NumPy is included with Pandas; the KH1 Gummi Ship viewer needs these)
+- PyCryptodome (`pip install pycryptodome`) (KH3 needs this for the AES encryption)
+- Jupyter Notebook (`pip install jupyter`) (more stable launching on Android)
+- Pydroid 3 (Android app I use to run my apps so on PC you don't need this)
 
 # Features
 ## What not to expect
@@ -100,8 +100,12 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
         - Heartless and Nobody kill counts
         - Reaction Command counters
         - Limit max scores
-    - Minigame records
+    - Minigame record
+- Worlds:
+    - Playtime
+    - Progress flags (WIP)
 - Difficulty
+- PCSX2 attach: Works exactly the same as for KH1.
 
 ## KH3 features
 - Support for both raw encrypted and decrypted save files
@@ -119,7 +123,8 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Player Script and Player Pawn
 
 # Documentation
-For now, kh1_src/kh1.py and kh2_src/kh2.py double as save file documentations for the respective games. It's another long term goal to create user-friendly documentations.
+For now, `kh1_src/kh1.py` and `kh2_src/kh2.py` double as save file documentations for the respective games. It's another long term goal to create user-friendly documentations.
+The repo's wiki is created for that user-friendly documentation but is nowhere near from being up-to-date.
 
 # Known issues
 - It's heavily work in progress so expect issues.
