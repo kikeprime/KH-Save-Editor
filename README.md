@@ -34,7 +34,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 
 ## KH1 features
 - Support for both vanilla and Final Mix save files.
-- Playtime: Hours, minutes, seconds and the modulo 60 since it's stored in frames which are seconds $\cdot$ 60 (in NTSC builds; I haven't tested any PAL versions).
+- Playtime: Hours, minutes, seconds and the modulo 60 since it's stored in frames which are seconds $$\cdot$$ 60 (in NTSC builds; I haven't tested any PAL versions).
 - Characters:
     - Base Stats
     - Sub MP: The orange MP bar. Remix versions are bugged, they might not load this.
@@ -55,6 +55,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Mini Game records.
     - Battle Report (—Battle Record—)
     - Treasure Chest and Atlantica Clam flags. (Vanilla chest contents aren't always correct yet but FM should be 100% correct.)
+    - Synthesis flags
 - Config menu options. It reflects the PS2 versions' options. Some of them are repurposed in Remix versions. PS3 and PC differs in that PC repurposes more options.
 - World statuses and landing point flags
 - Gummi Ships:
