@@ -27,6 +27,8 @@ def __create_journal(tab):
         return create_battle_record()
     if tab == "Treasures":
         return create_treasures()
+    if tab == "Synthesis":
+        return create_synthesis()
 
 def create_journal():
     jtabs = dcc.Tabs(id="JournalTabs", value="Journal Flags")
@@ -40,6 +42,7 @@ def create_journal():
         dcc.Tab(label="Mini Games", value="Mini Games"),
         dcc.Tab(label="—Battle Record—", value="—Battle Record—"),
         dcc.Tab(label="Treasures", value="Treasures"),
+        dcc.Tab(label="Synthesis", value="Synthesis"),
     ]
     return html.Div([
         jtabs,
