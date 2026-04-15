@@ -7,3 +7,4 @@ from .trinity import *
 from .minigames import *
 from .battle_record import *
 from .treasures import *
+from .synthesis import *
