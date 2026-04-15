@@ -337,6 +337,7 @@ class KH1:
         self.data[0x05CC:0x07C9] = bytearray(self.treasures)
         self.data[0x07D0:0x07D7] = bytearray(self.summons)
         self.data[0x0F4C:0x0FAC] = bytearray(self.oc_minigames)
+        self.data[0x0F69] = self.goldmatch
         self.data[0x0F6A] = self.platinummatch
         self.data[0x1036:0x1038] = bytearray(self.sorawins)
         self.data[0x1038:0x103A] = bytearray(self.rikuwins)
@@ -351,6 +352,7 @@ class KH1:
         self.data[0x1997:0x19BF:4] = bytearray(self.chronicles)
         self.data[0x19C0:0x19C2] = bytearray(self.reports)
         self.data[0x19C4] = self.journal_unlock
+        self.data[0x19C8:0x19CD] = bytearray(self.synth_flags)
         self.data[0x1C1B] = self.trinity_unlock
         self.data[0x1C66:0x1C6C] = bytearray(self.trinity_count)
         self.data[0x1C6C:0x1CB4] = bytearray(self.trinity_flags)
