@@ -21,3 +21,16 @@ def create_synthesis():
     return html.Div([
         synthesis,
     ])
+
+@callback(
+    Input({"type": "Synth Flag", "index": ALL}, "value"),
+    State({"type": "Synth Flag", "index": ALL}, "id"),
+)
+def journal_synthesis_callback(values, ids):
+    kh1 = utils.kh1
+    for i in range(len(values)):
+        v = ids[i]["index"]
+        if (1 << v % 16) in values[i]:
+            kh1.synth_flags[v // 16] |= (1 << v % 16)
+        else:
+            kh1.synth_flags[v // 16] &= ~(1 << v % 16)
