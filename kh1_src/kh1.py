@@ -227,6 +227,7 @@ class KH1:
         self.chronicles = (c_ubyte*10)(*data[0x1997:0x19BF:4])
         self.reports = (c_ubyte*2)(*data[0x19C0:0x19C2])
         self.journal_unlock = c_ubyte(data[0x19C4]) # bit index 3, 0x1F for completed game so needs further investigation
+        self.synth_flags = (c_ubyte*5)(*data[0x19C8:0x19CD])
 
         self.trinity_unlock = c_ubyte(data[0x1C1B])
         self.trinity_count = (c_ubyte*6)(*data[0x1C66:0x1C6C]) # Jump, Unused, Charge, Ladder, Push, Detect
