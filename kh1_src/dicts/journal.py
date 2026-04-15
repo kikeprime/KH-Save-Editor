@@ -340,6 +340,7 @@ def journal_dicts(obj):
         "Kurt Zisa": 0x157,
         "Phantom": 0x143,
     }
+    synthesis_dicts(obj)
 
 def trinity_dicts(obj):
     obj.trinity_names = [
@@ -565,3 +566,72 @@ def minigame_dicts(obj):
         "Block Tigger": "points",
         "Pooh's Swing": "yd.",
     }
+
+def synthesis_dicts(obj):
+    @property
+    def synth_dict(self):
+        if self.fm:
+            return {
+                "Mega-Potion": 0x07,
+                "Cottage": 0x06,
+                "Energy Bangle": 0x05,
+                "Power Chain": 0x04,
+                "Magic Armlet": 0x03,
+                "EXP Earring": 0x02,
+                "Mega-Ether": 0x01,
+                "Guard Earring": 0x00,
+                "Angel Bangle": 0x17,
+                "Golem Chain": 0x16,
+                "Rune Armlet": 0x15,
+                "Moogle Badge": 0x14,
+                "AP Up": 0x13,
+                "Dark Ring": 0x12,
+                "Master Earring": 0x11,
+                "Gaia Bangle": 0x10,
+                "Titan Chain": 0x27,
+                "Mythril": 0x26,
+                "Elixir": 0x25,
+                "Defense Up": 0x24,
+                "Heartguard": 0x23,
+                "Three Stars": 0x22,
+                "Atlas Armlet": 0x21,
+                "Crystal Crown": 0x20,
+                "Dark Matter": 0x37,
+                "Megalixir": 0x36,
+                "Power Up": 0x35,
+                "Cosmic Arts": 0x34,
+                "EXP Bracelet": 0x33,
+                "Ribbon": 0x32,
+                "Fantasista": 0x31,
+                "Seven Elements": 0x30,
+                "Ultima Weapon": 0x47,
+            }
+        else:
+            return {
+                "Cottage": 0x07,
+                "Elixir": 0x06,
+                "Energy Bangle": 0x05,
+                "Power Chain": 0x04,
+                "Guard Earring": 0x03,
+                "Dark Ring": 0x02,
+                "Mega-Potion": 0x01,
+                "AP Up": 0x00,
+                "Angel Bangle": 0x17,
+                "Magic Armlet": 0x16,
+                "Golem Chain": 0x15,
+                "Master Earring": 0x14,
+                "Mega-Ether": 0x13,
+                "Defense Up": 0x12,
+                "Gaia Bangle": 0x11,
+                "Rune Armlet": 0x10,
+                "Heartguard": 0x27,
+                "Three Stars": 0x26,
+                "Megalixir": 0x25,
+                "Power Up": 0x24,
+                "Titan Chain": 0x23,
+                "Atlas Armlet": 0x22,
+                "Crystal Crown": 0x21,
+                "Ribbon": 0x20,
+                "Ultima Weapon": 0x37,
+            }
+    type(obj).synth_dict = synth_dict
