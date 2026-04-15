@@ -31,7 +31,7 @@ def __create_gummi_ships(encoding):
     return html.Div([
         dcc.Markdown("Selected Gummi Ship:"),
         selected,
-        dcc.Markdown("Ship:"),
+        html.H3("Ship:"),
         gshtabs,
         html.Div(id="ShipDiv", style={"margin-bottom": 20}),
         viewerb,
