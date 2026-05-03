@@ -205,17 +205,17 @@ class KH2GummiShip:
 class KH2:
     def __init__(self, slot=0, version=1, attach=False):
         dicts(self)
+        self.version = version
+        if self.version == 0:
+            self.filename = "BISLPM-66233-" + f"{slot-1:02d}"
+            self.filesize = 0xB830
+        elif self.version == 1:
+            self.filename = "BASLUS-21005-" + f"{slot-1:02d}"
+            self.filesize = 0xB4E0
+        elif self.version == 2:
+            self.filename = "BISLPM-66675FM-" + f"{slot-1:02d}"
+            self.filesize = 0x10FC0
         if slot != 0:
-            self.version = version
-            if self.version == 0:
-                self.filename = "BISLPM-66233-" + f"{slot-1:02d}"
-                self.filesize = 0xB830
-            elif self.version == 1:
-                self.filename = "BASLUS-21005-" + f"{slot-1:02d}"
-                self.filesize = 0xB4E0
-            elif self.version == 2:
-                self.filename = "BISLPM-66675FM-" + f"{slot-1:02d}"
-                self.filesize = 0x10FC0
             if os.path.exists(os.path.join("files", "kh2", self.filename, self.filename)):
                 with open(os.path.join("files", "kh2", self.filename, self.filename), "rb") as file:
                     self.data = (c_ubyte*self.filesize)(*file.read())
@@ -228,7 +228,6 @@ class KH2:
                 with open(os.path.join("files", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "rb") as sysfile:
                     self.sysdata = (c_ubyte*0x400)(*sysfile.read())
         if attach:
-            self.version = version
             if self.version == 0:
                 self.addr = 0x33DCE0
                 self.filesize = 0xB830
@@ -506,15 +505,14 @@ class KH2:
         self.checksum = KH2.calculate_checksum(self.data)
         self.data[0x08:0x0C] = bytearray(self.checksum)
         
-        if hasattr(self, "filename"):
-            os.makedirs("saved/kh2/" + self.filename, exist_ok=True)
-            with open(os.path.join("saved", "kh2", self.filename, self.filename), "wb") as file:
-                file.write(self.data)
-            if self.sysdata is not None:
-                os.makedirs("saved/kh2/" + self.filename[:-2]+"SYS", exist_ok=True)
-                with open(os.path.join("saved", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
-                    sysfile.write(self.sysdata)
-        else:
+        os.makedirs("saved/kh2/" + self.filename, exist_ok=True)
+        with open(os.path.join("saved", "kh2", self.filename, self.filename), "wb") as file:
+            file.write(self.data)
+        if self.sysdata is not None:
+            os.makedirs("saved/kh2/" + self.filename[:-2]+"SYS", exist_ok=True)
+            with open(os.path.join("saved", "kh2", self.filename[:-2]+"SYS", self.filename[:-2]+"SYS"), "wb") as sysfile:
+                sysfile.write(self.sysdata)
+        if hasattr(self, "pcsx2"):
             self.pcsx2.dump_to_emu()
         
     @staticmethod
