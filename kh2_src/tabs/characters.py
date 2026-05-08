@@ -154,7 +154,7 @@ def __create_equipment(c):
                 {"label": k, "value": kh2.item_dict[k]} for k in kh2.armor_list
             ],
             value=c.armors[i],
-            id={"type": "Armor", "index": c.name + ":" + str(i)},
+            id={"type": "Armor", "character": c.name, "index": i},
             searchable=False,
             clearable=False,
             style={"width": 200},
@@ -175,7 +175,7 @@ def __create_equipment(c):
                 {"label": k, "value": kh2.item_dict[k]} for k in kh2.accessory_list
             ],
             value=c.accessories[i],
-            id={"type": "Accessory", "index": c.name + ":" + str(i)},
+            id={"type": "Accessory", "character": c.name, "index": i},
             searchable=False,
             clearable=False,
             style={"width": 200},
@@ -196,7 +196,7 @@ def __create_equipment(c):
                 {"label": k, "value": v} for k, v in kh2.item_dict.items() if v < 0x08
             ],
             value=c.items[i],
-            id={"type": "Item", "index": c.name + ":" + str(i)},
+            id={"type": "Item", "character": c.name, "index": i},
             searchable=False,
             clearable=False,
             style={"width": 200},
@@ -403,14 +403,29 @@ def stats_callback(
 @callback(
     Input({"type": "Weapon", "index": ALL}, "value"),
     Input({"type": "Armor Slots", "index": ALL}, "value"),
-    Input({"type": "Armors", "index": ALL}, "value"),
+    Input({"type": "Armor", "character": ALL, "index": ALL}, "value"),
     Input({"type": "Accessory Slots", "index": ALL}, "value"),
-    Input({"type": "Accessory", "index": ALL}, "value"),
+    Input({"type": "Accessory", "character": ALL, "index": ALL}, "value"),
     Input({"type": "Item Slots", "index": ALL}, "value"),
-    Input({"type": "Item", "index": ALL}, "value"),
+    Input({"type": "Item", "character": ALL, "index": ALL}, "value"),
     State({"type": "Weapon", "index": ALL}, "id"),
+    State({"type": "Armor", "character": ALL, "index": ALL}, "id"),
+    State({"type": "Accessory", "character": ALL, "index": ALL}, "id"),
+    State({"type": "Item", "character": ALL, "index": ALL}, "id"),
 )
-def equipment_callback(weapon, armorslots, armors, accessoryslots, accessories, itemslots, items, ids):
+def equipment_callback(
+    weapon,
+    armorslots,
+    armors,
+    accessoryslots,
+    accessories,
+    itemslots,
+    items,
+    ids,
+    armor_ids,
+    accessory_ids,
+    item_ids,
+):
     kh2 = utils.kh2
     id = kh2.character_dict[ids[0]["index"]]
     try:
@@ -418,10 +433,15 @@ def equipment_callback(weapon, armorslots, armors, accessoryslots, accessories, 
         kh2.characters[id].armorslots.value = armorslots[0]
         kh2.characters[id].accessoryslots.value = accessoryslots[0]
         kh2.characters[id].itemslots.value = itemslots[0]
-        for i in range(8):
-            kh2.characters[id].armors[i] = armors[i]
-            kh2.characters[id].accessories[i] = accessories[i]
-            kh2.characters[id].items[i] = items[i]
+        for armor_id, armor in zip(armor_ids, armors):
+            idx = armor_id["index"]
+            kh2.characters[id].armors[idx] = armor
+        for accessory_id, accessory in zip(accessory_ids, accessories):
+            idx = accessory_id["index"]
+            kh2.characters[id].accessories[idx] = accessory
+        for item_id, item in zip(item_ids, items):
+            idx = item_id["index"]
+            kh2.characters[id].items[idx] = item
     except:
         pass
 
