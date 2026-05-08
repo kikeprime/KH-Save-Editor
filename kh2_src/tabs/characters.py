@@ -299,7 +299,7 @@ def __create_customize(c):
                 {"label": k, "value": v} for k, v in kh2.item_dict.items() if v < 0x08
             ],
             value=c.autoreload[i],
-            id={"type": "AutoReload", "index": c.name + ":" + str(i)},
+            id={"type": "AutoReload", "character": c.name, "index": i},
             searchable=False,
             clearable=False,
             style={"width": 200},
@@ -330,7 +330,7 @@ def __create_customize(c):
                 {"label": "Rare", "value": 0x02},
             ],
             value=c.abilitystyles[i],
-            id={"type": "AbilityStyle", "index": c.name + ":" + str(i)},
+            id={"type": "AbilityStyle", "character": c.name, "index": i},
             searchable=False,
             clearable=False,
             style={"width": 200},
@@ -341,7 +341,7 @@ def __create_customize(c):
         html.Div([
             html.Div([dcc.Markdown("Battle Style:"), battlestyle]),
             html.Div([dcc.Markdown("Ability Styles:"), abilitystyles]),
-        ])  if c.name != "Sora" else None,
+        ]),  #if c.name != "Sora" else None,
         __create_customize_sora(c) if c.name == "Sora" else None,
     ])
 
@@ -469,3 +469,31 @@ def customize_sora_callback(circle, triangle, square, cross):
     kh2.shortcuts[1] = triangle
     kh2.shortcuts[2] = square
     kh2.shortcuts[3] = cross
+
+@callback(
+    Input({"type": "AutoReload", "character": ALL, "index": ALL}, "value"),
+    Input({"type": "BattleStyle", "index": ALL}, "value"),
+    Input({"type": "AbilityStyle", "character": ALL, "index": ALL}, "value"),
+    State({"type": "AutoReload", "character": ALL, "index": ALL}, "id"),
+    State({"type": "BattleStyle", "index": ALL}, "id"),
+    State({"type": "AbilityStyle", "character": ALL, "index": ALL}, "id"),
+)
+def customize_callback(
+    autoreloads,
+    battlestyles,
+    abilitystyles,
+    autoreload_ids,
+    battlestyle_ids,
+    abilitystyle_ids,
+):
+    kh2 = utils.kh2
+    for autoreload_id, autoreload in zip(autoreload_ids, autoreloads):
+        id = kh2.character_dict[autoreload_id["character"]]
+        idx = autoreload_id["index"]
+        kh2.characters[id].autoreload[idx] = autoreload
+    id = kh2.character_dict[battlestyle_ids[0]["index"]]
+    kh2.characters[id].battlestyle.value = battlestyles[0]
+    for abilitystyle_id, abilitystyle in zip(abilitystyle_ids, abilitystyles):
+        id = kh2.character_dict[abilitystyle_id["character"]]
+        idx = abilitystyle_id["index"]
+        kh2.characters[id].abilitystyles[idx] = abilitystyle
