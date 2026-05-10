@@ -47,6 +47,10 @@ class KHBBSCharacter:
         obj.data[offset+0x1E:offset+0x20] = bytearray(self.strength)
         obj.data[offset+0x2A:offset+0x2C] = bytearray(self.weapon)
 
+    def __repr__(self):
+        dicts(self)
+        return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.weapon_dict.keys())[self.weapon.value]})"
+
 
 class KHBBS:
     def __init__(self, slot=0, version=2, attach=False):
@@ -174,3 +178,12 @@ class KHBBS:
     @property
     def name(self):
         return {v: k for k, v in self.character_dict.items()}[self.character_type.value]
+
+    def __repr__(self):
+        if self.version == 0:
+            game = "KHBBSJP"
+        if self.version == 1:
+            game = "KHBBSUSA"
+        else:
+            game = "KHBBSFM"
+        return f"{game}(\n    {self.character},\n    World: {self.world_dict[self.world.value]},\n)"
