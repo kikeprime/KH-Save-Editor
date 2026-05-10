@@ -5,6 +5,7 @@ List of supported games:
 - Kingdom Hearts II Japan
 - Kingdom Hearts II USA (EU should be the same as this)
 - Kingdom Hearts II Final Mix (Remix too)
+- Kingdom Hearts Birth by Sleep Final Mix (Remix too)
 - Kingdom Hearts III + ReMind (PC only)
 
 The idea to write my own save editor came from the fact that Kingdom Save Editor is abandoned and it is very barebones in terms of knowledge and it can't be run on Android. For a university assignment I had to work with the ipywidgets Python package so I thought I could use it for my save editor. It turned out that it's not optimized for small screens so I was looking for GUI packages. I mostly stayed with Python since it can be easily used on Android. So after multiple restarts and a second university class influence I landed on Dash.
@@ -108,6 +109,12 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Progress flags (WIP)
 - Difficulty
 - PCSX2 attach: Works exactly the same as for KH1.
+
+## KHBBS features
+- Playtime: Hours, minutes, seconds
+- Character
+- World, room, flag
+- Munny
 
 ## KH3 features
 - Support for both raw encrypted and decrypted save files
