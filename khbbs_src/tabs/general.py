@@ -122,6 +122,7 @@ def playtime_callback(
         pass
 
 @callback(
+    Output("CharacterTab", "label"),
     Input("CharacterType", "value"),
     Input("World", "value"),
     Input("Room", "value"),
@@ -142,5 +143,6 @@ def general_callbacks(
         khbbs.room.value = room
         khbbs.flag.value = flag
         khbbs.character.munny.value = munny
+        return khbbs.name
     except:
-        pass
+        return "Character"
