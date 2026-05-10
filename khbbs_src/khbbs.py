@@ -24,9 +24,9 @@ class KHBBSCharacter:
         self.magic = c_ushort(int.from_bytes(data[0x18:0x1A][::-1]))
         self.defense = c_ushort(int.from_bytes(data[0x1A:0x1C][::-1]))
         self.arenalevel = c_ushort(int.from_bytes(data[0x1C:0x1E][::-1]))
-        self.strength = c_ushort(int.from_bytes(data[0x1E:0x20][::-1]))
         # Unknown part
         self.weapon = c_ushort(int.from_bytes(data[0x2A:0x2C][::-1]))
+        self.strength = c_ushort(int.from_bytes(data[0x2E:0x30][::-1]))
     
     def save(self, obj):
         if obj.version == 0:
@@ -44,8 +44,8 @@ class KHBBSCharacter:
         obj.data[offset+0x18:offset+0x1A] = bytearray(self.magic)
         obj.data[offset+0x1A:offset+0x1C] = bytearray(self.defense)
         obj.data[offset+0x1C:offset+0x1E] = bytearray(self.arenalevel)
-        obj.data[offset+0x1E:offset+0x20] = bytearray(self.strength)
         obj.data[offset+0x2A:offset+0x2C] = bytearray(self.weapon)
+        obj.data[offset+0x2E:offset+0x30] = bytearray(self.strength)
 
     def __repr__(self):
         dicts(self)
