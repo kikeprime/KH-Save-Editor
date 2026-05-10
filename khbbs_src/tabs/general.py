@@ -141,6 +141,6 @@ def general_callbacks(
         khbbs.world.value = world
         khbbs.room.value = room
         khbbs.flag.value = flag
-        khbbs.munny.value = munny
+        khbbs.character.munny.value = munny
     except:
         pass
