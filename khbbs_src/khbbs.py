@@ -21,10 +21,16 @@ class KHBBSCharacter:
         self.hp = c_ushort(int.from_bytes(data[0x0E:0x10][::-1]))
         self.maxhp = c_ushort(int.from_bytes(data[0x10:0x12][::-1]))
         # Unknown part
+        # 3 resistances maybe?
         self.magic = c_ushort(int.from_bytes(data[0x18:0x1A][::-1]))
         self.defense = c_ushort(int.from_bytes(data[0x1A:0x1C][::-1]))
         self.arenalevel = c_ushort(int.from_bytes(data[0x1C:0x1E][::-1]))
         # Unknown part
+        # self.physical_resistance = c_ushort(int.from_bytes(data[0x20:0x22][::-1])) # hunch
+        self.fire_resistance = c_ushort(int.from_bytes(data[0x22:0x24][::-1]))
+        self.blizzard_resistance = c_ushort(int.from_bytes(data[0x24:0x26][::-1]))
+        self.thunder_resistance = c_ushort(int.from_bytes(data[0x26:0x28][::-1]))
+        self.dark_resistance = c_ushort(int.from_bytes(data[0x28:0x2A][::-1]))
         self.weapon = c_ushort(int.from_bytes(data[0x2A:0x2C][::-1]))
         self.strength = c_ushort(int.from_bytes(data[0x2E:0x30][::-1]))
     
@@ -44,6 +50,10 @@ class KHBBSCharacter:
         obj.data[offset+0x18:offset+0x1A] = bytearray(self.magic)
         obj.data[offset+0x1A:offset+0x1C] = bytearray(self.defense)
         obj.data[offset+0x1C:offset+0x1E] = bytearray(self.arenalevel)
+        obj.data[offset+0x22:offset+0x24] = bytearray(self.fire_resistance)
+        obj.data[offset+0x24:offset+0x26] = bytearray(self.blizzard_resistance)
+        obj.data[offset+0x26:offset+0x28] = bytearray(self.thunder_resistance)
+        obj.data[offset+0x28:offset+0x2A] = bytearray(self.dark_resistance)
         obj.data[offset+0x2A:offset+0x2C] = bytearray(self.weapon)
         obj.data[offset+0x2E:offset+0x30] = bytearray(self.strength)
 
@@ -155,7 +165,7 @@ class KHBBS:
         with open(os.path.join("saved", "khbbs", self.foldername, "SAVEDATA.DAT"), "wb") as file:
             file.write(self.data)
         if self.sysdata is not None:
-            os.makedirs("saved/khbbs/" + self.filename[:-4], exist_ok=True)
+            os.makedirs("saved/khbbs/" + self.foldername[:-4], exist_ok=True)
             with open(os.path.join("saved", "khbbs", self.foldername[:-4], "SYSTEM.DAT"), "wb") as sysfile:
                 sysfile.write(self.sysdata)
         if hasattr(self, "ppsspp"):
