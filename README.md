@@ -113,8 +113,20 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 ## KHBBS features
 - Playtime: Hours, minutes, seconds
 - Character
+    - Weapon
+    - EXP
+    - Level
+    - Current and max HP
+    - Base Strength, Magic, Defense stats
+    - Arena Medals and Arena Level
+    - Munny technically belongs here too.
 - World, room, flag
 - Munny
+- PPSSPP attach
+    - Works like the KH1 and KH2 PCSX2 attaches
+    - However, PSP KHBBSFM seems to have some kind of memory protection so you need to load the dumped save file to see the changes.
+    - Works with both 32 bit and 64 bit exes.
+    - Windows only
 
 ## KH3 features
 - Support for both raw encrypted and decrypted save files
