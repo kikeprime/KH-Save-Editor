@@ -1,6 +1,10 @@
 from ctypes import *
-FindWindowW = windll.user32.FindWindowW
-SendMessageW = windll.user32.SendMessageW
+try:
+    FindWindowW = windll.user32.FindWindowW
+    SendMessageW = windll.user32.SendMessageW
+except:
+    pass
+
 
 class PPSSPP:
     def __init__(self, addr, size, obj):
