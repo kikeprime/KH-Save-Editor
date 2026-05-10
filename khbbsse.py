@@ -86,7 +86,7 @@ menu = html.Div([
 
 tabs = dcc.Tabs(id="Tabs", value="General")
 general = dcc.Tab(label="General", value="General")
-character = dcc.Tab(label="Character", value="Character")
+character = dcc.Tab(label="Character", value="Character", id="CharacterTab")
 inventory = dcc.Tab(label="Inventory", value="Inventory")
 journal = dcc.Tab(label="Reports", value="Journal")
 config = dcc.Tab(label="Config", value="Config")
