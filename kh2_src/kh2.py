@@ -10,6 +10,8 @@ from kh1_src.pcsx2 import PCSX2
 class KH2:
     def __init__(self, slot=0, version=1, attach=False):
         dicts(self)
+        if slot == 0:
+            slot = 100
         self.version = version
         if self.version == 0:
             self.filename = "BISLPM-66233-" + f"{slot-1:02d}"
@@ -20,7 +22,7 @@ class KH2:
         elif self.version == 2:
             self.filename = "BISLPM-66675FM-" + f"{slot-1:02d}"
             self.filesize = 0x10FC0
-        if slot != 0:
+        if slot != 100:
             if os.path.exists(os.path.join("files", "kh2", self.filename, self.filename)):
                 with open(os.path.join("files", "kh2", self.filename, self.filename), "rb") as file:
                     self.data = (c_ubyte*self.filesize)(*file.read())
@@ -35,13 +37,10 @@ class KH2:
         if attach:
             if self.version == 0:
                 self.addr = 0x33DCE0
-                self.filesize = 0xB830
             elif self.version == 1:
                 self.addr = 0x33E860
-                self.filesize = 0xB4E0
             elif self.version == 2:
                 self.addr = 0x32BB30
-                self.filesize = 0x10FC0
             self.sysdata = None
             self.pcsx2 = PCSX2(self.addr, self.filesize, self)
             self.__parse_data(self.data)
@@ -52,8 +51,8 @@ class KH2:
         # For vanilla JP it starts at 0x33DCE0.
         self.header = bytearray(data[0x00:0x04]) # KH2 + region specific letter: J for JP/FM, U for USA
         # JP: 0x2A, USA: 0x2D, FM: 0x3A
-        self.ver = c_uint(int.from_bytes(data[0x04:0x08]))
-        self.checksum = c_uint(int.from_bytes(data[0x08:0x0C]))
+        self.ver = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
+        self.checksum = c_uint(int.from_bytes(data[0x08:0x0C][::-1]))
         self.world = c_ubyte(data[0x0C])
         self.room = c_ubyte(data[0x0D])
         self.flag = c_ubyte(data[0x0E])
@@ -213,7 +212,12 @@ class KH2:
         minigames = data[0x3DB4:0x3EF4]
         self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
         self.form_usage = (c_ushort*0x0A)(*struct.unpack("<10H", bytearray(data[0x3FD6:0x3FEA])))
-        self.weapon_backup = c_ushort(int.from_bytes(data[0x3FEA:0x3FEC]))
+        self.weapon_backup = c_ushort(int.from_bytes(data[0x3FEA:0x3FEC][::-1]))
+        # At 0x4438 starts something like a 0x60 long struct 15? times.
+        # At 0x4C38 starts The Heartless tab's "New" flags.
+        # At 0x4C42 starts The Nobodies tab's "New" flags.
+        # After 0x4D40 there are Journal "New" flags.
+        # From 0x4DA0 these affect the Puzzle Pieces tab.
     
     def __save_shared(self):
         self.data[0x0C] = self.world
