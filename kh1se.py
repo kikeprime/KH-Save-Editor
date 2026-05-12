@@ -12,7 +12,6 @@ import kh1_src.kh1_utils as utils
 if "text/css" not in mimetypes.guess_type("style.css"):
     mimetypes.add_type("text/css", ".css")
 
-kh1 = None
 app = Dash("KH1 Save Editor", suppress_callback_exceptions=True)
 
 app.title = "KH1 Save Editor"
@@ -113,16 +112,14 @@ app.layout = [
 )
 def load_file(n_clicks, slot, fm):
     if n_clicks > 0:
-        global kh1
-        kh1 = KH1(slot, fm != [], slot == 0)
-        utils.kh1 = kh1
+        utils.kh1 = KH1(slot, fm != [], slot == 0)
         return "General"
 
 @callback(
     Input("Save", "n_clicks"),
 )
 def save_file(n_clicks):
-    global kh1
+    kh1 = utils.kh1
     if kh1 is not None and n_clicks > 0:
         kh1.save()
 
@@ -132,7 +129,7 @@ def save_file(n_clicks):
     Input("Encoding", "value"),
 )
 def tab_switch(tab, encoding):
-    global kh1
+    kh1 = utils.kh1
     if kh1 is not None:
         if tab == "General":
             return create_general()
