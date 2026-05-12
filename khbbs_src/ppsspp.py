@@ -28,7 +28,7 @@ class PPSSPP:
             win = FindWindowW("PPSSPPWnd", None)
             WM_USER_GET_BASE_POINTER = 0xB118
             lower = SendMessageW(win, WM_USER_GET_BASE_POINTER, 0, 0)
-            upper = SendMessageW(win, WM_USER_GET_BASE_POINTER, 0, 1)
+            upper = SendMessageW(win, WM_USER_GET_BASE_POINTER, 0, 1) + 1
             base = upper * 0x100000000 + lower
             self.addr = base + addr
             self.obj.data = (c_ubyte*self.size)(*self.ppsspp.read_bytes(self.addr, self.size))
