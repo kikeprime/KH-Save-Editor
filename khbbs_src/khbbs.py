@@ -65,6 +65,8 @@ class KHBBSCharacter:
 class KHBBS:
     def __init__(self, slot=0, version=2, attach=False):
         dicts(self)
+        if slot == 0:
+            slot = 100
         self.version = version
         if self.version == 0:
             self.foldername = "ULJM05600" + f"{slot-1:04d}"
@@ -75,7 +77,7 @@ class KHBBS:
         elif self.version == 2:
             self.foldername = "ULJM05775" + f"{slot-1:04d}"
             self.filesize = 0x11E50
-        if slot != 0:
+        if slot != 100:
             if os.path.exists(os.path.join("files", "khbbs", self.foldername, "SAVEDATA.DAT")):
                 with open(os.path.join("files", "khbbs", self.foldername, "SAVEDATA.DAT"), "rb") as file:
                     self.data = (c_ubyte*self.filesize)(*file.read())
