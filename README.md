@@ -5,6 +5,8 @@ List of supported games:
 - Kingdom Hearts II Japan
 - Kingdom Hearts II USA (EU should be the same as this)
 - Kingdom Hearts II Final Mix (Remix too)
+- Kingdom Hearts Birth by Sleep Japan
+- Kingdom Hearts Birth by Sleep USA (EU should be the same as this)
 - Kingdom Hearts Birth by Sleep Final Mix (Remix too)
 - Kingdom Hearts III + ReMind (PC only)
 
