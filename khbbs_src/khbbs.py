@@ -3,63 +3,8 @@ import struct
 
 from ctypes import *
 from .khbbs_dicts import dicts
+from .khbbs_helper import *
 from .ppsspp import PPSSPP
-
-
-class KHBBSCharacter:
-    """
-    Class for representing the character struct.
-    So in C/C++ I'd use a struct instead.
-    The structure is 0x30 bytes long.
-    """
-    def __init__(self, name, data):
-        self.name = name
-        self.exp = c_uint(int.from_bytes(data[0x00:0x04][::-1]))
-        self.munny = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
-        self.medals = c_uint(int.from_bytes(data[0x08:0x0C][::-1]))
-        self.level = c_ushort(int.from_bytes(data[0x0C:0x0E][::-1]))
-        self.hp = c_ushort(int.from_bytes(data[0x0E:0x10][::-1]))
-        self.maxhp = c_ushort(int.from_bytes(data[0x10:0x12][::-1]))
-        # Unknown part
-        # 3 resistances maybe?
-        self.magic = c_ushort(int.from_bytes(data[0x18:0x1A][::-1]))
-        self.defense = c_ushort(int.from_bytes(data[0x1A:0x1C][::-1]))
-        self.arenalevel = c_ushort(int.from_bytes(data[0x1C:0x1E][::-1]))
-        # Unknown part
-        # self.physical_resistance = c_ushort(int.from_bytes(data[0x20:0x22][::-1])) # hunch
-        self.fire_resistance = c_ushort(int.from_bytes(data[0x22:0x24][::-1]))
-        self.blizzard_resistance = c_ushort(int.from_bytes(data[0x24:0x26][::-1]))
-        self.thunder_resistance = c_ushort(int.from_bytes(data[0x26:0x28][::-1]))
-        self.dark_resistance = c_ushort(int.from_bytes(data[0x28:0x2A][::-1]))
-        self.weapon = c_ushort(int.from_bytes(data[0x2A:0x2C][::-1]))
-        self.strength = c_ushort(int.from_bytes(data[0x2E:0x30][::-1]))
-    
-    def save(self, obj):
-        if obj.version == 0:
-            offset = 0x59A8
-        if obj.version == 1:
-            offset = 0x59A8
-        if obj.fm:
-            offset = 0x59D0
-        obj.data[offset+0x00:offset+0x04] = bytearray(self.exp)
-        obj.data[offset+0x04:offset+0x08] = bytearray(self.munny)
-        obj.data[offset+0x08:offset+0x0C] = bytearray(self.medals)
-        obj.data[offset+0x0C:offset+0x0E] = bytearray(self.level)
-        obj.data[offset+0x0E:offset+0x10] = bytearray(self.hp)
-        obj.data[offset+0x10:offset+0x12] = bytearray(self.maxhp)
-        obj.data[offset+0x18:offset+0x1A] = bytearray(self.magic)
-        obj.data[offset+0x1A:offset+0x1C] = bytearray(self.defense)
-        obj.data[offset+0x1C:offset+0x1E] = bytearray(self.arenalevel)
-        obj.data[offset+0x22:offset+0x24] = bytearray(self.fire_resistance)
-        obj.data[offset+0x24:offset+0x26] = bytearray(self.blizzard_resistance)
-        obj.data[offset+0x26:offset+0x28] = bytearray(self.thunder_resistance)
-        obj.data[offset+0x28:offset+0x2A] = bytearray(self.dark_resistance)
-        obj.data[offset+0x2A:offset+0x2C] = bytearray(self.weapon)
-        obj.data[offset+0x2E:offset+0x30] = bytearray(self.strength)
-
-    def __repr__(self):
-        dicts(self)
-        return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.weapon_dict.keys())[self.weapon.value]})"
 
 
 class KHBBS:
@@ -131,6 +76,8 @@ class KHBBS:
         pass
     
     def __parse_data_fm(self, data):
+        commands = data[0x3498:0x4898]
+        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i) for i in range(0x200)]
         self.character = KHBBSCharacter(self.name, data[0x59D0:0x5A00])
 
     def __save_shared(self):
