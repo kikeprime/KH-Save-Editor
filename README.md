@@ -153,7 +153,6 @@ The repo's wiki is created for that user-friendly documentation but is nowhere n
 - It's heavily work in progress so expect issues.
 - Some fields aren't saved yet.
 - There are placeholder tabs that won't show anything. This isn't a bug, they just aren't implemented yet.
-- The KH1 minigame records can shift up if you unset then set a record. The method I use for KH2 might solve this when I port it back.
 
 # Special thanks
 - Xeeynamo: [Kingdom Save Editor](https://github.com/Xeeynamo/KingdomSaveEditor) the main inspiration of the project
