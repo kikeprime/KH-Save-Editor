@@ -5,6 +5,7 @@ def dicts(obj):
     main_dicts(obj)
     world_dicts(obj)
     weapon_dicts(obj)
+    command_dicts(obj)
 
 def main_dicts(obj):
     obj.character_dict = {
