@@ -15,13 +15,16 @@ class KHBBS:
         self.version = version
         if self.version == 0:
             self.foldername = "ULJM05600" + f"{slot-1:04d}"
-            self.filesize = 0x11B40
+            self.filesize = 0x10970
+            self.syssize = 0x11C00
         elif self.version == 1:
             self.foldername = "ULUS10505" + f"{slot-1:04d}"
             self.filesize = 0x11B40
+            self.syssize = 0x13750
         elif self.version == 2:
             self.foldername = "ULJM05775" + f"{slot-1:04d}"
             self.filesize = 0x11E50
+            self.syssize = 0x13B80
         if slot != 100:
             if os.path.exists(os.path.join("files", "khbbs", self.foldername, "SAVEDATA.DAT")):
                 with open(os.path.join("files", "khbbs", self.foldername, "SAVEDATA.DAT"), "rb") as file:
@@ -34,7 +37,7 @@ class KHBBS:
             self.sysdata = None
             if os.path.exists(os.path.join("files", "khbbs", self.foldername[:-4], "SYSTEM.DAT")):
                 with open(os.path.join("files", "khbbs", self.foldername[:-4], "SYSTEM.DAT"), "rb") as sysfile:
-                    self.sysdata = (c_ubyte*0x13B80)(*sysfile.read())
+                    self.sysdata = (c_ubyte*self.syssize)(*sysfile.read())
         if attach:
             if self.version == 0:
                 self.addr = 0x00000000
@@ -70,10 +73,14 @@ class KHBBS:
             self.__parse_data_fm(data)
     
     def __parse_data_vanilla_jp(self, data):
-        pass
+        commands = data[0x33FC:0x47FC]
+        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i) for i in range(0x200)]
+        self.character = KHBBSCharacter(self.name, data[0x5654:0x5684])
     
     def __parse_data_vanilla_usa(self, data):
-        pass
+        commands = data[0x3488:0x4888]
+        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i) for i in range(0x200)]
+        self.character = KHBBSCharacter(self.name, data[0x59A8:0x5AD8])
     
     def __parse_data_fm(self, data):
         commands = data[0x3498:0x4898]
@@ -87,6 +94,8 @@ class KHBBS:
         self.data[0x16] = self.flag
         self.data[0x17] = self.character_type
         self.data[0x18:0x1C] = bytearray(self.playtime)
+        for command in self.commands:
+            command.save(self)
         self.character.save(self)
     
     def __save_vanilla_jp(self):
@@ -143,6 +152,6 @@ class KHBBS:
             game = "KHBBSJP"
         if self.version == 1:
             game = "KHBBSUSA"
-        else:
+        if self.fm:
             game = "KHBBSFM"
         return f"{game}(\n    {self.character},\n    World: {self.world_dict[self.world.value]},\n)"
