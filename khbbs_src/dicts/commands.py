@@ -1,3 +1,4 @@
+# These are completely wrong. I need to redo these.
 def command_dicts(obj):
     obj.finisher_dict = {
         "Empty": 0x0000,
@@ -27,7 +28,7 @@ def command_dicts(obj):
         "Ice Burst": 0x0056,
         "Celebration": 0x0057,
         "Stratosphere": 0x0058,
-        "Teleport Spike": 0x0059,
+        "Teleport Blast": 0x0059,
         "Demolition": 0x005A,
     }
     obj.command1_dict = {
