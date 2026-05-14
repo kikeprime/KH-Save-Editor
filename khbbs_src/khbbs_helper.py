@@ -67,8 +67,9 @@ class KHBBSCommand:
     So in C/C++ I'd use a struct instead.
     The structure is 0x0A bytes long.
     """
-    def __init__(self, data, idx):
+    def __init__(self, data, idx, fm):
         self.idx = idx
+        self.fm = fm
         self.id = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
         self.level = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
         self.cp = c_ushort(int.from_bytes(data[0x04:0x06][::-1]))
@@ -93,6 +94,7 @@ class KHBBSCommand:
     def __repr__(self):
         dicts(self)
         command_dict = {v: k for k, v in self.command_dict.items()}
+        ability_dict = {v: k for k, v in self.ability_dict.items()}
         name = command_dict[self.id.value]
-        ability = command_dict[self.ability.value]
+        ability = ability_dict[self.ability.value]
         return f"{name}(Level: {self.level.value}, CP: {self.cp.value}, Ability: {ability}, Flags: 0x{self.flags.value:04X})"
