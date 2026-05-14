@@ -23,7 +23,7 @@ def world_dicts(obj):
     def world_dict(self):
         return {
             0x00: "World EX",
-            0x01: "Land of Departure",
+            0x01: "The Land of Departure",
             0x02: "Dwarf Woodlands",
             0x03: "Castle of Dreams",
             0x04: "Enchanted Dominion",
