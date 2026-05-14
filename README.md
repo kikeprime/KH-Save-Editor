@@ -55,7 +55,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Heartless kill counts
     - 99 Puppies unlock flags
     - Everything Trinity related
-    - Mini Game records.
+    - Mini Game records. Includes the Destiny Islands scores too.
     - Battle Report (—Battle Record—)
     - Treasure Chest and Atlantica Clam flags. (Vanilla chest contents aren't always correct yet but FM should be 100% correct.)
     - Synthesis flags
