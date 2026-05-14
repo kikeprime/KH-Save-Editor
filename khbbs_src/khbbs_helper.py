@@ -35,7 +35,7 @@ class KHBBSCharacter:
     def save(self, obj):
         offset = 0
         if obj.version == 0:
-            offset = 0x59A8
+            offset = 0x5654
         if obj.version == 1:
             offset = 0x59A8
         if obj.fm:
@@ -78,7 +78,7 @@ class KHBBSCommand:
     def save(self, obj):
         offset = 0
         if obj.version == 0:
-            offset = 0x3488
+            offset = 0x33FC
         if obj.version == 1:
             offset = 0x3488
         if obj.fm:
