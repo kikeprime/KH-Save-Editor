@@ -74,17 +74,17 @@ class KHBBS:
     
     def __parse_data_vanilla_jp(self, data):
         commands = data[0x33FC:0x47FC]
-        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i) for i in range(0x200)]
+        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         self.character = KHBBSCharacter(self.name, data[0x5654:0x5684])
     
     def __parse_data_vanilla_usa(self, data):
         commands = data[0x3488:0x4888]
-        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i) for i in range(0x200)]
+        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         self.character = KHBBSCharacter(self.name, data[0x59A8:0x5AD8])
     
     def __parse_data_fm(self, data):
         commands = data[0x3498:0x4898]
-        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i) for i in range(0x200)]
+        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         self.character = KHBBSCharacter(self.name, data[0x59D0:0x5A00])
 
     def __save_shared(self):
