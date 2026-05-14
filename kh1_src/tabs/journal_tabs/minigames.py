@@ -13,6 +13,8 @@ def __create_minigames_tabs(tab):
     kh1 = utils.kh1
     if tab == "Olympus Coliseum":
         return __create_oc_minigames()
+    if tab == "Destiny Islands":
+        return __create_di_minigames()
     elif tab in kh1.minigames_with_sub:
         minigame = html.Div([
             html.Div([
@@ -220,6 +222,81 @@ def __create_oc_minigame(t):
         ),
     ]),
 
+def __create_di_minigames():
+    kh1 = utils.kh1
+    return html.Div([
+        html.H3("Sora vs. Riku"),
+        html.Div([
+            html.Div([
+                html.Label("Sora: "),
+                dcc.Input(
+                    id="Sora Wins",
+                    type="number",
+                    value=kh1.sorawins.value,
+                    min=0,
+                    max=100,
+                    step=1,
+                    style={"width": 50},
+                ),
+            ]),
+            html.Div([
+                html.Label("Riku: "),
+                dcc.Input(
+                    id="Riku Wins",
+                    type="number",
+                    value=kh1.rikuwins.value,
+                    min=0,
+                    max=100,
+                    step=1,
+                    style={"width": 50},
+                ),
+            ]),
+        ],
+            style={"display": "flex", "gap": 10},
+        ),
+        html.H3("Sora vs. FF Trio"),
+        html.Div([
+            html.Div([
+                html.Label("Tidus: "),
+                dcc.Input(
+                    id="Tidus Wins",
+                    type="number",
+                    value=kh1.tiduswins.value,
+                    min=0,
+                    max=255,
+                    step=1,
+                    style={"width": 50},
+                ),
+            ]),
+            html.Div([
+                html.Label("Wakka: "),
+                dcc.Input(
+                    id="Wakka Wins",
+                    type="number",
+                    value=kh1.wakkawins.value,
+                    min=0,
+                    max=255,
+                    step=1,
+                    style={"width": 50},
+                ),
+            ]),
+            html.Div([
+                html.Label("Selphie: "),
+                dcc.Input(
+                    id="Selphie Wins",
+                    type="number",
+                    value=kh1.selphiewins.value,
+                    min=0,
+                    max=255,
+                    step=1,
+                    style={"width": 50},
+                ),
+            ]),
+        ],
+            style={"display": "flex", "gap": 10},
+        ),
+    ])
+
 def create_minigames():
     kh1 = utils.kh1
     mgtabs = dcc.Tabs(id="MiniGamesTabs", value="Jungle Slider")
@@ -228,6 +305,7 @@ def create_minigames():
         for k in kh1.minigame_dict.keys()
     ] + [
         dcc.Tab(label="Olympus Coliseum", value="Olympus Coliseum"),
+        dcc.Tab(label="Destiny Islands", value="Destiny Islands"),
     ]
     return html.Div([
         mgtabs,
@@ -328,3 +406,24 @@ def minigame_oc_callback(minutes, seconds, fractions, ids):
         except:
             centis.append(0)
     return centis
+
+@callback(
+    Input("Sora Wins", "value"),
+    Input("Riku Wins", "value"),
+    Input("Tidus Wins", "value"),
+    Input("Wakka Wins", "value"),
+    Input("Selphie Wins", "value"),
+)
+def minigame_di_callback(
+    sorawins, rikuwins,
+    tiduswins, wakkawins, selphiewins,
+):
+    kh1 = utils.kh1
+    try:
+        kh1.sorawins.value = sorawins
+        kh1.rikuwins.value = rikuwins
+        kh1.tiduswins.value = tiduswins
+        kh1.wakkawins.value = wakkawins
+        kh1.selphiewins.value = selphiewins
+    except:
+        pass
