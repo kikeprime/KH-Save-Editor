@@ -202,9 +202,9 @@ class KH1:
         self.sorawins = c_ushort(int.from_bytes(data[0x1036:0x1038][::-1]))
         self.rikuwins = c_ushort(int.from_bytes(data[0x1038:0x103A][::-1]))
 
-        self.tidus_beaten = c_ubyte(data[0x105C])
-        self.wakka_beaten = c_ubyte(data[0x105D])
-        self.selphie_beaten = c_ubyte(data[0x105E])
+        self.tidus_event = c_ubyte(data[0x105C])
+        self.wakka_event = c_ubyte(data[0x105D])
+        self.selphie_event = c_ubyte(data[0x105E])
 
         self.weapon_backup = c_ubyte(data[0x1114])
         
@@ -216,7 +216,8 @@ class KH1:
         self.raft = bytearray(data[0x16D1:0x16DB])
         
         # Entries existing since vanilla JP use data[0x16E3:0x16F3]
-        # Sephiroth, Ice Titan, Jasmine 2 use 0x16F7, Xemnas uses 0x16F8
+        # Sephiroth, Ice Titan, Jasmine 2 use 0x16F7
+        # Kurt Zisa, Xemnas use 0x16F8, Red Armor uses 0x16F9
         self.journal_chars = (c_ubyte*23)(*data[0x16E3:0x16FA])
         # self.boss_journal = (c_ubyte*4)(*data[0x16F6:0x16FA])
         # data[0x16FA:0x1703] is unknown
