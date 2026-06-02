@@ -204,6 +204,10 @@ class KH1:
         self.tidus_event = c_ubyte(data[0x103A])
         self.wakka_event = c_ubyte(data[0x103B])
         self.selphie_event = c_ubyte(data[0x103C])
+        
+        self.tidus_beaten = c_ubyte(data[0x105F])
+        self.wakka_beaten = c_ubyte(data[0x1060])
+        self.selphie_beaten = c_ubyte(data[0x1061])
 
         self.weapon_backup = c_ubyte(data[0x1114])
         
@@ -338,8 +342,17 @@ class KH1:
         self.data[0x0F4C:0x0FAC] = bytearray(self.oc_minigames)
         self.data[0x0F69] = self.goldmatch
         self.data[0x0F6A] = self.platinummatch
+        self.data[0x101B] = self.tiduswins
+        self.data[0x101C] = self.wakkawins
+        self.data[0x101D] = self.selphiewins
         self.data[0x1036:0x1038] = bytearray(self.sorawins)
         self.data[0x1038:0x103A] = bytearray(self.rikuwins)
+        self.data[0x103A] = self.tidus_event
+        self.data[0x103B] = self.wakka_event
+        self.data[0x103C] = self.selphie_event
+        self.data[0x105F] = self.tidus_beaten
+        self.data[0x1060] = self.wakka_beaten
+        self.data[0x1061] = self.selphie_beaten
         self.data[0x1207:0x120D] = bytearray(self.slides)
         self.data[0x1212] = self.slides_watched
         self.data[0x1114] = self.weapon_backup
