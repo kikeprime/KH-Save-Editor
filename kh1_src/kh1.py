@@ -201,10 +201,9 @@ class KH1:
 
         self.sorawins = c_ushort(int.from_bytes(data[0x1036:0x1038][::-1]))
         self.rikuwins = c_ushort(int.from_bytes(data[0x1038:0x103A][::-1]))
-
-        self.tidus_event = c_ubyte(data[0x105C])
-        self.wakka_event = c_ubyte(data[0x105D])
-        self.selphie_event = c_ubyte(data[0x105E])
+        self.tidus_event = c_ubyte(data[0x103A])
+        self.wakka_event = c_ubyte(data[0x103B])
+        self.selphie_event = c_ubyte(data[0x103C])
 
         self.weapon_backup = c_ubyte(data[0x1114])
         
