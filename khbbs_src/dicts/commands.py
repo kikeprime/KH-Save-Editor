@@ -399,7 +399,7 @@ def command_dicts(obj):
                 # Defense Commands
                 "Block": 0x0109,
                 "Renewal Block": 0x010A,
-                "Focus Guard": 0x010B,
+                "Focus Block": 0x010B,
                 "Stun Block": 0x010C,
                 "Poison Block": 0x010D,
                 "Barrier": 0x010E,
@@ -444,7 +444,7 @@ def command_dicts(obj):
                 # Defense Commands
                 "Block": 0x0104,
                 "Renewal Block": 0x0105,
-                "Focus Guard": 0x0106,
+                "Focus Block": 0x0106,
                 "Stun Block": 0x0107,
                 "Poison Block": 0x0108,
                 "Barrier": 0x0109,
