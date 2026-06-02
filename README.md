@@ -57,6 +57,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Everything Trinity related
     - Mini Game records. Includes the Destiny Islands scores too.
     - Battle Report (—Battle Record—)
+        - Includes a few hidden statistics too.
     - Treasure Chest and Atlantica Clam flags. (Vanilla chest contents aren't always correct yet but FM should be 100% correct.)
     - Synthesis flags
 - Config menu options. It reflects the PS2 versions' options. Some of them are repurposed in Remix versions. PS3 and PC differs in that PC repurposes more options.
