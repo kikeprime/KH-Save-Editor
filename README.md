@@ -108,7 +108,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Minigame record
 - Worlds:
     - Playtime
-    - Progress flags (WIP)
+    - Progress flags
 - Difficulty
 - PCSX2 attach: Works exactly the same as for KH1.
 
