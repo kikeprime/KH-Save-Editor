@@ -178,12 +178,17 @@ class KH1:
         self.heartless_killed = c_ushort(int.from_bytes(data[0x083E:0x0840][::-1]))
         # data[0x0840:0x0844] is unknown.
         self.deflected = c_ushort(int.from_bytes(data[0x0844:0x0846][::-1]))
-        # data[0x0846:0x0848] is unknown.
+        self.taken_damage = c_ushort(int.from_bytes(data[0x0846:0x0848][::-1]))
         self.item_usage = c_ushort(int.from_bytes(data[0x0848:0x084A][::-1]))
         self.hits = c_ushort(int.from_bytes(data[0x084A:0x084C][::-1]))
         self.friend_ko = c_ushort(int.from_bytes(data[0x084C:0x084E][::-1]))
         self.deaths = c_ushort(int.from_bytes(data[0x084E:0x0850][::-1]))
-
+        self.weapon_usage = c_ushort(int.from_bytes(data[0x0856:0x0858][::-1]))
+        
+        self.dalmatian_event = c_ubyte(data[0x0E3A])
+        self.dalmatian_gifts = (c_ubyte*10)(*data[0x0E3C:0x0E46])
+        self.dalmatian_gift_ready = c_ubyte(data[0x0E47])
+        
         self.currentcup = c_ubyte(data[0x0F26])
         self.philcup = c_ubyte(data[0x0F36])
         self.pegasuscup = c_ubyte(data[0x0F37])
@@ -290,10 +295,12 @@ class KH1:
             self.cure_on_friends = c_ushort(int.from_bytes(data[0x084E:0x0850][::-1]))
             self.heartless_killed = c_ushort(int.from_bytes(data[0x0856:0x0858][::-1]))
             self.deflected = c_ushort(int.from_bytes(data[0x085C:0x085E][::-1]))
+            self.taken_damage = c_ushort(int.from_bytes(data[0x085E:0x0860][::-1]))
             self.item_usage = c_ushort(int.from_bytes(data[0x0860:0x0862][::-1]))
             self.hits = c_ushort(int.from_bytes(data[0x0862:0x0864][::-1]))
             self.friend_ko = c_ushort(int.from_bytes(data[0x0864:0x0866][::-1]))
             self.deaths = c_ushort(int.from_bytes(data[0x0866:0x0868][::-1]))
+            self.weapon_usage = c_ushort(int.from_bytes(data[0x086E:0x0870][::-1]))
             self.xemnas = c_ubyte(data[0x1118])
             self.gummiblocks = (c_ubyte*160)(*data[0xBE78:0xBF18]) # 144 bytes until the last Design Gummi
             self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF41:0xBF45][::-1]))
@@ -339,6 +346,9 @@ class KH1:
         self.data[0x0599:0x05C9] = bytearray(self.shared_abilities)
         self.data[0x05CC:0x07C9] = bytearray(self.treasures)
         self.data[0x07D0:0x07D7] = bytearray(self.summons)
+        self.data[0x0E3A] = self.dalmatian_event
+        self.data[0x0E3C:0x0E46] = bytearray(self.dalmatian_gifts)
+        self.data[0x0E47] = self.dalmatian_gift_ready
         self.data[0x0F4C:0x0FAC] = bytearray(self.oc_minigames)
         self.data[0x0F69] = self.goldmatch
         self.data[0x0F6A] = self.platinummatch
@@ -395,10 +405,12 @@ class KH1:
         self.data[0x0836:0x0838] = bytearray(self.cure_on_friends)
         self.data[0x083E:0x0840] = bytearray(self.heartless_killed)
         self.data[0x0844:0x0846] = bytearray(self.deflected)
+        self.data[0x0846:0x0848] = bytearray(self.taken_damage)
         self.data[0x0848:0x084A] = bytearray(self.item_usage)
         self.data[0x084A:0x084C] = bytearray(self.hits)
         self.data[0x084C:0x084E] = bytearray(self.friend_ko)
         self.data[0x084E:0x0850] = bytearray(self.deaths)
+        self.data[0x0856:0x0858] = bytearray(self.weapon_usage)
         self.data[0xBE78:0xBEE4] = bytearray(self.gummiblocks)
         self.data[0xBF01:0xBF05] = bytearray(self.gummi_decelerate)
         self.data[0xBF05:0xBF09] = bytearray(self.gummi_accelerate)
@@ -416,10 +428,12 @@ class KH1:
         self.data[0x084E:0x0850] = bytearray(self.cure_on_friends)
         self.data[0x0856:0x0858] = bytearray(self.heartless_killed)
         self.data[0x085C:0x085E] = bytearray(self.deflected)
+        self.data[0x085E:0x0860] = bytearray(self.taken_damage)
         self.data[0x0860:0x0862] = bytearray(self.item_usage)
         self.data[0x0862:0x0864] = bytearray(self.hits)
         self.data[0x0864:0x0866] = bytearray(self.friend_ko)
         self.data[0x0866:0x0868] = bytearray(self.deaths)
+        self.data[0x086E:0x0870] = bytearray(self.weapon_usage)
         self.data[0x1118] = self.xemnas
         self.data[0xBE78:0xBF18] = bytearray(self.gummiblocks)
         self.data[0xBF41:0xBF45] = bytearray(self.gummi_decelerate)
