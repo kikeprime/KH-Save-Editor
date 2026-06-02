@@ -102,6 +102,34 @@ def create_battle_record():
     ],
         style={"margin-top": 20},
     )
+    taken_damage = html.Div([
+        html.Label("Times taken damage: "),
+        dcc.Input(
+            id="TakenDamage",
+            type="number",
+            value=kh1.taken_damage.value,
+            min=0,
+            max=0xFFFF,
+            step=1,
+            style={"width": 50},
+        ),
+    ],
+        style={"margin-top": 20},
+    )
+    weapon_usage = html.Div([
+        html.Label("Times using your weapon: "),
+        dcc.Input(
+            id="WeaponUsage",
+            type="number",
+            value=kh1.weapon_usage.value,
+            min=0,
+            max=0xFFFF,
+            step=1,
+            style={"width": 50},
+        ),
+    ],
+        style={"margin-top": 20},
+    )
     return html.Div([
         heartless_killed,
         deaths,
@@ -109,7 +137,10 @@ def create_battle_record():
         hits,
         item_usage,
         friend_ko,
-        cure_on_friends
+        cure_on_friends,
+        html.H3("Hidden Statistics"),
+        taken_damage,
+        weapon_usage,
     ])
 
 @callback(
@@ -120,6 +151,8 @@ def create_battle_record():
     Input("ItemUsage", "value"),
     Input("FriendKO", "value"),
     Input("CureOnFriends", "value"),
+    Input("TakenDamage", "value"),
+    Input("WeaponUsage", "value"),
 )
 def journal_battle_record_callback(
     heartless_killed,
@@ -128,7 +161,9 @@ def journal_battle_record_callback(
     hits,
     item_usage,
     friend_ko,
-    cure_on_friends
+    cure_on_friends,
+    taken_damage,
+    weapon_usage,
 ):
     kh1 = utils.kh1
     try:
@@ -139,5 +174,7 @@ def journal_battle_record_callback(
         kh1.item_usage.value = item_usage
         kh1.friend_ko.value = friend_ko
         kh1.cure_on_friends.value = cure_on_friends
+        kh1.taken_damage.value = taken_damage
+        kh1.weapon_usage.value = weapon_usage
     except:
         pass
