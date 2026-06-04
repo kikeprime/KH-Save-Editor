@@ -16,6 +16,9 @@ def main_dicts(obj):
         "Armored Ventus": 0x04,
         "Armored Aqua": 0x05,
         "Armored Terra": 0x06,
+        "Helmetless Ventus": 0x0D,
+        "Helmetless Aqua": 0x0E,
+        "Helmetless Terra": 0x0F,
     }
 
 def world_dicts(obj):
