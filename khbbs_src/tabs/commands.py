@@ -101,11 +101,11 @@ def __create_command(idx):
             step=1,
             style={"width": 50},
         ),
-        dcc.Markdown("Flags:"),
+        dcc.Markdown("State:"),
         dcc.Input(
-            id={"type": "Command Flags", "index": command.idx},
+            id={"type": "Command State", "index": command.idx},
             type="number",
-            value=command.flags.value,
+            value=command.state.value,
             min=0,
             max=0xFFFF,
             step=1,
@@ -118,10 +118,10 @@ def __create_command(idx):
     Input({"type": "Command Ability", "index": ALL}, "value"),
     Input({"type": "Command Level", "index": ALL}, "value"),
     Input({"type": "Command CP", "index": ALL}, "value"),
-    Input({"type": "Command Flags", "index": ALL}, "value"),
+    Input({"type": "Command State", "index": ALL}, "value"),
     State({"type": "Command Type", "index": ALL}, "id"),
 )
-def command_list_callback(id, ability, level, cp, flags, idx):
+def command_list_callback(id, ability, level, cp, state, idx):
     khbbs = utils.khbbs
     idx = idx[0]["index"]
     khbbs.commands[idx].id.value = id[0]
@@ -129,6 +129,6 @@ def command_list_callback(id, ability, level, cp, flags, idx):
     try:
         khbbs.commands[idx].level.value = level[0]
         khbbs.commands[idx].cp.value = cp[0]
-        khbbs.commands[idx].flags.value = flags[0]
+        khbbs.commands[idx].state.value = state[0]
     except:
         pass
