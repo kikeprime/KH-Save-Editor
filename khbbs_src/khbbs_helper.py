@@ -74,7 +74,7 @@ class KHBBSCommand:
         self.level = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
         self.cp = c_ushort(int.from_bytes(data[0x04:0x06][::-1]))
         self.ability = c_ushort(int.from_bytes(data[0x06:0x08][::-1]))
-        self.flags = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
+        self.state = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
     
     def save(self, obj):
         offset = 0
@@ -89,7 +89,7 @@ class KHBBSCommand:
         obj.data[offset+0x02:offset+0x04] = bytearray(self.level)
         obj.data[offset+0x04:offset+0x06] = bytearray(self.cp)
         obj.data[offset+0x06:offset+0x08] = bytearray(self.ability)
-        obj.data[offset+0x08:offset+0x0A] = bytearray(self.flags)
+        obj.data[offset+0x08:offset+0x0A] = bytearray(self.state)
 
     def __repr__(self):
         dicts(self)
@@ -97,4 +97,102 @@ class KHBBSCommand:
         ability_dict = {v: k for k, v in self.ability_dict.items()}
         name = command_dict[self.id.value]
         ability = ability_dict[self.ability.value]
-        return f"{name}(Level: {self.level.value}, CP: {self.cp.value}, Ability: {ability}, Flags: 0x{self.flags.value:04X})"
+        return \
+            f"{name}(" +\
+            f"\n\tLevel: {self.level.value}" +\
+            f"\n\tCP: {self.cp.value}" +\
+            f"\n\tAbility: {ability}" +\
+            f"\n\tState: 0x{self.state.value:04X}" +\
+            f"\n)"
+
+
+class KHBBSAbility:
+    def __init__(self, data, idx):
+        self.data = (c_ubyte*4)(*data)
+        self.idx = idx
+    
+    @property
+    def num_on(self):
+        return self.data[0] % 0b1000
+    
+    @num_on.setter
+    def num_on(self, num):
+        self.data[0] &= ~0b111
+        self.data[0] += num % 8
+    
+    @property
+    def num_unlocked(self):
+        return self.data[0] // 0b1000000 + (self.data[1] & (1 << 0)) * 4
+    
+    @num_unlocked.setter
+    def num_unlocked(self, num):
+        self.data[0] &= ~0b1100000
+        self.data[0] += (num % 4) << 6
+        self.data[1] &= ~(1 << 0)
+        self.data[1] += (num // 4)
+    
+    def active(self, idx: int):
+        return self.data[1] & (1 << idx) != 0
+    
+    def set_active(self, idx: int, b: bool):
+        self.data[1] &= ~(1 << idx)
+        if b:
+            self.data[1] |= (1 << idx)
+    
+    @property
+    def unread(self):
+        return self.data[1] & (1 << 6) != 0
+    
+    @unread.setter
+    def unread(self, b: bool):
+        self.data[1] &= ~(1 << 6)
+        if b:
+            self.data[1] |= (1 << 6)
+    
+    @property
+    def read(self):
+        return self.data[1] & (1 << 7) != 0
+    
+    @read.setter
+    def read(self, b: bool):
+        self.data[1] &= ~(1 << 7)
+        if b:
+            self.data[1] |= (1 << 7)
+    
+    @property
+    def mastered_message(self):
+        return self.data[2] & (1 << 2) != 0
+    
+    @mastered_message.setter
+    def mastered_message(self, b: bool):
+        self.data[2] & (1 << 2)
+        if b:
+            self.data[2] |= (1 << 2)
+    
+    def save(self, obj):
+        offset = 0
+        if obj.version == 0:
+            offset = 0x4CB0
+        if obj.version == 1:
+            offset = 0x4D3C
+        if obj.fm:
+            offset = 0x4D64
+        offset += self.idx * 0x04
+        obj.data[offset+0x00:offset+0x04] = bytearray(self.data)
+    
+    def __repr__(self):
+        dicts(self)
+        name = self.ability_list[self.idx]
+        return \
+            f"{name}(" +\
+            f"\n\tTurned on: {self.num_on}" +\
+            f"\n\tUnlocked: {self.num_unlocked}" +\
+            f"\n\tActive 1: {self.active(1)}" +\
+            f"\n\tActive 2: {self.active(2)}" +\
+            f"\n\tActive 3: {self.active(3)}" +\
+            f"\n\tActive 4: {self.active(4)}" +\
+            f"\n\tActive 5: {self.active(5)}" +\
+            f"\n\tUnread: {self.unread}" +\
+            f"\n\tRead: {self.read}" +\
+            f"\n\tMastered message: {self.mastered_message}" +\
+            f"\n)"
