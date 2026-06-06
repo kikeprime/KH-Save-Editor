@@ -53,7 +53,7 @@ menu = html.Div([
                 {"label": "Vanilla USA", "value": 1},
                 {"label": "Final Mix", "value": 2},
             ],
-            value=2,
+            value=1,
             id="Version",
             style={"margin-left": 5, "width": 200},
             searchable=False,
@@ -87,6 +87,7 @@ menu = html.Div([
 tabs = dcc.Tabs(id="Tabs", value="General")
 general = dcc.Tab(label="General", value="General")
 character = dcc.Tab(label="Character", value="Character", id="CharacterTab")
+commands = dcc.Tab(label="Commands", value="Commands")
 inventory = dcc.Tab(label="Inventory", value="Inventory")
 journal = dcc.Tab(label="Reports", value="Journal")
 config = dcc.Tab(label="Config", value="Config")
@@ -95,6 +96,7 @@ misc = dcc.Tab(label="Misc", value="Misc")
 tabs.children = [
     general,
     character,
+    commands,
     inventory,
     journal,
     config,
@@ -140,13 +142,15 @@ def tab_switch(tab, encoding):
             return create_general()
         if tab == "Character":
             return create_character()
+        if tab == "Commands":
+            return create_commands()
         """if tab == "Inventory":
             return create_inventory()
         if tab == "Journal":
-            return create_journal()
+            return create_journal()"""
         if tab == "Config":
             return create_config()
-        if tab == "Worlds":
+        """if tab == "Worlds":
             return create_worlds()
         if tab == "Misc":
             return create_misc()"""
