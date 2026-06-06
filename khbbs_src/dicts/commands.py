@@ -675,6 +675,7 @@ def command_dicts(obj):
                 "Leaf Bracer": 0x01C6,
             }
     type(obj).ability_dict = ability_dict
+    obj.ability_list = list(obj.ability_dict.keys())[1:]
     @property
     def command_dict(self):
         return (
