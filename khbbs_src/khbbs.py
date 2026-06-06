@@ -60,6 +60,7 @@ class KHBBS:
         assert(self.size.value == self.filesize)
         self.checksum = c_uint(int.from_bytes(data[0x0C:0x10][::-1]))
         self.reports = c_ubyte(data[0x10])
+        # self.difficulty = c_ubyte(data[0x11])
         self.world = c_ubyte(data[0x14])
         self.room = c_ubyte(data[0x15])
         self.flag = c_ubyte(data[0x16])
@@ -75,20 +76,38 @@ class KHBBS:
     def __parse_data_vanilla_jp(self, data):
         commands = data[0x33FC:0x47FC]
         self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
+        abilities = data[0x4CB0:0x4D28]
+        self.abilities = {
+            k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
+        }
         self.character = KHBBSCharacter(self.name, data[0x5654:0x5684])
+        self.difficulty = c_ubyte(data[0x58FC])
     
     def __parse_data_vanilla_usa(self, data):
         commands = data[0x3488:0x4888]
         self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
+        abilities = data[0x4D3C:0x4DB4]
+        self.abilities = {
+            k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
+        }
         self.character = KHBBSCharacter(self.name, data[0x59A8:0x5AD8])
+        self.difficulty = c_ubyte(data[0x5C84])
     
     def __parse_data_fm(self, data):
         commands = data[0x3498:0x4898]
         self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
+        abilities = data[0x4D64:0x4DDC]
+        self.abilities = {
+            k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
+        }
+        self.command_styles = (c_ubyte*0x0D)(*data[0x4DDD:0x4DEA])
         self.character = KHBBSCharacter(self.name, data[0x59D0:0x5A00])
+        self.difficulty = c_ubyte(data[0x5CAC])
+        self.total_medals = c_uint(int.from_bytes(data[0xFE88:0xFE8C]))
 
     def __save_shared(self):
         self.data[0x10] = self.reports
+        self.data[0x11] = self.difficulty.value // 0x40
         self.data[0x14] = self.world
         self.data[0x15] = self.room
         self.data[0x16] = self.flag
@@ -96,16 +115,18 @@ class KHBBS:
         self.data[0x18:0x1C] = bytearray(self.playtime)
         for command in self.commands:
             command.save(self)
+        for ability in self.abilities.values():
+            ability.save(self)
         self.character.save(self)
     
     def __save_vanilla_jp(self):
-        pass
+        self.data[0x58FC] = self.difficulty
     
     def __save_vanilla_usa(self):
-        pass
+        self.data[0x5C84] = self.difficulty
     
     def __save_fm(self):
-        pass
+        self.data[0x5CAC] = self.difficulty
 
     def save(self):
         self.__save_shared()
