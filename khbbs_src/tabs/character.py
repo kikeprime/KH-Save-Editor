@@ -18,7 +18,7 @@ def create_character():
         id="EXP",
         type="number",
         value=khbbs.character.exp.value,
-        min=0,
+        min=-999999,
         max=999999,
         step=1,
         style={"width": 60},
