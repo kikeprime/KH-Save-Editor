@@ -12,7 +12,7 @@ class KHBBSCharacter:
     """
     def __init__(self, name, data):
         self.name = name
-        self.exp = c_uint(int.from_bytes(data[0x00:0x04][::-1]))
+        self.exp = c_int(int.from_bytes(data[0x00:0x04][::-1]))
         self.munny = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
         self.medals = c_uint(int.from_bytes(data[0x08:0x0C][::-1]))
         self.level = c_ushort(int.from_bytes(data[0x0C:0x0E][::-1]))
