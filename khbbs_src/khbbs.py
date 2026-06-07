@@ -60,7 +60,7 @@ class KHBBS:
         assert(self.size.value == self.filesize)
         self.checksum = c_uint(int.from_bytes(data[0x0C:0x10][::-1]))
         self.reports = c_ubyte(data[0x10])
-        # self.difficulty = c_ubyte(data[0x11])
+        # self.difficulty = c_ubyte(data[0x11]) # Zero EXP needs it to be displayed
         self.world = c_ubyte(data[0x14])
         self.room = c_ubyte(data[0x15])
         self.flag = c_ubyte(data[0x16])
