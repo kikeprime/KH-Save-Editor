@@ -80,6 +80,9 @@ class KHBBS:
         self.abilities = {
             k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
+        # I counted multiple times and there are only 20 slots in this version.
+        dlinks = data[0x5470:0x5510]
+        self.dlinks = [KHBBSDLink(dlinks[i*0x08:(i+1)*0x08], i) for i in range(20)]
         self.character = KHBBSCharacter(self.name, data[0x5654:0x5684])
         self.difficulty = c_ubyte(data[0x58FC])
     
@@ -90,6 +93,8 @@ class KHBBS:
         self.abilities = {
             k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
+        dlinks = data[0x569C:0x5744]
+        self.dlinks = [KHBBSDLink(dlinks[i*0x08:(i+1)*0x08], i) for i in range(21)]
         self.character = KHBBSCharacter(self.name, data[0x59A8:0x5AD8])
         self.difficulty = c_ubyte(data[0x5C84])
     
@@ -101,6 +106,8 @@ class KHBBS:
             k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
         self.command_styles = (c_ubyte*0x0D)(*data[0x4DDD:0x4DEA])
+        dlinks = data[0x56C4:0x576C]
+        self.dlinks = [KHBBSDLink(dlinks[i*0x08:(i+1)*0x08], i) for i in range(21)]
         self.character = KHBBSCharacter(self.name, data[0x59D0:0x5A00])
         self.difficulty = c_ubyte(data[0x5CAC])
         self.total_medals = c_uint(int.from_bytes(data[0xFE88:0xFE8C]))
@@ -117,6 +124,8 @@ class KHBBS:
             command.save(self)
         for ability in self.abilities.values():
             ability.save(self)
+        for dlink in self.dlinks:
+            dlink.save(self)
         self.character.save(self)
     
     def __save_vanilla_jp(self):
