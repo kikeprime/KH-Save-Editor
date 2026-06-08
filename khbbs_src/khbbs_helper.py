@@ -107,6 +107,12 @@ class KHBBSCommand:
 
 
 class KHBBSAbility:
+    """
+    Class for handling the abilities.
+    I didn't want to use properties because
+    I think they bloat the code but I had to.
+    I hate the Osaka Team more and more.
+    """
     def __init__(self, data, idx):
         self.data = (c_ubyte*4)(*data)
         self.idx = idx
@@ -165,7 +171,7 @@ class KHBBSAbility:
     
     @mastered_message.setter
     def mastered_message(self, b: bool):
-        self.data[2] & (1 << 2)
+        self.data[2] &= ~(1 << 2)
         if b:
             self.data[2] |= (1 << 2)
     
@@ -195,4 +201,70 @@ class KHBBSAbility:
             f"\n\tUnread: {self.unread}" +\
             f"\n\tRead: {self.read}" +\
             f"\n\tMastered message: {self.mastered_message}" +\
+            f"\n)"
+
+
+class KHBBSDLink:
+    """
+    Class for representing the D-Link struct.
+    So in C/C++ I'd use a struct instead.
+    The structure is 0x08 bytes long.
+    """
+    def __init__(self, data, idx):
+        self.idx = idx
+        self.id = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
+        self.state = c_ubyte(data[0x03])
+    
+    @property
+    def on(self):
+        return self.state.value & (1 << 7) != 0
+    
+    @on.setter
+    def on(self, b: bool):
+        self.state.value &= ~(1 << 7)
+        if b:
+            self.state.value |= (1 << 7)
+    
+    @property
+    def ability_1(self):
+        return self.state.value & (1 << 0) != 0
+    
+    @ability_1.setter
+    def ability_1(self, b: bool):
+        self.state.value &= ~(1 << 0)
+        if b:
+            self.state.value |= (1 << 0)
+    
+    @property
+    def ability_2(self):
+        return self.state.value & (1 << 1) != 0
+    
+    @ability_2.setter
+    def ability_2(self, b: bool):
+        self.state.value &= ~(1 << 1)
+        if b:
+            self.state.value |= (1 << 1)
+    
+    def save(self, obj):
+        offset = 0
+        if obj.version == 0:
+            offset = 0x5470
+        if obj.version == 1:
+            offset = 0x569C
+        if obj.fm:
+            offset = 0x56C4
+        offset += self.idx * 0x08
+        obj.data[offset+0x00:offset+0x02] = bytearray(self.id)
+        obj.data[offset+0x03] = self.state
+
+    def __repr__(self):
+        dicts(self)
+        dlink_dict = {v: k for k, v in self.dlink_dict.items()}
+        name = dlink_dict[self.id.value]
+        return \
+            f"{name}(" +\
+            f"\n\tOn: {self.on}" +\
+            f"\n\tAbility 1: {self.ability_1}" +\
+            f"\n\tAbility 2: {self.ability_2}" +\
+            f"\n\tState: 0x{self.state.value:02X}" +\
             f"\n)"
