@@ -486,7 +486,7 @@ def kh1us_decode(input_bytes):
                 seq = []
             else:
                 out_chars.append(decode_table.get(b, " "))
-    return (''.join(out_chars), len(input_bytes))
+    return ("".join(out_chars), len(input_bytes))
 
 def kh1jp_encode(input_str):
     out_bytes = bytearray()
