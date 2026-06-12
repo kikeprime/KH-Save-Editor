@@ -37,7 +37,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 
 ## KH1 features
 - Support for both vanilla and Final Mix save files.
-- Playtime: Hours, minutes, seconds and the modulo 60 since it's stored in frames which are seconds $\cdot$ 60 (in NTSC builds; I haven't tested any PAL versions).
+- Playtime: Hours, minutes, seconds and the modulo 60 since it's stored in frames which are seconds times 60 (in NTSC builds; I haven't tested any PAL versions).
 - Characters:
     - Base Stats
     - Sub MP: The orange MP bar. Remix versions are bugged, they might not load this.
@@ -56,7 +56,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - 99 Puppies unlock flags
     - Everything Trinity related
     - Mini Game records. Includes the Destiny Islands scores too.
-    - Battle Report (—Battle Record—)
+    - Battle Report (—Battle Record—):
         - Includes a few hidden statistics too.
     - Treasure Chest and Atlantica Clam flags. (Vanilla chest contents aren't always correct yet but FM should be 100% correct.)
     - Synthesis flags
@@ -106,7 +106,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
         - Heartless and Nobody kill counts
         - Reaction Command counters
         - Limit max scores
-    - Minigame record
+    - Minigame records
 - Worlds:
     - Playtime
     - Progress flags
@@ -114,8 +114,10 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - PCSX2 attach: Works exactly the same as for KH1.
 
 ## KHBBS features
+- Support for vanilla Japanese, vanilla USA and Final Mix save files.
 - Playtime: Hours, minutes, seconds
-- Character
+- Character type
+- Character:
     - Weapon
     - EXP
     - Level
@@ -125,6 +127,12 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Munny technically belongs here too.
 - World, room, flag
 - Munny
+- Difficulty
+- Commands:
+    - Command List
+    - Finishers along with their names
+    - Abilities
+    - D-Links
 - PPSSPP attach
     - Works like the KH1 and KH2 PCSX2 attaches
     - However, PSP KHBBSFM seems to have some kind of memory protection so you need to load the dumped save file to see the changes.
