@@ -1,7 +1,9 @@
 def command_dicts(obj):
     obj.finisher_dict = {
         "Empty": 0x0000,
-        "Finish": 0x003F,
+        "Finish (Ventus)": 0x003D,
+        "Finish (Aqua)": 0x003E,
+        "Finish (Terra)": 0x003F,
         "Air Flair 1": 0x0040,
         "Magic Pulse 1": 0x0041,
         "Rising Rock 1": 0x0042,
