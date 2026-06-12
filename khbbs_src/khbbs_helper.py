@@ -268,3 +268,39 @@ class KHBBSDLink:
             f"\n\tAbility 2: {self.ability_2}" +\
             f"\n\tState: 0x{self.state.value:02X}" +\
             f"\n)"
+
+class KHBBSFinisher:
+    """
+    Class for representing the Finisher struct.
+    So in C/C++ I'd use a struct instead.
+    The structure is 0x08 bytes long.
+    """
+    def __init__(self, data, idx):
+        self.idx = idx
+        self.id = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
+        self.state = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
+        self.exp = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
+    
+    def save(self, obj):
+        offset = 0
+        if obj.version == 0:
+            offset = 0x53F0
+        if obj.version == 1:
+            offset = 0x561C
+        if obj.fm:
+            offset = 0x5644
+        offset += self.idx * 0x08
+        obj.data[offset+0x00:offset+0x02] = bytearray(self.id)
+        obj.data[offset+0x02:offset+0x04] = bytearray(self.state)
+        obj.data[offset+0x04:offset+0x08] = bytearray(self.exp)
+    
+    def __repr__(self):
+        dicts(self)
+        finisher_dict = {v: k for k, v in self.finisher_dict.items()}
+        name = finisher_dict[self.id.value]
+        state = ["Empty", "Locked", "Unlocked"][self.state.value]
+        return \
+            f"{name}(" +\
+            f"\n\tState: {state}" +\
+            f"\n\tEXP: {self.exp.value}" +\
+            f"\n)"
