@@ -320,44 +320,75 @@ class KHBBSDeckCommand(Structure):
     ]
 
 
-class KHBBSDeck:
+class KHBBSDeck(Structure):
     """
     Class for representing the Deck struct.
     So in C/C++ I'd use a struct instead.
-    The structure is 0xB2 bytes long in vanilla JP.
-    The structure is 0xC4 bytes long in the rest.
+    The structure is 0xC4 bytes long.
     """
-    def __init__(self, data, idx):
-        self.data = bytearray(data)
-        self.idx = idx
-        self.battle_commands = (KHBBSDeckCommand*8).from_buffer_copy(
-            bytearray(data[:sizeof(KHBBSDeckCommand*8)])
-        )
-        self.action_commands = (KHBBSDeckCommand*10).from_buffer_copy(
-            bytearray(data[sizeof(KHBBSDeckCommand*8):sizeof(KHBBSDeckCommand*18)])
-        )
-        self.shotlock = KHBBSDeckCommand.from_buffer_copy(
-            bytearray(data[sizeof(KHBBSDeckCommand*18):sizeof(KHBBSDeckCommand*19)])
-        )
-        self.name = bytearray(data[0x86:0x96])
+    _fields_ = [
+        ("battle_commands", KHBBSDeckCommand*8),
+        ("action_commands", KHBBSDeckCommand*10),
+        ("shotlock", KHBBSDeckCommand),
+        ("unk72", c_ubyte*0x14),
+        ("name", c_ubyte*0x10),
+        ("unk96", c_ubyte*(0xC4-0x96)),
+    ]
     
+    def init(data, idx):
+        obj = KHBBSDeck.from_buffer_copy(bytearray(data))
+        obj.idx = idx
+        return obj
+
     def save(self, obj):
         offset = 0
-        if obj.version == 0:
-            offset = 0x56B0
         if obj.version == 1:
             offset = 0x5A04
         if obj.fm:
             offset = 0x5A2C
-        offset += self.idx * 0xC4
-        obj.data[offset:offset+sizeof(KHBBSDeckCommand*8)] = bytearray(self.battle_commands)
-        obj.data[offset+sizeof(KHBBSDeckCommand*8):offset+sizeof(KHBBSDeckCommand*18)] = bytearray(self.action_commands)
-        obj.data[offset+sizeof(KHBBSDeckCommand*18):offset+sizeof(KHBBSDeckCommand*19)] = bytearray(self.shotlock)
-        obj.data[offset+0x86:offset+0x96] = self.name
-    
+        offset += self.idx * sizeof(self)
+        obj.data[offset:offset+sizeof(self)] = bytearray(self)
+
     def __repr__(self):
         dicts(self)
-        name = self.name.decode("Shift-JIS")
+        name = bytearray(self.name).decode("Shift-JIS")
+        return \
+            f"{name}(" +\
+            f"\n\tBattle Commands:\n\t{bytearray(self.battle_commands)}" +\
+            f"\n\tAction Commands:\n\t{bytearray(self.action_commands)}" +\
+            f"\n\tShotlock:\n\t{bytearray(self.shotlock)}" +\
+            f"\n)"
+
+
+class KHBBSDeckJP(Structure):
+    """
+    Class for representing the vanilla JP Deck struct.
+    So in C/C++ I'd use a struct instead.
+    The structure is 0xB2 bytes long.
+    I couldn't avoid full copying.
+    """
+    _fields_ = [
+        ("battle_commands", KHBBSDeckCommand*8),
+        ("action_commands", KHBBSDeckCommand*10),
+        ("shotlock", KHBBSDeckCommand),
+        ("unk72", c_ubyte*0x14),
+        ("name", c_ubyte*0x10),
+        ("unk96", c_ubyte*(0xB2-0x96)),
+    ]
+    
+    def init(data, idx):
+        obj = KHBBSDeckJP.from_buffer_copy(bytearray(data))
+        obj.idx = idx
+        return obj
+
+    def save(self, obj):
+        offset = 0x56B0
+        offset += self.idx * sizeof(self)
+        obj.data[offset:offset+sizeof(self)] = bytearray(self)
+
+    def __repr__(self):
+        dicts(self)
+        name = bytearray(self.name).decode("Shift-JIS")
         return \
             f"{name}(" +\
             f"\n\tBattle Commands:\n\t{bytearray(self.battle_commands)}" +\
