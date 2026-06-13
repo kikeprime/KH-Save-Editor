@@ -86,7 +86,7 @@ def create_general():
     munny = dcc.Input(
         id="Munny",
         type="number",
-        value=khbbs.character.munny.value,
+        value=khbbs.character.munny,
         min=0,
         max=0xFFFFFFFF,
         step=1,
@@ -142,7 +142,7 @@ def general_callbacks(
         khbbs.world.value = world
         khbbs.room.value = room
         khbbs.flag.value = flag
-        khbbs.character.munny.value = munny
+        khbbs.character.munny = munny
         return khbbs.name
     except:
         return "Character"
