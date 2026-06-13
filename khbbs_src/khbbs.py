@@ -75,56 +75,56 @@ class KHBBS:
     
     def __parse_data_vanilla_jp(self, data):
         commands = data[0x33FC:0x47FC]
-        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
+        self.commands = [KHBBSCommand.init(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         abilities = data[0x4CB0:0x4D28]
         self.abilities = {
             k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
         finishers = data[0x53F0:0x5470]
-        self.finishers = [KHBBSFinisher(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
+        self.finishers = [KHBBSFinisher.init(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
         # I counted multiple times and there are only 20 slots in this version.
         dlinks = data[0x5470:0x5510]
-        self.dlinks = [KHBBSDLink(dlinks[i*0x08:(i+1)*0x08], i) for i in range(20)]
+        self.dlinks = [KHBBSDLink.init(dlinks[i*0x08:(i+1)*0x08], i) for i in range(20)]
         finisher_names = data[0x5510:0x5650]
         self.finisher_names = [bytearray(finisher_names[i*0x14:(i+1)*0x14]) for i in range(16)]
-        self.character = KHBBSCharacter(self.name, data[0x5654:0x5684])
+        self.character = KHBBSCharacter.init(self.name, data[0x5654:0x5684])
         decks = data[0x56B0:0x58CA]
         self.decks = [KHBBSDeck(decks[i*0xB2:(i+1)*0xB2], i) for i in range(3)]
         self.difficulty = c_ubyte(data[0x58FC])
     
     def __parse_data_vanilla_usa(self, data):
         commands = data[0x3488:0x4888]
-        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
+        self.commands = [KHBBSCommand.init(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         abilities = data[0x4D3C:0x4DB4]
         self.abilities = {
             k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
         finishers = data[0x561C:0x569C]
-        self.finishers = [KHBBSFinisher(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
+        self.finishers = [KHBBSFinisher.init(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
         dlinks = data[0x569C:0x5744]
-        self.dlinks = [KHBBSDLink(dlinks[i*0x08:(i+1)*0x08], i) for i in range(21)]
+        self.dlinks = [KHBBSDLink.init(dlinks[i*0x08:(i+1)*0x08], i) for i in range(21)]
         finisher_names = data[0x5744:0x59A4]
         self.finisher_names = [bytearray(finisher_names[i*0x26:(i+1)*0x26]) for i in range(16)]
-        self.character = KHBBSCharacter(self.name, data[0x59A8:0x59D8])
+        self.character = KHBBSCharacter.init(self.name, data[0x59A8:0x59D8])
         decks = data[0x5A04:0x5C50]
         self.decks = [KHBBSDeck(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
         self.difficulty = c_ubyte(data[0x5C84])
     
     def __parse_data_fm(self, data):
         commands = data[0x3498:0x4898]
-        self.commands = [KHBBSCommand(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
+        self.commands = [KHBBSCommand.init(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         abilities = data[0x4D64:0x4DDC]
         self.abilities = {
             k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
         self.command_styles = (c_ubyte*0x0D)(*data[0x4DDD:0x4DEA])
         finishers = data[0x5644:0x56C4]
-        self.finishers = [KHBBSFinisher(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
+        self.finishers = [KHBBSFinisher.init(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
         dlinks = data[0x56C4:0x576C]
-        self.dlinks = [KHBBSDLink(dlinks[i*0x08:(i+1)*0x08], i) for i in range(21)]
+        self.dlinks = [KHBBSDLink.init(dlinks[i*0x08:(i+1)*0x08], i) for i in range(21)]
         finisher_names = data[0x576C:0x59CC]
         self.finisher_names = [bytearray(finisher_names[i*0x26:(i+1)*0x26]) for i in range(16)]
-        self.character = KHBBSCharacter(self.name, data[0x59D0:0x5A00])
+        self.character = KHBBSCharacter.init(self.name, data[0x59D0:0x5A00])
         decks = data[0x5A2C:0x5C78]
         self.decks = [KHBBSDeck(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
         self.difficulty = c_ubyte(data[0x5CAC])
