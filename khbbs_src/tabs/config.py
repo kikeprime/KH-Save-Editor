@@ -14,7 +14,7 @@ def create_config():
             {"label": "Proud", "value": 0x88},
             {"label": "Critical", "value": 0xC8},
         ],
-        value=khbbs.difficulty.value,
+        value=khbbs.difficulty.value & 0xC8,
         id="Difficulty",
         searchable=False,
         clearable=False,
@@ -31,4 +31,5 @@ def config_callback(
     difficulty,
 ):
     khbbs = utils.khbbs
-    khbbs.difficulty.value = difficulty
+    khbbs.difficulty.value &= ~0xC8
+    khbbs.difficulty.value |= difficulty
