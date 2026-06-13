@@ -8,7 +8,7 @@ def create_character():
         options=[
             {"label": k, "value": v} for k, v in khbbs.weapon_dict.items()
         ],
-        value=khbbs.character.weapon.value,
+        value=khbbs.character.weapon,
         id="Weapon",
         searchable=False,
         clearable=False,
@@ -17,7 +17,7 @@ def create_character():
     exp = dcc.Input(
         id="EXP",
         type="number",
-        value=khbbs.character.exp.value,
+        value=khbbs.character.exp,
         min=-999999,
         max=999999,
         step=1,
@@ -26,7 +26,7 @@ def create_character():
     level = dcc.Input(
         id="Level",
         type="number",
-        value=khbbs.character.level.value,
+        value=khbbs.character.level,
         min=1,
         max=99,
         step=1,
@@ -36,7 +36,7 @@ def create_character():
         dcc.Input(
             id="HP",
             type="number",
-            value=khbbs.character.hp.value,
+            value=khbbs.character.hp,
             min=0,
             max=255,
             step=1,
@@ -46,7 +46,7 @@ def create_character():
         dcc.Input(
             id="Max HP",
             type="number",
-            value=khbbs.character.maxhp.value,
+            value=khbbs.character.maxhp,
             min=0,
             max=255,
             step=1,
@@ -58,7 +58,7 @@ def create_character():
     strength = dcc.Input(
         id="Strength",
         type="number",
-        value=khbbs.character.strength.value,
+        value=khbbs.character.strength,
         min=0,
         max=255,
         step=1,
@@ -67,7 +67,7 @@ def create_character():
     magic = dcc.Input(
         id="Magic",
         type="number",
-        value=khbbs.character.magic.value,
+        value=khbbs.character.magic,
         min=0,
         max=255,
         step=1,
@@ -76,7 +76,7 @@ def create_character():
     defense = dcc.Input(
         id="Defense",
         type="number",
-        value=khbbs.character.defense.value,
+        value=khbbs.character.defense,
         min=0,
         max=255,
         step=1,
@@ -85,7 +85,7 @@ def create_character():
     medals = dcc.Input(
         id="Medals",
         type="number",
-        value=khbbs.character.medals.value,
+        value=khbbs.character.medals,
         min=0,
         max=0xFFFF,
         step=1,
@@ -94,7 +94,7 @@ def create_character():
     arenalevel = dcc.Input(
         id="Arena Level",
         type="number",
-        value=khbbs.character.arenalevel.value,
+        value=khbbs.character.arenalevel,
         min=0,
         max=255,
         step=1,
@@ -106,7 +106,7 @@ def create_character():
             dcc.Input(
                 id="Fire Resistance",
                 type="number",
-                value=100 - khbbs.character.fire_resistance.value,
+                value=100 - khbbs.character.fire_resistance,
                 min=-100,
                 max=100,
                 step=1,
@@ -119,7 +119,7 @@ def create_character():
             dcc.Input(
                 id="Thunder Resistance",
                 type="number",
-                value=100 - khbbs.character.thunder_resistance.value,
+                value=100 - khbbs.character.thunder_resistance,
                 min=-100,
                 max=100,
                 step=1,
@@ -132,7 +132,7 @@ def create_character():
             dcc.Input(
                 id="Blizzard Resistance",
                 type="number",
-                value=100 - khbbs.character.blizzard_resistance.value,
+                value=100 - khbbs.character.blizzard_resistance,
                 min=-100,
                 max=100,
                 step=1,
@@ -145,7 +145,7 @@ def create_character():
             dcc.Input(
                 id="Dark Resistance",
                 type="number",
-                value=100 - khbbs.character.dark_resistance.value,
+                value=100 - khbbs.character.dark_resistance,
                 min=-100,
                 max=100,
                 step=1,
@@ -217,19 +217,19 @@ def character_callback(
 ):
     khbbs = utils.khbbs
     try:
-        khbbs.character.weapon.value = weapon
-        khbbs.character.exp.value = exp
-        khbbs.character.level.value = level
-        khbbs.character.hp.value = hp
-        khbbs.character.maxhp.value = maxhp
-        khbbs.character.strength.value = strength
-        khbbs.character.magic.value = magic
-        khbbs.character.defense.value = defense
-        khbbs.character.medals.value = medals
-        khbbs.character.arenalevel.value = arenalevel
-        khbbs.character.fire_resistance.value = 100 - fire_resistance
-        khbbs.character.thunder_resistance.value = 100 - thunder_resistance
-        khbbs.character.blizzard_resistance.value = 100 - blizzard_resistance
-        khbbs.character.dark_resistance.value = 100 - dark_resistance
+        khbbs.character.weapon = weapon
+        khbbs.character.exp = exp
+        khbbs.character.level = level
+        khbbs.character.hp = hp
+        khbbs.character.maxhp = maxhp
+        khbbs.character.strength = strength
+        khbbs.character.magic = magic
+        khbbs.character.defense = defense
+        khbbs.character.medals = medals
+        khbbs.character.arenalevel = arenalevel
+        khbbs.character.fire_resistance = 100 - fire_resistance
+        khbbs.character.thunder_resistance = 100 - thunder_resistance
+        khbbs.character.blizzard_resistance = 100 - blizzard_resistance
+        khbbs.character.dark_resistance = 100 - dark_resistance
     except:
         pass
