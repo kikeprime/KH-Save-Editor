@@ -88,6 +88,8 @@ class KHBBS:
         finisher_names = data[0x5510:0x5650]
         self.finisher_names = [bytearray(finisher_names[i*0x14:(i+1)*0x14]) for i in range(16)]
         self.character = KHBBSCharacter(self.name, data[0x5654:0x5684])
+        decks = data[0x56B0:0x58CA]
+        self.decks = [KHBBSDeck(decks[i*0xB2:(i+1)*0xB2], i) for i in range(3)]
         self.difficulty = c_ubyte(data[0x58FC])
     
     def __parse_data_vanilla_usa(self, data):
@@ -103,7 +105,9 @@ class KHBBS:
         self.dlinks = [KHBBSDLink(dlinks[i*0x08:(i+1)*0x08], i) for i in range(21)]
         finisher_names = data[0x5744:0x59A4]
         self.finisher_names = [bytearray(finisher_names[i*0x26:(i+1)*0x26]) for i in range(16)]
-        self.character = KHBBSCharacter(self.name, data[0x59A8:0x5AD8])
+        self.character = KHBBSCharacter(self.name, data[0x59A8:0x59D8])
+        decks = data[0x5A04:0x5C50]
+        self.decks = [KHBBSDeck(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
         self.difficulty = c_ubyte(data[0x5C84])
     
     def __parse_data_fm(self, data):
@@ -121,6 +125,8 @@ class KHBBS:
         finisher_names = data[0x576C:0x59CC]
         self.finisher_names = [bytearray(finisher_names[i*0x26:(i+1)*0x26]) for i in range(16)]
         self.character = KHBBSCharacter(self.name, data[0x59D0:0x5A00])
+        decks = data[0x5A2C:0x5C78]
+        self.decks = [KHBBSDeck(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
         self.difficulty = c_ubyte(data[0x5CAC])
         self.total_medals = c_uint(int.from_bytes(data[0xFE88:0xFE8C]))
 
@@ -141,6 +147,8 @@ class KHBBS:
         for dlink in self.dlinks:
             dlink.save(self)
         self.character.save(self)
+        for deck in self.decks:
+            deck.save(self)
     
     def __save_vanilla_jp(self):
         self.data[0x58FC] = self.difficulty
