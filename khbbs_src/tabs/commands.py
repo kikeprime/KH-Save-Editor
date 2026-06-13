@@ -72,7 +72,7 @@ def __create_command(idx):
                 {"label": k, "value": v} for k, v\
                 in khbbs.command_dict.items()
             ],
-            value=command.id.value,
+            value=command.id,
             id={"type": "Command Type", "index": command.idx},
             style={"width": 300},
             searchable=False,
@@ -84,7 +84,7 @@ def __create_command(idx):
                 {"label": k, "value": v} for k, v\
                 in khbbs.ability_dict.items()
             ],
-            value=command.ability.value,
+            value=command.ability,
             id={"type": "Command Ability", "index": command.idx},
             style={"width": 200},
             searchable=False,
@@ -94,7 +94,7 @@ def __create_command(idx):
         dcc.Input(
             id={"type": "Command Level", "index": command.idx},
             type="number",
-            value=command.level.value,
+            value=command.level,
             min=0,
             max=99,
             step=1,
@@ -104,7 +104,7 @@ def __create_command(idx):
         dcc.Input(
             id={"type": "Command CP", "index": command.idx},
             type="number",
-            value=command.cp.value,
+            value=command.cp,
             min=0,
             max=0xFFFF,
             step=1,
@@ -114,7 +114,7 @@ def __create_command(idx):
         dcc.Input(
             id={"type": "Command State", "index": command.idx},
             type="number",
-            value=command.state.value,
+            value=command.state,
             min=0,
             max=0xFFFF,
             step=1,
@@ -222,7 +222,7 @@ def __create_finishers():
                         {"label": k, "value": v} for k, v\
                         in khbbs.finisher_dict.items()
                     ],
-                    value=finisher.id.value,
+                    value=finisher.id,
                     id={"type": "Finisher ID", "index": finisher.idx},
                     style={"width": 200},
                     searchable=False,
@@ -237,7 +237,7 @@ def __create_finishers():
                         {"label": "Locked", "value": 1},
                         {"label": "Unlocked", "value": 2},
                     ],
-                    value=finisher.state.value,
+                    value=finisher.state,
                     id={"type": "Finisher State", "index": finisher.idx},
                     style={"width": 200},
                     searchable=False,
@@ -249,7 +249,7 @@ def __create_finishers():
                 dcc.Input(
                     id={"type": "Finisher EXP", "index": finisher.idx},
                     type="number",
-                    value=finisher.exp.value,
+                    value=finisher.exp,
                     min=0,
                     max=0xFFFF,
                     step=1,
@@ -280,7 +280,7 @@ def __create_dlinks():
                         {"label": k, "value": v} for k, v\
                         in khbbs.dlink_dict.items()
                     ],
-                    value=dlink.id.value,
+                    value=dlink.id,
                     id={"type": "D-Link ID", "index": dlink.idx},
                     style={"width": 200},
                     searchable=False,
@@ -343,12 +343,12 @@ def __create_dlinks():
 def command_list_callback(id, ability, level, cp, state, idx):
     khbbs = utils.khbbs
     idx = idx[0]["index"]
-    khbbs.commands[idx].id.value = id[0]
-    khbbs.commands[idx].ability.value = ability[0]
+    khbbs.commands[idx].id = id[0]
+    khbbs.commands[idx].ability = ability[0]
     try:
-        khbbs.commands[idx].level.value = level[0]
-        khbbs.commands[idx].cp.value = cp[0]
-        khbbs.commands[idx].state.value = state[0]
+        khbbs.commands[idx].level = level[0]
+        khbbs.commands[idx].cp = cp[0]
+        khbbs.commands[idx].state = state[0]
     except:
         pass
 
@@ -404,10 +404,10 @@ def finisher_callback(
     khbbs = utils.khbbs
     for id, state, exp, idx in zip(ids, states, exps, idxs):
         finisher = khbbs.finishers[idx["index"]]
-        finisher.id.value = id
-        finisher.state.value = state
+        finisher.id = id
+        finisher.state = state
         try:
-            finisher.exp.value = exp
+            finisher.exp = exp
         except:
             pass
 
@@ -445,7 +445,7 @@ def dlink_callback(
     khbbs = utils.khbbs
     for id, on, ability_1, ability_2, idx in zip(ids, ons, ability_1s, ability_2s, idxs):
         dlink = khbbs.dlinks[idx["index"]]
-        dlink.id.value = id
+        dlink.id = id
         dlink.on = on
         dlink.ability_1 = ability_1
         dlink.ability_2 = ability_2
