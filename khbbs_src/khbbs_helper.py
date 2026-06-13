@@ -269,6 +269,7 @@ class KHBBSDLink:
             f"\n\tState: 0x{self.state.value:02X}" +\
             f"\n)"
 
+
 class KHBBSFinisher:
     """
     Class for representing the Finisher struct.
@@ -303,4 +304,63 @@ class KHBBSFinisher:
             f"{name}(" +\
             f"\n\tState: {state}" +\
             f"\n\tEXP: {self.exp.value}" +\
+            f"\n)"
+
+
+class KHBBSDeckCommand(Structure):
+    """
+    Class for representing the Deck Command struct.
+    So in C/C++ I'd use a struct instead.
+    The structure is 0x06 bytes long.
+    """
+    _fields_ = [
+        ("id", c_short),
+        ("padding", c_short),
+        ("end", c_short),
+    ]
+
+
+class KHBBSDeck:
+    """
+    Class for representing the Deck struct.
+    So in C/C++ I'd use a struct instead.
+    The structure is 0xB2 bytes long in vanilla JP.
+    The structure is 0xC4 bytes long in the rest.
+    """
+    def __init__(self, data, idx):
+        self.data = bytearray(data)
+        self.idx = idx
+        self.battle_commands = (KHBBSDeckCommand*8).from_buffer_copy(
+            bytearray(data[:sizeof(KHBBSDeckCommand*8)])
+        )
+        self.action_commands = (KHBBSDeckCommand*10).from_buffer_copy(
+            bytearray(data[sizeof(KHBBSDeckCommand*8):sizeof(KHBBSDeckCommand*18)])
+        )
+        self.shotlock = KHBBSDeckCommand.from_buffer_copy(
+            bytearray(data[sizeof(KHBBSDeckCommand*18):sizeof(KHBBSDeckCommand*19)])
+        )
+        self.name = bytearray(data[0x86:0x96])
+    
+    def save(self, obj):
+        offset = 0
+        if obj.version == 0:
+            offset = 0x56B0
+        if obj.version == 1:
+            offset = 0x5A04
+        if obj.fm:
+            offset = 0x5A2C
+        offset += self.idx * 0xC4
+        obj.data[offset:offset+sizeof(KHBBSDeckCommand*8)] = bytearray(self.battle_commands)
+        obj.data[offset+sizeof(KHBBSDeckCommand*8):offset+sizeof(KHBBSDeckCommand*18)] = bytearray(self.action_commands)
+        obj.data[offset+sizeof(KHBBSDeckCommand*18):offset+sizeof(KHBBSDeckCommand*19)] = bytearray(self.shotlock)
+        obj.data[offset+0x86:offset+0x96] = self.name
+    
+    def __repr__(self):
+        dicts(self)
+        name = self.name.decode("Shift-JIS")
+        return \
+            f"{name}(" +\
+            f"\n\tBattle Commands:\n\t{bytearray(self.battle_commands)}" +\
+            f"\n\tAction Commands:\n\t{bytearray(self.action_commands)}" +\
+            f"\n\tShotlock:\n\t{bytearray(self.shotlock)}" +\
             f"\n)"
