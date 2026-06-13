@@ -4,34 +4,39 @@ from ctypes import *
 from .khbbs_dicts import dicts
 
 
-class KHBBSCharacter:
+class KHBBSCharacter(Structure):
     """
     Class for representing the character struct.
     So in C/C++ I'd use a struct instead.
     The structure is 0x30 bytes long.
     """
-    def __init__(self, name, data):
-        self.name = name
-        self.exp = c_int(int.from_bytes(data[0x00:0x04][::-1]))
-        self.munny = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
-        self.medals = c_uint(int.from_bytes(data[0x08:0x0C][::-1]))
-        self.level = c_ushort(int.from_bytes(data[0x0C:0x0E][::-1]))
-        self.hp = c_ushort(int.from_bytes(data[0x0E:0x10][::-1]))
-        self.maxhp = c_ushort(int.from_bytes(data[0x10:0x12][::-1]))
-        # Unknown part
-        # 3 resistances maybe?
-        self.magic = c_ushort(int.from_bytes(data[0x18:0x1A][::-1]))
-        self.defense = c_ushort(int.from_bytes(data[0x1A:0x1C][::-1]))
-        self.arenalevel = c_ushort(int.from_bytes(data[0x1C:0x1E][::-1]))
-        # Unknown part
-        # self.physical_resistance = c_ushort(int.from_bytes(data[0x20:0x22][::-1])) # hunch
-        self.fire_resistance = c_ushort(int.from_bytes(data[0x22:0x24][::-1]))
-        self.blizzard_resistance = c_ushort(int.from_bytes(data[0x24:0x26][::-1]))
-        self.thunder_resistance = c_ushort(int.from_bytes(data[0x26:0x28][::-1]))
-        self.dark_resistance = c_ushort(int.from_bytes(data[0x28:0x2A][::-1]))
-        self.weapon = c_ushort(int.from_bytes(data[0x2A:0x2C][::-1]))
-        self.strength = c_ushort(int.from_bytes(data[0x2E:0x30][::-1]))
+    _fields_ = [
+        ("exp", c_int),
+        ("munny", c_uint),
+        ("medals", c_uint),
+        ("level", c_ushort),
+        ("hp", c_ushort),
+        ("maxhp", c_ushort),
+        ("unk12", c_ubyte*6),
+        ("magic", c_ushort),
+        ("defense", c_ushort),
+        ("arenalevel", c_ushort),
+        ("unk1e", c_ubyte*4),
+        #("physical_resistance", c_ushort),
+        ("fire_resistance", c_ushort),
+        ("blizzard_resistance", c_ushort),
+        ("thunder_resistance", c_ushort),
+        ("dark_resistance", c_ushort),
+        ("weapon", c_ushort),
+        ("unk2c", c_ubyte*2),
+        ("strength", c_ushort),
+    ]
     
+    def init(name, data):
+        obj = KHBBSCharacter.from_buffer_copy(bytearray(data))
+        obj.name = name
+        return obj
+
     def save(self, obj):
         offset = 0
         if obj.version == 0:
@@ -40,41 +45,32 @@ class KHBBSCharacter:
             offset = 0x59A8
         if obj.fm:
             offset = 0x59D0
-        obj.data[offset+0x00:offset+0x04] = bytearray(self.exp)
-        obj.data[offset+0x04:offset+0x08] = bytearray(self.munny)
-        obj.data[offset+0x08:offset+0x0C] = bytearray(self.medals)
-        obj.data[offset+0x0C:offset+0x0E] = bytearray(self.level)
-        obj.data[offset+0x0E:offset+0x10] = bytearray(self.hp)
-        obj.data[offset+0x10:offset+0x12] = bytearray(self.maxhp)
-        obj.data[offset+0x18:offset+0x1A] = bytearray(self.magic)
-        obj.data[offset+0x1A:offset+0x1C] = bytearray(self.defense)
-        obj.data[offset+0x1C:offset+0x1E] = bytearray(self.arenalevel)
-        obj.data[offset+0x22:offset+0x24] = bytearray(self.fire_resistance)
-        obj.data[offset+0x24:offset+0x26] = bytearray(self.blizzard_resistance)
-        obj.data[offset+0x26:offset+0x28] = bytearray(self.thunder_resistance)
-        obj.data[offset+0x28:offset+0x2A] = bytearray(self.dark_resistance)
-        obj.data[offset+0x2A:offset+0x2C] = bytearray(self.weapon)
-        obj.data[offset+0x2E:offset+0x30] = bytearray(self.strength)
+        obj.data[offset:offset+sizeof(self)] = bytearray(self)
 
     def __repr__(self):
         dicts(self)
-        return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.weapon_dict.keys())[self.weapon.value]})"
+        return f"{self.name}(Level: {self.level}, Weapon: {list(self.weapon_dict.keys())[self.weapon]})"
 
 
-class KHBBSCommand:
+class KHBBSCommand(Structure):
     """
     Class for representing the command struct.
     So in C/C++ I'd use a struct instead.
     The structure is 0x0A bytes long.
     """
-    def __init__(self, data, idx, fm):
-        self.idx = idx
-        self.fm = fm
-        self.id = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
-        self.level = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
-        self.cp = c_ushort(int.from_bytes(data[0x04:0x06][::-1]))
-        self.ability = c_ushort(int.from_bytes(data[0x06:0x08][::-1]))
-        self.state = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
+    _fields_ = [
+        ("id", c_ushort),
+        ("level", c_ushort),
+        ("cp", c_ushort),
+        ("ability", c_ushort),
+        ("state", c_ushort),
+    ]
+    
+    def init(data, idx, fm):
+        obj = KHBBSCommand.from_buffer_copy(bytearray(data))
+        obj.idx = idx
+        obj.fm = fm
+        return obj
     
     def save(self, obj):
         offset = 0
@@ -85,24 +81,20 @@ class KHBBSCommand:
         if obj.fm:
             offset = 0x3498
         offset += self.idx * 0x0A
-        obj.data[offset+0x00:offset+0x02] = bytearray(self.id)
-        obj.data[offset+0x02:offset+0x04] = bytearray(self.level)
-        obj.data[offset+0x04:offset+0x06] = bytearray(self.cp)
-        obj.data[offset+0x06:offset+0x08] = bytearray(self.ability)
-        obj.data[offset+0x08:offset+0x0A] = bytearray(self.state)
+        obj.data[offset:offset+sizeof(self)] = bytearray(self)
 
     def __repr__(self):
         dicts(self)
         command_dict = {v: k for k, v in self.command_dict.items()}
         ability_dict = {v: k for k, v in self.ability_dict.items()}
-        name = command_dict[self.id.value]
-        ability = ability_dict[self.ability.value]
+        name = command_dict[self.id]
+        ability = ability_dict[self.ability]
         return \
             f"{name}(" +\
-            f"\n\tLevel: {self.level.value}" +\
-            f"\n\tCP: {self.cp.value}" +\
+            f"\n\tLevel: {self.level}" +\
+            f"\n\tCP: {self.cp}" +\
             f"\n\tAbility: {ability}" +\
-            f"\n\tState: 0x{self.state.value:04X}" +\
+            f"\n\tState: 0x{self.state:04X}" +\
             f"\n)"
 
 
@@ -204,46 +196,53 @@ class KHBBSAbility:
             f"\n)"
 
 
-class KHBBSDLink:
+class KHBBSDLink(Structure):
     """
     Class for representing the D-Link struct.
     So in C/C++ I'd use a struct instead.
     The structure is 0x08 bytes long.
     """
-    def __init__(self, data, idx):
-        self.idx = idx
-        self.id = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
-        self.state = c_ubyte(data[0x03])
+    _fields_ = [
+        ("id", c_ushort),
+        ("unk2", c_ubyte),
+        ("state", c_ubyte),
+        ("unk4", c_ubyte*4),
+    ]
+    
+    def init(data, idx):
+        obj = KHBBSDLink.from_buffer_copy(bytearray(data))
+        obj.idx = idx
+        return obj
     
     @property
     def on(self):
-        return self.state.value & (1 << 7) != 0
+        return self.state & (1 << 7) != 0
     
     @on.setter
     def on(self, b: bool):
-        self.state.value &= ~(1 << 7)
+        self.state &= ~(1 << 7)
         if b:
-            self.state.value |= (1 << 7)
+            self.state |= (1 << 7)
     
     @property
     def ability_1(self):
-        return self.state.value & (1 << 0) != 0
+        return self.state & (1 << 0) != 0
     
     @ability_1.setter
     def ability_1(self, b: bool):
-        self.state.value &= ~(1 << 0)
+        self.state &= ~(1 << 0)
         if b:
-            self.state.value |= (1 << 0)
+            self.state |= (1 << 0)
     
     @property
     def ability_2(self):
-        return self.state.value & (1 << 1) != 0
+        return self.state & (1 << 1) != 0
     
     @ability_2.setter
     def ability_2(self, b: bool):
-        self.state.value &= ~(1 << 1)
+        self.state &= ~(1 << 1)
         if b:
-            self.state.value |= (1 << 1)
+            self.state |= (1 << 1)
     
     def save(self, obj):
         offset = 0
@@ -254,34 +253,38 @@ class KHBBSDLink:
         if obj.fm:
             offset = 0x56C4
         offset += self.idx * 0x08
-        obj.data[offset+0x00:offset+0x02] = bytearray(self.id)
-        obj.data[offset+0x03] = self.state
+        obj.data[offset:offset+sizeof(self)] = bytearray(self)
 
     def __repr__(self):
         dicts(self)
         dlink_dict = {v: k for k, v in self.dlink_dict.items()}
-        name = dlink_dict[self.id.value]
+        name = dlink_dict[self.id]
         return \
             f"{name}(" +\
             f"\n\tOn: {self.on}" +\
             f"\n\tAbility 1: {self.ability_1}" +\
             f"\n\tAbility 2: {self.ability_2}" +\
-            f"\n\tState: 0x{self.state.value:02X}" +\
+            f"\n\tState: 0x{self.state:02X}" +\
             f"\n)"
 
 
-class KHBBSFinisher:
+class KHBBSFinisher(Structure):
     """
     Class for representing the Finisher struct.
     So in C/C++ I'd use a struct instead.
     The structure is 0x08 bytes long.
     """
-    def __init__(self, data, idx):
-        self.idx = idx
-        self.id = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
-        self.state = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
-        self.exp = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
+    _fields_ = [
+        ("id", c_ushort),
+        ("state", c_ushort),
+        ("exp", c_uint),
+    ]
     
+    def init(data, idx):
+        obj = KHBBSFinisher.from_buffer_copy(bytearray(data))
+        obj.idx = idx
+        return obj
+
     def save(self, obj):
         offset = 0
         if obj.version == 0:
@@ -291,19 +294,17 @@ class KHBBSFinisher:
         if obj.fm:
             offset = 0x5644
         offset += self.idx * 0x08
-        obj.data[offset+0x00:offset+0x02] = bytearray(self.id)
-        obj.data[offset+0x02:offset+0x04] = bytearray(self.state)
-        obj.data[offset+0x04:offset+0x08] = bytearray(self.exp)
-    
+        obj.data[offset:offset+sizeof(self)] = bytearray(self)
+
     def __repr__(self):
         dicts(self)
         finisher_dict = {v: k for k, v in self.finisher_dict.items()}
-        name = finisher_dict[self.id.value]
-        state = ["Empty", "Locked", "Unlocked"][self.state.value]
+        name = finisher_dict[self.id]
+        state = ["Empty", "Locked", "Unlocked"][self.state]
         return \
             f"{name}(" +\
             f"\n\tState: {state}" +\
-            f"\n\tEXP: {self.exp.value}" +\
+            f"\n\tEXP: {self.exp}" +\
             f"\n)"
 
 
@@ -315,8 +316,7 @@ class KHBBSDeckCommand(Structure):
     """
     _fields_ = [
         ("id", c_short),
-        ("padding", c_short),
-        ("end", c_short),
+        ("unk", c_ubyte*4),
     ]
 
 
