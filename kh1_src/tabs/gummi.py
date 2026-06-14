@@ -143,7 +143,7 @@ def __create_gummi_ship_blocks(idx, ship_idx):
     ship = kh1.gummiships[ship_idx]
     block_type = dcc.Dropdown(
         options=[{"label": k, "value": v} for v, k in kh1.gummi_block_dict.items()],
-        value=ship.blocks[idx].id.value,
+        value=ship.blocks[idx].id,
         id={"type": "Gummi Block Type", "ship": ship_idx, "index": idx},
         style={"margin-bottom": 10, "width": 200},
         searchable=False,
@@ -154,7 +154,7 @@ def __create_gummi_ship_blocks(idx, ship_idx):
         dcc.Input(
             id={"type": "Gummi Block X", "ship": ship_idx, "index": idx},
             type="number",
-            value=ship.blocks[idx].x.value,
+            value=ship.blocks[idx].x,
             min=0,
             max=9,
             step=1,
@@ -164,7 +164,7 @@ def __create_gummi_ship_blocks(idx, ship_idx):
         dcc.Input(
             id={"type": "Gummi Block Y", "ship": ship_idx, "index": idx},
             type="number",
-            value=ship.blocks[idx].y.value,
+            value=ship.blocks[idx].y,
             min=0,
             max=255,
             step=1,
@@ -174,7 +174,7 @@ def __create_gummi_ship_blocks(idx, ship_idx):
         dcc.Input(
             id={"type": "Gummi Block Z", "ship": ship_idx, "index": idx},
             type="number",
-            value=ship.blocks[idx].z.value,
+            value=ship.blocks[idx].z,
             min=0,
             max=9,
             step=1,
@@ -210,7 +210,7 @@ def __create_gummi_ship_blocks(idx, ship_idx):
     ]
     rotation = dcc.Dropdown(
         options=rotation_options,
-        value=ship.blocks[idx].r.value & ~0x1000,
+        value=ship.blocks[idx].r & ~0x1000,
         id={"type": "Gummi Block Rotation", "ship": ship_idx, "index": idx},
         style={"margin-bottom": 10, "width": 200},
         searchable=False,
@@ -219,7 +219,7 @@ def __create_gummi_ship_blocks(idx, ship_idx):
     color = dcc.Input(
         id={"type": "Gummi Block Color", "ship": ship_idx, "index": idx},
         type="number",
-        value=ship.blocks[idx].color.value,
+        value=ship.blocks[idx].color,
         min=0,
         max=63,
         step=1,
@@ -619,12 +619,12 @@ def gummi_block_callback(t, x, y, z, r, c, id):
     idx = id[0]["index"]
     block = kh1.gummiships[ship].blocks[idx]
     try:
-        block.id.value = t[0]
-        block.x.value = x[0]
-        block.y.value = y[0]
-        block.z.value = z[0]
-        block.r.value = r[0]
-        block.color.value = c[0]
+        block.id = t[0]
+        block.x = x[0]
+        block.y = y[0]
+        block.z = z[0]
+        block.r = r[0]
+        block.color = c[0]
     except:
         pass
 
