@@ -6,53 +6,79 @@ from .kh1_dicts import dicts
 from .pcsx2 import PCSX2
 
 
-class KH1Character:
+class KH1Character(Structure):
     """
     Class for representing the character struct.
     So in C/C++ I'd use a struct instead.
     The structure is 0x74 bytes long.
     """
-    def __init__(self, name, data):
-        self.name = name
-        self.level = c_ubyte(data[0])
-        self.hp = c_ubyte(data[1])
-        self.maxhp = c_ubyte(data[2])
-        self.mp = c_ubyte(data[3])
-        self.maxmp = c_ubyte(data[4])
-        self.maxap = c_ubyte(data[5])
-        self.strength = c_ubyte(data[6])
-        self.defense = c_ubyte(data[7])
-        self.resistances = (c_ubyte*16)(*data[0x08:0x18])
-        self.accessoryslots = c_ubyte(data[0x18])
-        self.accessories = (c_ubyte*8)(*data[0x19:0x21])
-        self.itemslots = c_ubyte(data[0x21])
-        self.items = (c_ubyte*8)(*data[0x22:0x2A])
-        # data[0x2A:0x32] is unknown
-        self.weapon = c_ubyte(data[0x32])
-        # data[0x33:0x38] is unknown
-        self.submp = c_ushort(int.from_bytes(data[0x38:0x3A][::-1])) # 30 or 0x1E means 1 MP
-        # data[0x3A:0x3C] is unknown
-        self.exp = c_uint(int.from_bytes(data[0x3C:0x40][::-1]))
-        self.abilities = (c_ubyte*48)(*data[0x40:0x70]) # Pooh has unknown data here with invalid ability IDs.
-        self.magic = c_ubyte(data[0x70])
-        # data[0x71:0x74] is unknown
+    _fields_ = [
+        ("level", c_ubyte),
+        ("hp", c_ubyte),
+        ("maxhp", c_ubyte),
+        ("mp", c_ubyte),
+        ("maxmp", c_ubyte),
+        ("maxap", c_ubyte),
+        ("strength", c_ubyte),
+        ("defense", c_ubyte),
+        ("resistances", c_ubyte*16),
+        ("accessoryslots", c_ubyte),
+        ("accessories", c_ubyte*8),
+        ("itemslots", c_ubyte),
+        ("items", c_ubyte*8),
+        ("unk2a", c_ubyte*8),
+        ("weapon", c_ubyte),
+        ("unk33", c_ubyte*5),
+        ("submp", c_ushort),
+        ("unk3a", c_ubyte*2),
+        ("exp", c_uint),
+        ("abilities", c_ubyte*48),
+        ("magic", c_ubyte),
+        ("unk71", c_ubyte*3),
+    ]
+    
+    def init(name, data):
+        obj = KH1Character.from_buffer_copy(bytearray(data))
+        obj.name = name
+        return obj
 
 
-class KH1GummiBlock:
+class KH1GummiBlock(Structure):
     """
     Class for representing the Gummi Blocks of Gummi Ships.
     The structure is 0x0C bytes long.
     """
-    def __init__(self, data):
-        self.data = (c_ubyte*12)(*data)
-        self.x = c_ubyte(data[0] % 16)
-        self.y = c_ubyte(data[1])
-        self.z = c_ubyte(data[0] // 16)
-        self.r = c_ushort(int.from_bytes(data[2:4][::-1]))
-        self.id = c_ubyte(data[4])
+    _fields_ = [
+        ("xz", c_ubyte),
+        ("y", c_ubyte),
+        ("r", c_ushort),
+        ("id", c_ubyte),
         # data[6] is always 0x21
-        self.color = c_ubyte(data[8])
+        ("unk5", c_ubyte*3),
+        ("color", c_ubyte),
         # data[0x09:0x0C] seems to be unused
+        ("unk9", c_ubyte*3),
+    ]
+    
+    def init(data):
+        obj = KH1GummiBlock.from_buffer_copy(bytearray(data))
+        return obj
+
+    @property
+    def x(self):
+        return self.xz % 16
+    
+    @x.setter
+    def x(self, value):
+        self.xz = self.z * 16 + value
+    
+    @property
+    def z(self):
+        return self.xz // 16
+    
+    @z.setter
+    def z(self, value):
+        self.xz = value * 16 + self.x
     
     colors = [
         "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
@@ -65,17 +91,9 @@ class KH1GummiBlock:
         "black", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
     ]
     
-    def save(self):
-        self.data[0] = self.z.value * 16 + self.x.value
-        self.data[1] = self.y
-        self.data[2:4] = bytearray(self.r)
-        self.data[4] = self.id
-        self.data[8] = self.color
-        return self.data
-    
     def __repr__(self):
         dicts(self)
-        return f"{self.gummi_block_dict[self.id.value]}(X={self.x.value}, Y={self.y.value}, Z={self.z.value}, R={self.r.value:04X}, C={self.color.value})"
+        return f"{self.gummi_block_dict[self.id]}(X={self.x}, Y={self.y}, Z={self.z}, R={self.r:04X}, C={self.color})"
 
 
 class KH1GummiShip:
@@ -92,7 +110,7 @@ class KH1GummiShip:
         self.transformpair = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
         self.name = bytearray(data[0x4C:0x56])
         blocks = data[0x6C:0x09CC]
-        self.blocks = [KH1GummiBlock(blocks[i*0x0C:(i+1)*0x0C]) for i in range(200)]
+        self.blocks = [KH1GummiBlock.init(blocks[i*0x0C:(i+1)*0x0C]) for i in range(200)]
     
     def save(self):
         self.data[0x00:0x02] = bytearray(self.blockcount)
@@ -102,7 +120,7 @@ class KH1GummiShip:
         self.data[0x08:0x0A] = bytearray(self.transformpair)
         self.data[0x4C:0x56] = self.name
         for i in range(len(self.blocks)):
-            self.data[0x6C+i*0x0C:0x6C+(i+1)*0x0C] = bytearray(self.blocks[i].save())
+            self.data[0x6C+i*0x0C:0x6C+(i+1)*0x0C] = bytearray(self.blocks[i])
         return self.data
 
 
@@ -140,16 +158,16 @@ class KH1:
         # For vanilla JP it starts at 0x3F2080.
         self.header = c_uint(int.from_bytes(data[0x00:0x04][::-1])) # 4 in vanilla, 5 in FM
         # self.characters = data[0x04:0x048C]
-        self.sora = KH1Character("Sora", data[0x04:0x04+0x74])
-        self.donald = KH1Character("Donald", data[0x04+0x74:0x04+2*0x74])
-        self.goofy = KH1Character("Goofy", data[0x04+2*0x74:0x04+3*0x74])
-        self.tarzan = KH1Character("Tarzan", data[0x04+3*0x74:0x04+4*0x74])
-        self.pooh = KH1Character("Winnie the Pooh", data[0x04+4*0x74:0x04+5*0x74])
-        self.aladdin = KH1Character("Aladdin", data[0x04+5*0x74:0x04+6*0x74])
-        self.ariel = KH1Character("Ariel", data[0x04+6*0x74:0x04+7*0x74])
-        self.jack = KH1Character("Jack Skellington", data[0x04+7*0x74:0x04+8*0x74])
-        self.peterpan = KH1Character("Peter Pan", data[0x04+8*0x74:0x04+9*0x74])
-        self.beast = KH1Character("Beast", data[0x04+9*0x74:0x04+10*0x74])
+        self.sora = KH1Character.init("Sora", data[0x04:0x04+0x74])
+        self.donald = KH1Character.init("Donald", data[0x04+0x74:0x04+2*0x74])
+        self.goofy = KH1Character.init("Goofy", data[0x04+2*0x74:0x04+3*0x74])
+        self.tarzan = KH1Character.init("Tarzan", data[0x04+3*0x74:0x04+4*0x74])
+        self.pooh = KH1Character.init("Winnie the Pooh", data[0x04+4*0x74:0x04+5*0x74])
+        self.aladdin = KH1Character.init("Aladdin", data[0x04+5*0x74:0x04+6*0x74])
+        self.ariel = KH1Character.init("Ariel", data[0x04+6*0x74:0x04+7*0x74])
+        self.jack = KH1Character.init("Jack Skellington", data[0x04+7*0x74:0x04+8*0x74])
+        self.peterpan = KH1Character.init("Peter Pan", data[0x04+8*0x74:0x04+9*0x74])
+        self.beast = KH1Character.init("Beast", data[0x04+9*0x74:0x04+10*0x74])
         self.characters = [
             self.sora, self.donald, self.goofy,
             self.tarzan, self.pooh, self.aladdin,
@@ -315,27 +333,8 @@ class KH1:
             self.difficulty = c_uint(int.from_bytes(data[0x1642C:0x16430][::-1]))
 
     def __save_characters(self):
-        i = 0
-        for c in self.characters:
-            self.data[0x04+i*0x74+0x00] = c.level
-            self.data[0x04+i*0x74+0x01] = c.hp
-            self.data[0x04+i*0x74+0x02] = c.maxhp
-            self.data[0x04+i*0x74+0x03] = c.mp
-            self.data[0x04+i*0x74+0x04] = c.maxmp
-            self.data[0x04+i*0x74+0x05] = c.maxap
-            self.data[0x04+i*0x74+0x06] = c.strength
-            self.data[0x04+i*0x74+0x07] = c.defense
-            self.data[0x04+i*0x74+0x08:0x04+i*0x74+0x18] = bytearray(c.resistances)
-            self.data[0x04+i*0x74+0x18] = c.accessoryslots
-            self.data[0x04+i*0x74+0x19:0x04+i*0x74+0x21] = bytearray(c.accessories)
-            self.data[0x04+i*0x74+0x21] = c.itemslots
-            self.data[0x04+i*0x74+0x22:0x04+i*0x74+0x2A] = bytearray(c.items)
-            self.data[0x04+i*0x74+0x32] = c.weapon
-            self.data[0x04+i*0x74+0x38:0x04+i*0x74+0x3A] = bytearray(c.submp)
-            self.data[0x04+i*0x74+0x3C:0x04+i*0x74+0x40] = bytearray(c.exp)
-            self.data[0x04+i*0x74+0x40:0x04+i*0x74+0x70] = bytearray(c.abilities)
-            self.data[0x04+i*0x74+0x70] = c.magic
-            i += 1
+        for i in range(len(self.characters)):
+            self.data[0x04+i*0x74:0x04+(i+1)*0x74] = bytearray(self.characters[i])
         
     def __save_shared(self):
         self.data[0x048C] = self.path
