@@ -7,103 +7,126 @@ def create_decks():
     khbbs = utils.khbbs
     return html.Div([
         html.Div([
-                dcc.Markdown("Equipped Deck:"),
+            dcc.Markdown("Equipped Deck:"),
+            dcc.Dropdown(
+                options=[
+                    {"label": f"Deck {i+1}", "value": i} for i\
+                    in range(3)
+                ],
+                value=khbbs.deck.value,
+                id="Deck",
+                style={"width": 200},
+                searchable=False,
+                clearable=False,
+            ),
+        ]),
+        html.Div([
+            dcc.Markdown("Tab:"),
+            dcc.Dropdown(
+                options=[
+                    {"label": f"Deck {i+1}", "value": i} for i\
+                    in range(3)
+                ],
+                value=0,
+                id="DeckTabs",
+                style={"width": 200},
+                searchable=False,
+                clearable=False,
+            ),
+        ]),
+        html.Div(id="DeckDiv")
+    ])
+
+@callback(
+    Output("DeckDiv", "children"),
+    Input("DeckTabs", "value"),
+)
+def __create_deck(idx):
+    khbbs = utils.khbbs
+    deck = khbbs.decks[idx]
+    return html.Div([
+        html.Div([
+            html.H3(f"Deck {deck.idx+1}"),
+            html.Div([
+                dcc.Markdown("Name:"),
+                dcc.Input(
+                    id={"type": "Deck Name", "index": deck.idx},
+                    type="text",
+                    value=bytearray(deck.name).decode("Shift-JIS").strip("\0"),
+                    style={"width": 200},
+                ),
+            ]),
+            html.H4("Battle Commands:"),
+            html.Div([
+                html.Div([
                     dcc.Dropdown(
                         options=[
-                            {"label": f"Deck {i+1}", "value": i} for i\
-                            in range(3)
+                            {"label": "Empty", "value": -1},
+                        ] + [
+                            {"label": f"Command {i+1}", "value": i} for i\
+                            in range(len(khbbs.commands))
                         ],
-                        value=khbbs.deck.value,
-                        id="Deck",
+                        value=deck.battle_commands[i].id,
+                        id={"type": "Battle Command", "deck": deck.idx, "index": i},
                         style={"width": 200},
                         searchable=False,
                         clearable=False,
                     ),
-            ]),
-        html.Div([
-            html.Div([
-                html.H3(f"Deck {deck.idx+1}"),
-                html.Div([
-                    dcc.Markdown("Name:"),
-                    dcc.Input(
-                        id={"type": "Deck Name", "index": deck.idx},
-                        type="text",
-                        value=bytearray(deck.name).decode("Shift-JIS").strip("\0"),
-                        style={"width": 200},
+                    dcc.Markdown(
+                        str(khbbs.commands[deck.battle_commands[i].id]),
+                        id={"type": "Battle Command text", "deck": deck.idx, "index": i},
+                        style={"whiteSpace": "pre-wrap"},
                     ),
-                ]),
-                html.H4("Battle Commands:"),
+                ]) for i in range(8)
+            ]),
+            html.H4("Action Commands:"),
+            html.Div([
                 html.Div([
-                    html.Div([
-                        dcc.Dropdown(
-                            options=[
-                                {"label": "Empty", "value": -1},
-                            ] + [
-                                {"label": f"Command {i+1}", "value": i} for i\
-                                in range(len(khbbs.commands))
-                            ],
-                            value=deck.battle_commands[i].id,
-                            id={"type": "Battle Command", "deck": deck.idx, "index": i},
-                            style={"width": 200},
-                            searchable=False,
-                            clearable=False,
-                        ),
-                        dcc.Markdown(
-                            str(khbbs.commands[deck.battle_commands[i].id]),
-                            id={"type": "Battle Command text", "deck": deck.idx, "index": i},
-                            style={"whiteSpace": "pre-wrap"},
-                        ),
-                    ]) for i in range(8)
-                ]),
-                html.H4("Action Commands:"),
+                    dcc.Dropdown(
+                        options=[
+                            {"label": "Empty", "value": -1},
+                        ] + [
+                            {"label": f"Command {i+1}", "value": i} for i\
+                            in range(len(khbbs.commands))
+                        ],
+                        value=deck.action_commands[i].id,
+                        id={"type": "Action Command", "deck": deck.idx, "index": i},
+                        style={"width": 200},
+                        searchable=False,
+                        clearable=False,
+                    ),
+                    dcc.Markdown(
+                        str(khbbs.commands[deck.action_commands[i].id]),
+                        id={"type": "Action Command text", "deck": deck.idx, "index": i},
+                        style={"whiteSpace": "pre-wrap"},
+                    ),
+                ]) for i in range(10)
+            ]),
+            html.H4("Shotlock:"),
+            html.Div([
                 html.Div([
-                    html.Div([
-                        dcc.Dropdown(
-                            options=[
-                                {"label": "Empty", "value": -1},
-                            ] + [
-                                {"label": f"Command {i+1}", "value": i} for i\
-                                in range(len(khbbs.commands))
-                            ],
-                            value=deck.action_commands[i].id,
-                            id={"type": "Action Command", "deck": deck.idx, "index": i},
-                            style={"width": 200},
-                            searchable=False,
-                            clearable=False,
-                        ),
-                        dcc.Markdown(
-                            str(khbbs.commands[deck.action_commands[i].id]),
-                            id={"type": "Action Command text", "deck": deck.idx, "index": i},
-                            style={"whiteSpace": "pre-wrap"},
-                        ),
-                    ]) for i in range(10)
-                ]),
-                html.H4("Shotlock:"),
-                html.Div([
-                    html.Div([
-                        dcc.Dropdown(
-                            options=[
-                                {"label": "Empty", "value": -1},
-                            ] + [
-                                {"label": f"Command {i+1}", "value": i} for i\
-                                in range(len(khbbs.commands))
-                            ],
-                            value=deck.shotlock.id,
-                            id={"type": "Shotlock", "deck": deck.idx},
-                            style={"width": 200},
-                            searchable=False,
-                            clearable=False,
-                        ),
-                        dcc.Markdown(
-                            str(khbbs.commands[deck.shotlock.id]),
-                            id={"type": "Shotlock text", "deck": deck.idx},
-                            style={"whiteSpace": "pre-wrap"},
-                        ),
-                    ])
-                ]),
-            ]) for deck in khbbs.decks
-        ]),
-    ])
+                    dcc.Dropdown(
+                        options=[
+                            {"label": "Empty", "value": -1},
+                        ] + [
+                            {"label": f"Command {i+1}", "value": i} for i\
+                            in range(len(khbbs.commands))
+                        ],
+                        value=deck.shotlock.id,
+                        id={"type": "Shotlock", "deck": deck.idx},
+                        style={"width": 200},
+                        searchable=False,
+                        clearable=False,
+                    ),
+                    dcc.Markdown(
+                        str(khbbs.commands[deck.shotlock.id]),
+                        id={"type": "Shotlock text", "deck": deck.idx},
+                        style={"whiteSpace": "pre-wrap"},
+                    ),
+                ])
+            ]),
+        ]) for deck in khbbs.decks
+    ]),
 
 @callback(
     Input("Deck", "value"),
