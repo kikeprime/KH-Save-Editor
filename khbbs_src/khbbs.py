@@ -78,7 +78,8 @@ class KHBBS:
         self.commands = [KHBBSCommand.init(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         abilities = data[0x4CB0:0x4D28]
         self.abilities = {
-            k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
+            k: KHBBSAbility(abilities[i*4:(i+1)*4], i)\
+            for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
         finishers = data[0x53F0:0x5470]
         self.finishers = [KHBBSFinisher.init(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
@@ -90,6 +91,7 @@ class KHBBS:
         self.character = KHBBSCharacter.init(self.name, data[0x5654:0x5684])
         decks = data[0x56B0:0x58CA]
         self.decks = [KHBBSDeckJP.init(decks[i*0xB2:(i+1)*0xB2], i) for i in range(3)]
+        self.deck = c_ubyte(data[0x58D8])
         self.difficulty = c_ubyte(data[0x58FC])
     
     def __parse_data_vanilla_usa(self, data):
@@ -97,7 +99,8 @@ class KHBBS:
         self.commands = [KHBBSCommand.init(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         abilities = data[0x4D3C:0x4DB4]
         self.abilities = {
-            k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
+            k: KHBBSAbility(abilities[i*4:(i+1)*4], i)\
+            for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
         finishers = data[0x561C:0x569C]
         self.finishers = [KHBBSFinisher.init(finishers[i*0x08:(i+1)*0x08], i) for i in range(16)]
@@ -119,7 +122,8 @@ class KHBBS:
         self.commands = [KHBBSCommand.init(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         abilities = data[0x4D64:0x4DDC]
         self.abilities = {
-            k: KHBBSAbility(abilities[i*4:(i+1)*4], i) for k, i in zip(self.ability_list, range(len(abilities)//4))
+            k: KHBBSAbility(abilities[i*4:(i+1)*4], i)\
+            for k, i in zip(self.ability_list, range(len(abilities)//4))
         }
         self.command_styles = (c_ubyte*0x0D)(*data[0x4DDD:0x4DEA])
         self.unversed_killed = c_uint(int.from_bytes(data[0x4F18:0x4F1C][::-1]))
@@ -158,16 +162,19 @@ class KHBBS:
             deck.save(self)
     
     def __save_vanilla_jp(self):
+        self.data[0x58D8] = self.deck
         self.data[0x58FC] = self.difficulty
         for i in range(16):
             self.data[0x5510+i*0x14:0x5510+(i+1)*0x14] = self.finisher_names[i]
     
     def __save_vanilla_usa(self):
+        self.data[0x5C60] = self.deck
         self.data[0x5C84] = self.difficulty
         for i in range(16):
             self.data[0x5744+i*0x26:0x5744+(i+1)*0x26] = self.finisher_names[i]
     
     def __save_fm(self):
+        self.data[0x5C88] = self.deck
         self.data[0x5CAC] = self.difficulty
         for i in range(16):
             self.data[0x576C+i*0x26:0x576C+(i+1)*0x26] = self.finisher_names[i]
