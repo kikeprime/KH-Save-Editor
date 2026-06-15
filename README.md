@@ -125,14 +125,18 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Base Strength, Magic, Defense stats
     - Arena Medals and Arena Level
     - Munny technically belongs here too.
-- World, room, flag
-- Munny
-- Difficulty
 - Commands:
+    - Decks:
+        - Equipped deck
+        - Deck's name
+        - Slots
     - Command List
     - Finishers along with their names
     - Abilities
     - D-Links
+- World, room, flag
+- Munny
+- Difficulty
 - PPSSPP attach
     - Works like the KH1 and KH2 PCSX2 attaches
     - However, PSP KHBBSFM seems to have some kind of memory protection so you need to load the dumped save file to see the changes.
