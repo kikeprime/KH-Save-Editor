@@ -10,13 +10,13 @@ def create_commands():
         dcc.Markdown("Tab:"),
         dcc.Dropdown(
             options=[
-                # {"label": "Decks", "value": "Decks"},
+                {"label": "Decks", "value": "Decks"},
                 {"label": "Command List", "value": "Command List"},
                 {"label": "Finishers", "value": "Finishers"},
                 {"label": "Abilities", "value": "Abilities"},
                 {"label": "D-Links", "value": "D-Links"},
             ],
-            value="Command List",
+            value="Decks",
             id="CommandsTabs",
             style={"width": 200},
             searchable=False,
@@ -31,6 +31,8 @@ def create_commands():
 )
 def __create_commands(tab):
     khbbs = utils.khbbs
+    if tab == "Decks":
+        return create_decks()
     if tab == "Command List":
         return create_command_list()
     if tab == "Finishers":
