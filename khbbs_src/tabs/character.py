@@ -100,6 +100,15 @@ def create_character():
         step=1,
         style={"width": 50},
     )
+    total_medals = dcc.Input(
+        id="Total Medals",
+        type="number",
+        value=khbbs.total_medals.value,
+        min=0,
+        max=0xFFFF,
+        step=1,
+        style={"width": 50},
+    )
     resistances = html.Div([
         html.Div([
             dcc.Markdown("Fire:"),
@@ -174,6 +183,7 @@ def create_character():
             html.Div([
                 html.Div([dcc.Markdown("Medals:"), medals]),
                 html.Div([dcc.Markdown("Arena Level:"), arenalevel]),
+                html.Div([dcc.Markdown("Total Medals:"), total_medals]),
             ],
                 style={"display": "flex", "gap": 20},
             ),
@@ -194,6 +204,7 @@ def create_character():
     Input("Defense", "value"),
     Input("Medals", "value"),
     Input("Arena Level", "value"),
+    Input("Total Medals", "value"),
     Input("Fire Resistance", "value"),
     Input("Thunder Resistance", "value"),
     Input("Blizzard Resistance", "value"),
@@ -210,6 +221,7 @@ def character_callback(
     defense,
     medals,
     arenalevel,
+    total_medals,
     fire_resistance,
     thunder_resistance,
     blizzard_resistance,
@@ -227,6 +239,7 @@ def character_callback(
         khbbs.character.defense = defense
         khbbs.character.medals = medals
         khbbs.character.arenalevel = arenalevel
+        khbbs.total_medals.value = total_medals
         khbbs.character.fire_resistance = 100 - fire_resistance
         khbbs.character.thunder_resistance = 100 - thunder_resistance
         khbbs.character.blizzard_resistance = 100 - blizzard_resistance
