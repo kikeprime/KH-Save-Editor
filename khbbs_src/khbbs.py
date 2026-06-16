@@ -2,6 +2,7 @@ import os
 import struct
 
 from ctypes import *
+from kh1_src.datatypes import *
 from .khbbs_dicts import dicts
 from .khbbs_helper import *
 from .ppsspp import PPSSPP
@@ -59,13 +60,13 @@ class KHBBS:
         self.size = c_uint(int.from_bytes(data[0x08:0x0C][::-1])) # should be the same as filesize
         assert(self.size.value == self.filesize)
         self.checksum = c_uint(int.from_bytes(data[0x0C:0x10][::-1]))
-        self.reports = c_ubyte(data[0x10])
+        self.reports = U8(0x10, self.data)
         # self.difficulty = c_ubyte(data[0x11]) # Zero EXP needs it to be displayed
-        self.world = c_ubyte(data[0x14])
-        self.room = c_ubyte(data[0x15])
-        self.flag = c_ubyte(data[0x16])
-        self.character_type = c_ubyte(data[0x17])
-        self.playtime = c_uint(int.from_bytes(data[0x18:0x1C][::-1]))
+        self.world = U8(0x14, self.data)
+        self.room = U8(0x15, self.data)
+        self.flag = U8(0x16, self.data)
+        self.character_type = U8(0x17, self.data)
+        self.playtime = U32(0x18, self.data)
         if self.version == 0:
             self.__parse_data_vanilla_jp(data)
         elif self.version == 1:
@@ -91,8 +92,8 @@ class KHBBS:
         self.character = KHBBSCharacter.init(self.name, data[0x5654:0x5684])
         decks = data[0x56B0:0x58CA]
         self.decks = [KHBBSDeckJP.init(decks[i*0xB2:(i+1)*0xB2], i) for i in range(3)]
-        self.deck = c_ubyte(data[0x58D8])
-        self.difficulty = c_ubyte(data[0x58FC])
+        self.deck = U8(0x58D8, self.data)
+        self.difficulty = U8(0x58FC, self.data)
     
     def __parse_data_vanilla_usa(self, data):
         commands = data[0x3488:0x4888]
@@ -111,8 +112,8 @@ class KHBBS:
         self.character = KHBBSCharacter.init(self.name, data[0x59A8:0x59D8])
         decks = data[0x5A04:0x5C50]
         self.decks = [KHBBSDeck.init(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
-        self.deck = c_ubyte(data[0x5C60])
-        self.difficulty = c_ubyte(data[0x5C84])
+        self.deck = U8(0x5C60, self.data)
+        self.difficulty = U8(0x5C84, self.data)
     
     def __parse_data_fm(self, data):
         key_inventory = data[0x325A:0x32BE]
@@ -136,19 +137,13 @@ class KHBBS:
         self.character = KHBBSCharacter.init(self.name, data[0x59D0:0x5A00])
         decks = data[0x5A2C:0x5C78]
         self.decks = [KHBBSDeck.init(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
-        self.deck = c_ubyte(data[0x5C88])
-        self.difficulty = c_ubyte(data[0x5CAC])
-        self.total_medals = c_uint(int.from_bytes(data[0xFE88:0xFE8C]))
-        self.arena_missions = (c_ubyte*4)(*data[0xFE8C:0xFE90])
+        self.deck = U8(0x5C88, self.data)
+        self.difficulty = U8(0x5CAC, self.data)
+        self.total_medals = U32(0xFE88, self.data)
+        self.arena_missions = Array(U8, 4, 0xFE8C, self.data)
 
     def __save_shared(self):
-        self.data[0x10] = self.reports
         self.data[0x11] = self.difficulty.value // 0x40
-        self.data[0x14] = self.world
-        self.data[0x15] = self.room
-        self.data[0x16] = self.flag
-        self.data[0x17] = self.character_type
-        self.data[0x18:0x1C] = bytearray(self.playtime)
         for command in self.commands:
             command.save(self)
         for ability in self.abilities.values():
@@ -162,20 +157,14 @@ class KHBBS:
             deck.save(self)
     
     def __save_vanilla_jp(self):
-        self.data[0x58D8] = self.deck
-        self.data[0x58FC] = self.difficulty
         for i in range(16):
             self.data[0x5510+i*0x14:0x5510+(i+1)*0x14] = self.finisher_names[i]
     
     def __save_vanilla_usa(self):
-        self.data[0x5C60] = self.deck
-        self.data[0x5C84] = self.difficulty
         for i in range(16):
             self.data[0x5744+i*0x26:0x5744+(i+1)*0x26] = self.finisher_names[i]
     
     def __save_fm(self):
-        self.data[0x5C88] = self.deck
-        self.data[0x5CAC] = self.difficulty
         for i in range(16):
             self.data[0x576C+i*0x26:0x576C+(i+1)*0x26] = self.finisher_names[i]
 
