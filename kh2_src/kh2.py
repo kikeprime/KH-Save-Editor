@@ -4,6 +4,7 @@ import struct
 from ctypes import *
 from .kh2_dicts import *
 from .kh2_helper import *
+from kh1_src.datatypes import *
 from kh1_src.pcsx2 import PCSX2
 
 
@@ -53,9 +54,9 @@ class KH2:
         # JP: 0x2A, USA: 0x2D, FM: 0x3A
         self.ver = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
         self.checksum = c_uint(int.from_bytes(data[0x08:0x0C][::-1]))
-        self.world = c_ubyte(data[0x0C])
-        self.room = c_ubyte(data[0x0D])
-        self.flag = c_ubyte(data[0x0E])
+        self.world = U8(0x0C, self.data)
+        self.room = U8(0x0D, self.data)
+        self.flag = U8(0x0E, self.data)
         if self.version == 0:
             self.__parse_data_vanilla_jp(data)
         elif self.version == 1:
@@ -75,35 +76,35 @@ class KH2:
         # with open("saved/KH2PlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
         progress = data[0x0E50:0x10B0]
-        self.progress = {w: (c_ubyte*0x20)(*progress[i*0x20:(i+1)*0x20]) for i, w in self.world_dict.items()}
-        self.munny = c_uint(int.from_bytes(data[0x1600:0x1604][::-1]))
-        self.playtimes = (c_uint*0x15)(*struct.unpack("<21I", bytearray(data[0x1604:0x1658])))
-        self.difficulty = c_ubyte(data[0x1658])
+        self.progress = {w: Array(U8, 0x20, 0x0E50 + i*0x20, self.data) for i, w in self.world_dict.items()}
+        self.munny = U32(0x1600, self.data)
+        self.playtimes = Array(U32, 0x15, 0x1604, self.data)
+        self.difficulty = U8(0x1658, self.data)
         characters = data[0x1660:0x2360]
         self.characters = [
             KH2Character(k, characters[v*0x100:(v+1)*0x100])\
             for k, v in self.character_dict.items()
         ]
-        self.path = c_ubyte(data[0x166E]) # One of Sora's unknown values
+        self.path = U8(0x166E, self.data) # One of Sora's unknown values
         forms = data[0x2360:0x24C8]
         self.forms = [
             KH2DriveForm(k, forms[v*0x28:(v+1)*0x28])\
             for k, v in self.drive_form_dict.items()
         ]
-        self.current_form = c_ubyte(data[0x24C8])
-        self.current_summon = c_ubyte(data[0x24C9])
-        self.summon_level = c_ubyte(data[0x24CA])
-        self.drive_gauge = c_ubyte(data[0x24CC])
-        self.drive = c_ubyte(data[0x24CD])
-        self.maxdrive = c_ubyte(data[0x24CE])
-        self.inventory = (c_ubyte*0x118)(*data[0x2524:0x263C])
-        self.exp = c_uint(int.from_bytes(data[0x2684:0x2688][::-1]))
-        self.shortcuts = (c_ushort*4)(*struct.unpack("<4H", bytearray(data[0x269C:0x26A4])))
-        self.bonuslevel = c_uint(int.from_bytes(data[0x26A4:0x26A8][::-1]))
-        self.heartless = (c_uint*0x2F)(*struct.unpack("<47I", bytearray(data[0x26EC:0x27A8])))
-        self.nobodies = (c_uint*0x0C)(*struct.unpack("<12I", bytearray(data[0x286C:0x289C])))
-        self.rc_usage = (c_ushort*0x30)(*struct.unpack("<48H", bytearray(data[0x28EE:0x294E])))
-        self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x2CEC:0x2D16])))
+        self.current_form = U8(0x24C8, self.data)
+        self.current_summon = U8(0x24C9, self.data)
+        self.summon_level = U8(0x24CA, self.data)
+        self.drive_gauge = U8(0x24CC, self.data)
+        self.drive = U8(0x24CD, self.data)
+        self.maxdrive = U8(0x24CE, self.data)
+        self.inventory = Array(U8, 0x118, 0x2524, self.data)
+        self.exp = U32(0x2684, self.data)
+        self.shortcuts = Array(U16, 4, 0x269C, self.data)
+        self.bonuslevel = U32(0x26A4, self.data)
+        self.heartless = Array(U32, 0x2F, 0x26EC, self.data)
+        self.nobodies = Array(U32, 0x0C, 0x286C, self.data)
+        self.rc_usage = Array(U16, 0x30, 0x28EE, self.data)
+        self.limit_usage = Array(U16, 0x15, 0x2CEC, self.data)
         
         minigames = data[0x2E5C:0x2F3C]
         self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
@@ -120,46 +121,45 @@ class KH2:
         # with open("saved/KH2PlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
         progress = data[0x0E50:0x10B0]
-        self.progress = {w: (c_ubyte*0x20)(*progress[i*0x20:(i+1)*0x20]) for i, w in self.world_dict.items()}
-        self.munny = c_uint(int.from_bytes(data[0x1600:0x1604][::-1]))
-        self.playtimes = (c_uint*0x15)(*struct.unpack("<21I", bytearray(data[0x1604:0x1658])))
-        self.difficulty = c_ubyte(data[0x1658])
+        self.progress = {w: Array(U8, 0x20, 0x0E50 + i*0x20, self.data) for i, w in self.world_dict.items()}
+        self.munny = U32(0x1600, self.data)
+        self.playtimes = Array(U32, 0x15, 0x1604, self.data)
+        self.difficulty = U8(0x1658, self.data)
         characters = data[0x1660:0x22C4]
         self.characters = [
             KH2Character(k, characters[v*0xF4:(v+1)*0xF4])\
             for k, v in self.character_dict.items()
         ]
-        self.path = c_ubyte(data[0x166E]) # One of Sora's unknown values
-        # print(self)
+        self.path = U8(0x166E, self.data) # One of Sora's unknown values
         forms = data[0x22C4:0x242C]
         self.forms = [
             KH2DriveForm(k, forms[v*0x28:(v+1)*0x28])\
             for k, v in self.drive_form_dict.items()
         ]
-        self.current_form = c_ubyte(data[0x242C])
-        self.current_summon = c_ubyte(data[0x242D])
-        self.summon_level = c_ubyte(data[0x242E])
-        self.drive_gauge = c_ubyte(data[0x2430])
-        self.drive = c_ubyte(data[0x2431])
-        self.maxdrive = c_ubyte(data[0x2432])
-        self.inventory = (c_ubyte*0x118)(*data[0x2488:0x25A0])
-        self.exp = c_uint(int.from_bytes(data[0x25E8:0x25EC][::-1]))
+        self.current_form = U8(0x242C, self.data)
+        self.current_summon = U8(0x242D, self.data)
+        self.summon_level = U8(0x242E, self.data)
+        self.drive_gauge = U8(0x2430, self.data)
+        self.drive = U8(0x2431, self.data)
+        self.maxdrive = U8(0x2432, self.data)
+        self.inventory = Array(U8, 0x118, 0x2488, self.data)
+        self.exp = U32(0x25E8, self.data)
         
-        self.shortcuts = (c_ushort*4)(*struct.unpack("<4H", bytearray(data[0x2600:0x2608])))
-        self.bonuslevel = c_uint(int.from_bytes(data[0x2608:0x260C][::-1]))
+        self.shortcuts = Array(U16, 4, 0x2600, self.data)
+        self.bonuslevel = U32(0x2608, self.data)
         
-        self.heartless = (c_uint*0x2F)(*struct.unpack("<47I", bytearray(data[0x2650:0x270C])))
-        self.nobodies = (c_uint*0x0C)(*struct.unpack("<12I", bytearray(data[0x27D0:0x2800])))
-        self.rc_usage = (c_ushort*0x30)(*struct.unpack("<48H", bytearray(data[0x2852:0x28B2])))
-        self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x2C50:0x2C7A])))
+        self.heartless = Array(U32, 0x2F, 0x2650, self.data)
+        self.nobodies = Array(U32, 0x0C, 0x27D0, self.data)
+        self.rc_usage = Array(U16, 0x30, 0x2852, self.data)
+        self.limit_usage = Array(U16, 0x15, 0x2C50, self.data)
         
         minigames = data[0x2DC0:0x2EA0]
         self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
         
-        self.synthesis_creations = (c_ubyte*5)(*data[0x3741:0x3746])
-        self.synthesis_exp = c_uint(int.from_bytes(data[0x3758:0x375C][::-1]))
-        self.synthesis_inventory = (c_uint*0x32)(*struct.unpack("<50I", bytearray(data[0x375C:0x3824])))
-        self.synthesis_log = (c_uint*0x32)(*struct.unpack("<50I", bytearray(data[0x3824:0x38EC])))
+        self.synthesis_creations = Array(U8, 5, 0x3741, self.data)
+        self.synthesis_exp = U32(0x3758, self.data)
+        self.synthesis_inventory = Array(U32, 0x32, 0x375C, self.data)
+        self.synthesis_log = Array(U32, 0x32, 0x3824, self.data)
         
         self.gummi_treasure_percents = (c_float*0x01A1)(*struct.unpack("<417f", bytearray(data[0xACE0:0xB364])))
     
@@ -174,45 +174,45 @@ class KH2:
         # with open("saved/KH2FMPlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
         progress = data[0x1C90:0x2150]
-        self.progress = {w: (c_ubyte*0x20)(*progress[i*0x20:(i+1)*0x20]) for i, w in self.world_dict.items()}
-        self.munny = c_uint(int.from_bytes(data[0x2440:0x2444][::-1]))
-        self.playtimes = (c_uint*0x15)(*struct.unpack("<21I", bytearray(data[0x2444:0x2498])))
-        self.difficulty = c_ubyte(data[0x2498])
-        self.puzzles = (c_ubyte*0x30)(*data[0x24A0:0x24D0])
+        self.progress = {w: Array(U8, 0x20, 0x1C90 + i*0x20, self.data) for i, w in self.world_dict.items()}
+        self.munny = U32(0x2440, self.data)
+        self.playtimes = Array(U32, 0x15, 0x2444, self.data)
+        self.difficulty = U8(0x2498, self.data)
+        self.puzzles = Array(U8, 0x30, 0x24A0, self.data)
         characters = data[0x24F0:0x32F4]
         self.characters = [
             KH2FMCharacter(k, characters[v*0x114:(v+1)*0x114])\
             for k, v in self.character_dict.items()
         ]
-        self.path = c_ubyte(data[0x24FE]) # One of Sora's unknown values
+        self.path = U8(0x24FE, self.data) # One of Sora's unknown values
         forms = data[0x32F4:0x3524]
         self.forms = [
             KH2FMDriveForm(k, forms[v*0x38:(v+1)*0x38])\
             for k, v in self.drive_form_fm_dict.items()
         ]
-        self.current_form = c_ubyte(data[0x3524])
-        self.current_summon = c_ubyte(data[0x3525])
-        self.summon_level = c_ubyte(data[0x3526])
-        self.drive_gauge = c_ubyte(data[0x3528])
-        self.drive = c_ubyte(data[0x3529])
-        self.maxdrive = c_ubyte(data[0x352A])
-        self.party = (c_ubyte*(19*4))(*data[0x3534:0x3580])
-        self.inventory = (c_ubyte*0x138)(*data[0x3580:0x36B8])
-        self.form_unlock = c_ubyte(data[0x36C0])
-        self.summon_unlock = c_ubyte(data[0x36C4])
-        self.reports = (c_ubyte*3)(*data[0x36C4:0x36C7])
-        self.limit_form_unlock = c_ubyte(data[0x36CA]) # bit index 3
-        self.exp = c_uint(int.from_bytes(data[0x36E0:0x36E4][::-1]))
-        self.shortcuts = (c_ushort*4)(*struct.unpack("<4H", bytearray(data[0x36F8:0x3700])))
-        self.bonuslevel = c_uint(int.from_bytes(data[0x3700:0x3704][::-1]))
-        self.heartless = (c_uint*0x48)(*struct.unpack("<72I", bytearray(data[0x3748:0x3868])))
-        self.nobodies = (c_uint*0x0C)(*struct.unpack("<12I", bytearray(data[0x38C8:0x38F8])))
-        self.rc_usage = (c_ushort*0x33)(*struct.unpack("<51H", bytearray(data[0x394A:0x39B0])))
-        self.limit_usage = (c_ushort*0x15)(*struct.unpack("<21H", bytearray(data[0x3D48:0x3D72])))
+        self.current_form = U8(0x3524, self.data)
+        self.current_summon = U8(0x3525, self.data)
+        self.summon_level = U8(0x3526, self.data)
+        self.drive_gauge = U8(0x3528, self.data)
+        self.drive = U8(0x3529, self.data)
+        self.maxdrive = U8(0x352A, self.data)
+        self.party = Array(U8, 19*4, 0x3534, self.data)
+        self.inventory = Array(U8, 0x138, 0x3580, self.data)
+        self.form_unlock = U8(0x36C0, self.data)
+        self.summon_unlock = U8(0x36C4, self.data)
+        self.reports = Array(U8, 3, 0x36C4, self.data)
+        self.limit_form_unlock = U8(0x36CA, self.data) # bit index 3
+        self.exp = U32(0x36E0, self.data)
+        self.shortcuts = Array(U16, 4, 0x36F8, self.data)
+        self.bonuslevel = U32(0x3700, self.data)
+        self.heartless = Array(U32, 0x48, 0x3748, self.data)
+        self.nobodies = Array(U32, 0x0C, 0x38C8, self.data)
+        self.rc_usage = Array(U16, 0x33, 0x394A, self.data)
+        self.limit_usage = Array(U16, 0x15, 0x3D48, self.data)
         minigames = data[0x3DB4:0x3EF4]
         self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
-        self.form_usage = (c_ushort*0x0A)(*struct.unpack("<10H", bytearray(data[0x3FD6:0x3FEA])))
-        self.weapon_backup = c_ushort(int.from_bytes(data[0x3FEA:0x3FEC][::-1]))
+        self.form_usage = Array(U16, 0x0A, 0x3FD6, self.data)
+        self.weapon_backup = U16(0x3FEA, self.data)
         # At 0x4438 starts something like a 0x60 long struct 15? times.
         # At 0x4C38 starts The Heartless tab's "New" flags.
         # At 0x4C42 starts The Nobodies tab's "New" flags.
@@ -220,9 +220,6 @@ class KH2:
         # From 0x4DA0 these affect the Puzzle Pieces tab.
     
     def __save_shared(self):
-        self.data[0x0C] = self.world
-        self.data[0x0D] = self.room
-        self.data[0x0E] = self.flag
         for c in self.characters:
             c.save(self)
         for f in self.forms:
@@ -234,73 +231,16 @@ class KH2:
         for i, w in self.world_dict.items():
             for j in range(len(self.progress[w])):
                 self.data[0x0E50+i*0x20+j] = self.progress[w][j]
-        self.data[0x1600:0x1604] = bytearray(self.munny)
-        self.data[0x1604:0x1658] = bytearray(self.playtimes)
-        self.data[0x1658] = self.difficulty
-        self.data[0x166E] = self.path
-        self.data[0x24C8] = self.current_form
-        self.data[0x24C9] = self.current_summon
-        self.data[0x24CA] = self.summon_level
-        self.data[0x24CC] = self.drive_gauge
-        self.data[0x24CD] = self.drive
-        self.data[0x24CE] = self.maxdrive
-        self.data[0x2524:0x263C] = bytearray(self.inventory)
-        self.data[0x2684:0x2688] = bytearray(self.exp)
-        self.data[0x269C:0x26A4] = bytearray(self.shortcuts)
-        self.data[0x26A4:0x26A8] = bytearray(self.bonuslevel)
-        self.data[0x26EC:0x27A8] = bytearray(self.heartless)
-        self.data[0x286C:0x289C] = bytearray(self.nobodies)
-        self.data[0x28EE:0x294E] = bytearray(self.rc_usage)
-        self.data[0x2CEC:0x2D16] = bytearray(self.limit_usage)
-    
+
     def __save_vanilla_usa(self):
         for i, w in self.world_dict.items():
             for j in range(len(self.progress[w])):
                 self.data[0x0E50+i*0x20+j] = self.progress[w][j]
-        self.data[0x1600:0x1604] = bytearray(self.munny)
-        self.data[0x1604:0x1658] = bytearray(self.playtimes)
-        self.data[0x1658] = self.difficulty
-        self.data[0x166E] = self.path
-        self.data[0x242C] = self.current_form
-        self.data[0x242D] = self.current_summon
-        self.data[0x242E] = self.summon_level
-        self.data[0x2430] = self.drive_gauge
-        self.data[0x2431] = self.drive
-        self.data[0x2432] = self.maxdrive
-        self.data[0x2488:0x25A0] = bytearray(self.inventory)
-        self.data[0x25E8:0x25EC] = bytearray(self.exp)
-        self.data[0x2600:0x2608] = bytearray(self.shortcuts)
-        self.data[0x2608:0x260C] = bytearray(self.bonuslevel)
-        self.data[0x2650:0x270C] = bytearray(self.heartless)
-        self.data[0x27D0:0x2800] = bytearray(self.nobodies)
-        self.data[0x2852:0x28B2] = bytearray(self.rc_usage)
-        self.data[0x2C50:0x2C7A] = bytearray(self.limit_usage)
-    
+
     def __save_fm(self):
         for i, w in self.world_dict.items():
             for j in range(len(self.progress[w])):
                 self.data[0x1C90+i*0x20+j] = self.progress[w][j]
-        self.data[0x2440:0x2444] = bytearray(self.munny)
-        self.data[0x2444:0x2498] = bytearray(self.playtimes)
-        self.data[0x2498] = self.difficulty
-        self.data[0x24FE] = self.path
-        self.data[0x3524] = self.current_form
-        self.data[0x3525] = self.current_summon
-        self.data[0x3526] = self.summon_level
-        self.data[0x3528] = self.drive_gauge
-        self.data[0x3529] = self.drive
-        self.data[0x352A] = self.maxdrive
-        self.data[0x3534:0x3580] = bytearray(self.party)
-        self.data[0x3580:0x36B8] = bytearray(self.inventory)
-        self.data[0x36E0:0x36E4] = bytearray(self.exp)
-        self.data[0x36F8:0x3700] = bytearray(self.shortcuts)
-        self.data[0x3700:0x3704] = bytearray(self.bonuslevel)
-        self.data[0x3748:0x3868] = bytearray(self.heartless)
-        self.data[0x38C8:0x38F8] = bytearray(self.nobodies)
-        self.data[0x394A:0x39B0] = bytearray(self.rc_usage)
-        self.data[0x3D48:0x3D72] = bytearray(self.limit_usage)
-        self.data[0x3FD6:0x3FEA] = bytearray(self.form_usage)
-        self.data[0x3FEA:0x3FEC] = bytearray(self.weapon_backup)
 
     def save(self):
         self.__save_shared()
