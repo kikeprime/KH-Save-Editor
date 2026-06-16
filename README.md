@@ -164,7 +164,6 @@ The repo's wiki is created for that user-friendly documentation but is nowhere n
 
 # Known issues
 - It's heavily work in progress so expect issues.
-- Some fields aren't saved yet.
 - There are placeholder tabs that won't show anything. This isn't a bug, they just aren't implemented yet.
 
 # Special thanks
