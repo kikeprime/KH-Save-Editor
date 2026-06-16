@@ -2,10 +2,10 @@ import os
 import struct
 
 from ctypes import *
-from kh1_src.datatypes import *
 from .khbbs_dicts import dicts
 from .khbbs_helper import *
 from .ppsspp import PPSSPP
+from kh1_src.datatypes import *
 
 
 class KHBBS:
@@ -114,11 +114,14 @@ class KHBBS:
         self.decks = [KHBBSDeck.init(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
         self.deck = U8(0x5C60, self.data)
         self.difficulty = U8(0x5C84, self.data)
+        self.total_medals = U32(0xFBC8, self.data)
+        self.arena_missions = Array(U8, 4, 0xFBCC, self.data)
     
     def __parse_data_fm(self, data):
         key_inventory = data[0x325A:0x32BE]
         inventory = data[0x335A:0x338A]
         key_inventory_new = data[0x33B8:0x3410]
+        self.reports = Array(U8, 3, 0x343B, self.data)
         commands = data[0x3498:0x4898]
         self.commands = [KHBBSCommand.init(commands[i*0x0A:(i+1)*0x0A], i, self.fm) for i in range(0x200)]
         abilities = data[0x4D64:0x4DDC]
@@ -139,8 +142,13 @@ class KHBBS:
         self.decks = [KHBBSDeck.init(decks[i*0xC4:(i+1)*0xC4], i) for i in range(3)]
         self.deck = U8(0x5C88, self.data)
         self.difficulty = U8(0x5CAC, self.data)
+        self.commandboard_counter = U16(0xAF32, self.data)
         self.total_medals = U32(0xFE88, self.data)
         self.arena_missions = Array(U8, 4, 0xFE8C, self.data)
+        self.command_style_counters = Array(U16, 15, 0xFFCC, self.data)
+        self.dlink_counters = Array(U16, 14, 0xFFEC, self.data)
+        self.unversed = Array(U16, 44, 0x10090, self.data)
+        self.racing_times = Array(F32, 4, 0x11E10, self.data)
 
     def __save_shared(self):
         self.data[0x11] = self.difficulty.value // 0x40
