@@ -2,6 +2,7 @@ import os
 import struct
 
 from ctypes import *
+from .datatypes import *
 from .kh1_dicts import dicts
 from .pcsx2 import PCSX2
 
@@ -103,21 +104,16 @@ class KH1GummiShip:
     """
     def __init__(self, data):
         self.data = (c_ubyte*0x0F70)(*data)
-        self.blockcount = c_ushort(int.from_bytes(data[0x00:0x02][::-1]))
-        self.x = c_ushort(int.from_bytes(data[0x02:0x04][::-1]))
-        self.y = c_ushort(int.from_bytes(data[0x04:0x06][::-1]))
-        self.z = c_ushort(int.from_bytes(data[0x06:0x08][::-1]))
-        self.transformpair = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
+        self.blockcount = U16(0x00, self.data)
+        self.x = U16(0x02, self.data)
+        self.y = U16(0x04, self.data)
+        self.z = U16(0x06, self.data)
+        self.transformpair = U16(0x08, self.data)
         self.name = bytearray(data[0x4C:0x56])
         blocks = data[0x6C:0x09CC]
         self.blocks = [KH1GummiBlock.init(blocks[i*0x0C:(i+1)*0x0C]) for i in range(200)]
     
     def save(self):
-        self.data[0x00:0x02] = bytearray(self.blockcount)
-        self.data[0x02:0x04] = bytearray(self.x)
-        self.data[0x04:0x06] = bytearray(self.y)
-        self.data[0x06:0x08] = bytearray(self.z)
-        self.data[0x08:0x0A] = bytearray(self.transformpair)
         self.data[0x4C:0x56] = self.name
         for i in range(len(self.blocks)):
             self.data[0x6C+i*0x0C:0x6C+(i+1)*0x0C] = bytearray(self.blocks[i])
@@ -145,7 +141,7 @@ class KH1:
                 with open(os.path.join("files", "kh1", self.filename, "system.bin"), "rb") as sysfile:
                     self.sysdata = (c_ubyte*0x400)(*sysfile.read())
                 # Playtime in seconds * 60 but possibly in seconds * 50 in PAL versions
-                self.playtime = c_uint(int.from_bytes(self.sysdata[0x10:0x14][::-1]))
+                self.playtime = U32(0x10, self.sysdata)
         if attach:
             self.sysdata = None
             self.addr = 0x3F8380 if self.fm else 0x3F1C90
@@ -174,283 +170,182 @@ class KH1:
             self.ariel, self.jack, self.peterpan,
             self.beast
         ]
-        self.path = c_ubyte(data[0x048C])
-        self.curve = c_ubyte(data[0x048D])
-        self.party = (c_ubyte*4)(*data[0x048E:0x0492])
-        self.magiclevels = (c_ubyte*7)(*data[0x0492:0x0499])
+        self.path = U8(0x048C, self.data)
+        self.curve = U8(0x048D, self.data)
+        self.party = Array(U8, 4, 0x048E, self.data)
+        self.magiclevels = Array(U8, 7, 0x0492, self.data)
         # data[0x0499] is unknown
         # I gave it to inventory so the array and item indices match
-        self.inventory = (c_ubyte*256)(*data[0x0499:0x0599])
-        self.shared_abilities = (c_ubyte*48)(*data[0x0599:0x05C9])
+        self.inventory = Array(U8, 0x100, 0x0499, self.data)
+        self.shared_abilities = Array(U8, 0x30, 0x0599, self.data)
         # data[0x05C9:0x05CC] is unknown.
-        self.di_chest_flag = c_ubyte(data[0x05CC])
-        self.treasures = (c_ubyte*0x01FD)(*data[0x05CC:0x07C9])
-        self.summons = (c_ubyte*7)(*data[0x07D0:0x07D7])
+        self.di_chest_flag = U8(0x05CC, self.data)
+        self.treasures = Array(U8, 0x01FD, 0x05CC, self.data)
+        self.summons = Array(U8, 7, 0x07D0, self.data)
         # data[0x07D7] is unknown.
-        self.heartless = (c_ushort*36)(*struct.unpack("<36H", bytearray(data[0x07D8:0x0820])))
+        self.heartless = Array(U16, 36, 0x07D8, self.data)
         # data[0x0820:0x082C] is unknown.
-        self.shortcuts = (c_ubyte*3)(*data[0x082C:0x082F])
+        self.shortcuts = Array(U8, 3, 0x082C, self.data)
         # data[0x082F:0x0836] is unknown.
-        self.cure_on_friends = c_ushort(int.from_bytes(data[0x0836:0x0838][::-1]))
+        self.cure_on_friends = U16(0x0836, self.data)
         # data[0x0838:0x083E] is unknown.
-        self.heartless_killed = c_ushort(int.from_bytes(data[0x083E:0x0840][::-1]))
+        self.heartless_killed = U16(0x083E, self.data)
         # data[0x0840:0x0844] is unknown.
-        self.deflected = c_ushort(int.from_bytes(data[0x0844:0x0846][::-1]))
-        self.taken_damage = c_ushort(int.from_bytes(data[0x0846:0x0848][::-1]))
-        self.item_usage = c_ushort(int.from_bytes(data[0x0848:0x084A][::-1]))
-        self.hits = c_ushort(int.from_bytes(data[0x084A:0x084C][::-1]))
-        self.friend_ko = c_ushort(int.from_bytes(data[0x084C:0x084E][::-1]))
-        self.deaths = c_ushort(int.from_bytes(data[0x084E:0x0850][::-1]))
-        self.weapon_usage = c_ushort(int.from_bytes(data[0x0856:0x0858][::-1]))
-        
-        self.dalmatian_event = c_ubyte(data[0x0E3A])
-        self.dalmatian_gifts = (c_ubyte*10)(*data[0x0E3C:0x0E46])
-        self.dalmatian_gift_ready = c_ubyte(data[0x0E47])
-        
-        self.currentcup = c_ubyte(data[0x0F26])
-        self.philcup = c_ubyte(data[0x0F36])
-        self.pegasuscup = c_ubyte(data[0x0F37])
-        self.herculescup = c_ubyte(data[0x0F38])
-        self.hadescup = c_ubyte(data[0x0F39])
+        self.deflected = U16(0x0844, self.data)
+        self.taken_damage = U16(0x0846, self.data)
+        self.item_usage = U16(0x0848, self.data)
+        self.hits = U16(0x084A, self.data)
+        self.friend_ko = U16(0x084C, self.data)
+        self.deaths = U16(0x084E, self.data)
+        # data[0x0850:0x0856] is unknown.
+        self.weapon_usage = U16(0x0856, self.data)
+
+        self.dalmatian_event = U8(0x0E3A, self.data)
+        self.dalmatian_gifts = Array(U8, 10, 0x0E3C, self.data)
+        # data[0x0E46] is unknown.
+        self.dalmatian_gift_ready = U8(0x0E47, self.data)
+
+        self.currentcup = U8(0x0F26, self.data)
+        self.philcup = U8(0x0F36, self.data)
+        self.pegasuscup = U8(0x0F37, self.data)
+        self.herculescup = U8(0x0F38, self.data)
+        self.hadescup = U8(0x0F39, self.data)
         # oc_minigames[0x10:0x14] and oc_minigames[0x1C:0x20] aren't used for minigame times
-        self.oc_minigames = (c_int*0x18)(*struct.unpack("<24i", bytearray(data[0x0F4C:0x0FAC])))
+        self.oc_minigames = Array(S32, 0x18, 0x0F4C, self.data)
         # oc_minigames[0x1D:0x1F] anyway
-        self.goldmatch = c_ubyte(data[0x0F69])
-        self.platinummatch = c_ubyte(data[0x0F6A])
-
-        self.tiduswins = c_ubyte(data[0x101B])
-        self.wakkawins = c_ubyte(data[0x101C])
-        self.selphiewins = c_ubyte(data[0x101D])
-
-        self.sorawins = c_ushort(int.from_bytes(data[0x1036:0x1038][::-1]))
-        self.rikuwins = c_ushort(int.from_bytes(data[0x1038:0x103A][::-1]))
-        self.tidus_event = c_ubyte(data[0x103A])
-        self.wakka_event = c_ubyte(data[0x103B])
-        self.selphie_event = c_ubyte(data[0x103C])
+        self.goldmatch = U8(0x0F69, self.data)
+        self.platinummatch = U8(0x0F6A, self.data)
         
-        self.tidus_beaten = c_ubyte(data[0x105F])
-        self.wakka_beaten = c_ubyte(data[0x1060])
-        self.selphie_beaten = c_ubyte(data[0x1061])
-
-        self.weapon_backup = c_ubyte(data[0x1114])
+        self.tiduswins = U8(0x101B, self.data)
+        self.wakkawins = U8(0x101C, self.data)
+        self.selphiewins = U8(0x101D, self.data)
         
-        self.slides = (c_ubyte*6)(*data[0x1207:0x120D])
-        self.slides_watched = c_ubyte(data[0x1212])
+        self.sorawins = U16(0x1036, self.data)
+        self.rikuwins = U16(0x1038, self.data)
+        self.tidus_event = U8(0x103A, self.data)
+        self.wakka_event = U8(0x103B, self.data)
+        self.selphie_event = U8(0x103C, self.data)
+        
+        self.tidus_beaten = U8(0x105F, self.data)
+        self.wakka_beaten = U8(0x1060, self.data)
+        self.selphie_beaten = U8(0x1061, self.data)
+        
+        self.weapon_backup = U8(0x1114, self.data)
+        
+        self.slides = Array(U8, 6, 0x1207, self.data)
+        self.slides_watched = U8(0x1212, self.data)
 
-        self.world_progresses = (c_ubyte*20)(*data[0x1500:0x1514])
+        self.world_progresses = Array(U8, 20, 0x1500, self.data)
         
         self.raft = bytearray(data[0x16D1:0x16DB])
         
         # Entries existing since vanilla JP use data[0x16E3:0x16F3]
         # Sephiroth, Ice Titan, Jasmine 2 use 0x16F7
         # Kurt Zisa, Xemnas use 0x16F8, Red Armor uses 0x16F9
-        self.journal_chars = (c_ubyte*23)(*data[0x16E3:0x16FA])
+        self.journal_chars = Array(U8, 23, 0x16E3, self.data)
         # self.boss_journal = (c_ubyte*4)(*data[0x16F6:0x16FA])
         # data[0x16FA:0x1703] is unknown
-        self.dalmatians = (c_ubyte*13)(*data[0x1703:0x1710])
+        self.dalmatians = Array(U8, 13, 0x1703, self.data)
         # needs to be signed because no record is -1
-        self.minigames = (c_int*0x46)(*struct.unpack("<70i", bytearray(data[0x1728:0x1840])))
+        self.minigames = Array(S32, 0x46, 0x1728, self.data)
         self.chronicles = (c_ubyte*10)(*data[0x1997:0x19BF:4])
-        self.reports = (c_ubyte*2)(*data[0x19C0:0x19C2])
-        self.journal_unlock = c_ubyte(data[0x19C4]) # bit index 3, 0x1F for completed game so needs further investigation
-        self.synth_flags = (c_ubyte*5)(*data[0x19C8:0x19CD])
-
-        self.trinity_unlock = c_ubyte(data[0x1C1B])
-        self.trinity_count = (c_ubyte*6)(*data[0x1C66:0x1C6C]) # Jump, Unused, Charge, Ladder, Push, Detect
+        self.reports = Array(U8, 2, 0x19C0, self.data)
+        self.journal_unlock = U8(0x19C4, self.data) # bit index 3, 0x1F for completed game so needs further investigation
+        self.synth_flags = Array(U8, 5, 0x19C8, self.data)
+        
+        self.trinity_unlock = U8(0x1C1B, self.data)
+        self.trinity_count = Array(U8, 6, 0x1C66, self.data) # Jump, Unused, Charge, Ladder, Push, Detect
         # The Trinity flags spread across these.
         # The OC Lobby Push isn't here but at 0x1E10 bit index 0.
-        self.trinity_flags = (c_ubyte*0x48)(*data[0x1C6C:0x1CB4])
+        self.trinity_flags = Array(U8, 0x48, 0x1C6C, self.data)
         
-        self.clams = (c_ubyte*2)(*data[0x1DA9:0x1DAB])
-        self.large_chest_state = c_ubyte(data[0x1DAB])
+        self.clams = Array(U8, 2, 0x1DA9, self.data)
+        self.large_chest_state = U8(0x1DAB, self.data)
         
-        self.bigben = (c_ubyte*2)(*data[0x1E61:0x1E63]) # Neverland Aero Upgrade Chest flag is here
+        self.bigben = Array(U8, 2, 0x1E61, self.data) # Neverland Aero Upgrade Chest flag is here
         
-        self.world_statuses = (c_ubyte*15)(*data[0x1EF0:0x1EFF])
-        self.landingpoints = (c_ubyte*15)(*data[0x1EFF:0x1F0E])
+        self.world_statuses = Array(U8, 15, 0x1EF0, self.data)
+        self.landingpoints = Array(U8, 15, 0x1EFF, self.data)
         
-        self.world = c_uint(int.from_bytes(data[0x2040:0x2044][::-1]))
-        self.room = c_uint(int.from_bytes(data[0x2044:0x2048][::-1]))
-        self.flag = c_uint(int.from_bytes(data[0x2048:0x204C][::-1]))
-        
+        self.world = U32(0x2040, self.data)
+        self.room = U32(0x2044, self.data)
+        self.flag = U32(0x2048, self.data)
+
         self.GUMI = bytearray(data[0x2400:0x2404]).decode() # ASCII string "GUMI"
         # data[0x2404] seems to be a version code, 0 for vanilla and 1 for FM, needs further investigation.
-        self.gummi_tutorial = c_ubyte(data[0x2405]) # might be an int # reseting wipes gummi data
+        self.gummi_tutorial = U8(0x2405, self.data)
         # data[0x2409:0x2410] is [1, 2, 3, 4, 5, 6, 7] for me
-        self.selectedship = c_ubyte(data[0x2410])
+        self.selectedship = U8(0x2410, self.data)
         # self.gummiships = data[0x241C:0xBE7C], based on the start offsets of each ship
         # which I've confirmed but the last ship overlaps with the 1st 4 blocks which are also confirmed.
         self.gummiships = [KH1GummiShip(data[0x241C+i*0x0F70:0x241C+(i+1)*0x0F70]) for i in range(10)]
-        self.gummiblocks = (c_ubyte*108)(*data[0xBE78:0xBEE4])
+        self.gummiblocks = Array(U8, 108, 0xBE78, self.data)
 
-        self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF01:0xBF05][::-1]))
-        self.gummi_accelerate = c_uint(int.from_bytes(data[0xBF05:0xBF09][::-1]))
-        self.gummi_transform = c_uint(int.from_bytes(data[0xBF09:0xBF0D][::-1]))
-        self.gummi_scannon = c_uint(int.from_bytes(data[0xBF0D:0xBF11][::-1]))
-        self.gummi_mcannon = c_uint(int.from_bytes(data[0xBF11:0xBF15][::-1]))
-        self.gummi_lcannon = c_uint(int.from_bytes(data[0xBF15:0xBF19][::-1]))
-        self.gummi_slaser = c_uint(int.from_bytes(data[0xBF19:0xBF1D][::-1]))
-        self.gummi_mlaser = c_uint(int.from_bytes(data[0xBF1D:0xBF21][::-1]))
-        self.gummi_llaser = c_uint(int.from_bytes(data[0xBF21:0xBF25][::-1]))
+        self.gummi_decelerate = U32(0xBF01, self.data)
+        self.gummi_accelerate = U32(0xBF05, self.data)
+        self.gummi_transform = U32(0xBF09, self.data)
+        self.gummi_scannon = U32(0xBF0D, self.data)
+        self.gummi_mcannon = U32(0xBF11, self.data)
+        self.gummi_lcannon = U32(0xBF15, self.data)
+        self.gummi_slaser = U32(0xBF19, self.data)
+        self.gummi_mlaser = U32(0xBF1D, self.data)
+        self.gummi_llaser = U32(0xBF21, self.data)
         
-        self.autolock = c_uint(int.from_bytes(data[0x16400:0x16404][::-1]))
-        self.targetlock = c_uint(int.from_bytes(data[0x16404:0x16408][::-1]))
-        self.camera = c_uint(int.from_bytes(data[0x16408:0x1640C][::-1]))
+        self.autolock = U32(0x16400, self.data)
+        self.targetlock = U32(0x16404, self.data)
+        self.camera = U32(0x16408, self.data)
         # data[0x1640C:0x16410] is unknown
-        self.vibration = c_uint(int.from_bytes(data[0x16410:0x16414][::-1]))
-        self.sound = c_uint(int.from_bytes(data[0x16414:0x16418][::-1]))
-        self.datainstall = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # JP/FM
-        self.difficulty = c_uint(int.from_bytes(data[0x16418:0x1641C][::-1])) # USA/EU
-        self.munny = c_uint(int.from_bytes(data[0x1641C:0x16420][::-1]))
-        self.journal_complete = c_ubyte(data[0x16474]) # 0x0A if complete
+        self.vibration = U32(0x16410, self.data)
+        self.sound = U32(0x16414, self.data)
+        self.datainstall = U32(0x16418, self.data) # JP/FM
+        self.difficulty = U32(0x16418, self.data) # USA/EU
+        self.munny = U32(0x1641C, self.data)
+        self.journal_complete = U8(0x16474, self.data) # 0x0A if complete
         # 4 bytes for each party member; I've found the rule so I'll update the dicts later
         self.customize = data[0x16804:0x16828]
 
         # Final Mix stuff
         if self.fm:
-            self.heartless = (c_ushort*51)(*struct.unpack("<51H", bytearray(data[0x07D8:0x083E])))
-            self.shortcuts = (c_ubyte*3)(*data[0x0844:0x0847])
-            self.cure_on_friends = c_ushort(int.from_bytes(data[0x084E:0x0850][::-1]))
-            self.heartless_killed = c_ushort(int.from_bytes(data[0x0856:0x0858][::-1]))
-            self.deflected = c_ushort(int.from_bytes(data[0x085C:0x085E][::-1]))
-            self.taken_damage = c_ushort(int.from_bytes(data[0x085E:0x0860][::-1]))
-            self.item_usage = c_ushort(int.from_bytes(data[0x0860:0x0862][::-1]))
-            self.hits = c_ushort(int.from_bytes(data[0x0862:0x0864][::-1]))
-            self.friend_ko = c_ushort(int.from_bytes(data[0x0864:0x0866][::-1]))
-            self.deaths = c_ushort(int.from_bytes(data[0x0866:0x0868][::-1]))
-            self.weapon_usage = c_ushort(int.from_bytes(data[0x086E:0x0870][::-1]))
-            self.xemnas = c_ubyte(data[0x1118])
-            self.gummiblocks = (c_ubyte*160)(*data[0xBE78:0xBF18]) # 144 bytes until the last Design Gummi
-            self.gummi_decelerate = c_uint(int.from_bytes(data[0xBF41:0xBF45][::-1]))
-            self.gummi_accelerate = c_uint(int.from_bytes(data[0xBF45:0xBF49][::-1]))
-            self.gummi_transform = c_uint(int.from_bytes(data[0xBF49:0xBF4D][::-1]))
-            self.gummi_scannon = c_uint(int.from_bytes(data[0xBF4D:0xBF51][::-1]))
-            self.gummi_mcannon = c_uint(int.from_bytes(data[0xBF51:0xBF55][::-1]))
-            self.gummi_lcannon = c_uint(int.from_bytes(data[0xBF55:0xBF59][::-1]))
-            self.gummi_slaser = c_uint(int.from_bytes(data[0xBF59:0xBF5D][::-1]))
-            self.gummi_mlaser = c_uint(int.from_bytes(data[0xBF5D:0xBF61][::-1]))
-            self.gummi_llaser = c_uint(int.from_bytes(data[0xBF61:0xBF65][::-1]))
-            self.difficulty = c_uint(int.from_bytes(data[0x1642C:0x16430][::-1]))
-
-    def __save_characters(self):
+            self.heartless = Array(U16, 51, 0x07D8, self.data)
+            self.shortcuts = Array(U8, 3, 0x0844, self.data)
+            self.cure_on_friends = U16(0x084E, self.data)
+            self.heartless_killed = U16(0x0856, self.data)
+            self.deflected = U16(0x085C, self.data)
+            self.taken_damage = U16(0x085E, self.data)
+            self.item_usage = U16(0x0860, self.data)
+            self.hits = U16(0x0862, self.data)
+            self.friend_ko = U16(0x0864, self.data)
+            self.deaths = U16(0x0866, self.data)
+            self.weapon_usage = U16(0x086E, self.data)
+            self.xemnas = U8(0x1118, self.data)
+            self.gummiblocks = Array(U8, 160, 0xBE78, self.data) # 144 bytes until the last Design Gummi
+            self.gummi_decelerate = U32(0xBF41, self.data)
+            self.gummi_accelerate = U32(0xBF45, self.data)
+            self.gummi_transform = U32(0xBF49, self.data)
+            self.gummi_scannon = U32(0xBF4D, self.data)
+            self.gummi_mcannon = U32(0xBF51, self.data)
+            self.gummi_lcannon = U32(0xBF55, self.data)
+            self.gummi_slaser = U32(0xBF59, self.data)
+            self.gummi_mlaser = U32(0xBF5D, self.data)
+            self.gummi_llaser = U32(0xBF61, self.data)
+            self.difficulty = U32(0x1642C, self.data)
+    
+    def __save_shared(self):
         for i in range(len(self.characters)):
             self.data[0x04+i*0x74:0x04+(i+1)*0x74] = bytearray(self.characters[i])
-        
-    def __save_shared(self):
-        self.data[0x048C] = self.path
-        self.data[0x048D] = self.curve
-        self.data[0x048E:0x0492] = bytearray(self.party)
-        self.data[0x0492:0x0499] = bytearray(self.magiclevels)
-        self.data[0x0499:0x0599] = bytearray(self.inventory)
-        self.data[0x0599:0x05C9] = bytearray(self.shared_abilities)
-        self.data[0x05CC:0x07C9] = bytearray(self.treasures)
-        self.data[0x07D0:0x07D7] = bytearray(self.summons)
-        self.data[0x0E3A] = self.dalmatian_event
-        self.data[0x0E3C:0x0E46] = bytearray(self.dalmatian_gifts)
-        self.data[0x0E47] = self.dalmatian_gift_ready
-        self.data[0x0F4C:0x0FAC] = bytearray(self.oc_minigames)
-        self.data[0x0F69] = self.goldmatch
-        self.data[0x0F6A] = self.platinummatch
-        self.data[0x101B] = self.tiduswins
-        self.data[0x101C] = self.wakkawins
-        self.data[0x101D] = self.selphiewins
-        self.data[0x1036:0x1038] = bytearray(self.sorawins)
-        self.data[0x1038:0x103A] = bytearray(self.rikuwins)
-        self.data[0x103A] = self.tidus_event
-        self.data[0x103B] = self.wakka_event
-        self.data[0x103C] = self.selphie_event
-        self.data[0x105F] = self.tidus_beaten
-        self.data[0x1060] = self.wakka_beaten
-        self.data[0x1061] = self.selphie_beaten
-        self.data[0x1207:0x120D] = bytearray(self.slides)
-        self.data[0x1212] = self.slides_watched
-        self.data[0x1114] = self.weapon_backup
-        self.data[0x1500:0x1514] = bytearray(self.world_progresses)
         self.data[0x16D1:0x16DB] = self.raft
-        self.data[0x16E3:0x16FA] = bytearray(self.journal_chars)
-        self.data[0x1703:0x1710] = bytearray(self.dalmatians)
-        self.data[0x1728:0x1840] = bytearray(self.minigames)
         self.data[0x1997:0x19BF:4] = bytearray(self.chronicles)
-        self.data[0x19C0:0x19C2] = bytearray(self.reports)
-        self.data[0x19C4] = self.journal_unlock
-        self.data[0x19C8:0x19CD] = bytearray(self.synth_flags)
-        self.data[0x1C1B] = self.trinity_unlock
-        self.data[0x1C66:0x1C6C] = bytearray(self.trinity_count)
-        self.data[0x1C6C:0x1CB4] = bytearray(self.trinity_flags)
-        self.data[0x1DA9:0x1DAB] = bytearray(self.clams)
-        self.data[0x1DAB] = self.large_chest_state
-        self.data[0x1EA1:0x1EA3] = bytearray(self.bigben)
-        self.data[0x1EF0:0x1EFF] = bytearray(self.world_statuses)
-        self.data[0x1EFF:0x1F0E] = bytearray(self.landingpoints)
-        self.data[0x2040:0x2044] = bytearray(self.world)
-        self.data[0x2044:0x2048] = bytearray(self.room)
-        self.data[0x2048:0x204C] = bytearray(self.flag)
-        self.data[0x2405] = self.gummi_tutorial
-        self.data[0x2410] = self.selectedship
         for i in range(len(self.gummiships)):
             self.data[0x241C+i*0x0F70:0x241C+(i+1)*0x0F70] = bytearray(self.gummiships[i].save())
-        self.data[0x16400:0x16404] = bytearray(self.autolock)
-        self.data[0x16404:0x16408] = bytearray(self.targetlock)
-        self.data[0x16408:0x1640C] = bytearray(self.camera)
-        self.data[0x16410:0x16414] = bytearray(self.vibration)
-        self.data[0x16414:0x16418] = bytearray(self.sound)
-        self.data[0x16418:0x1641C] = bytearray(self.datainstall)
-        self.data[0x1641C:0x16420] = bytearray(self.munny)
-        self.data[0x16804:0x16828] = bytearray(self.customize)
+        # self.data[0x16804:0x16828] = bytearray(self.customize)
 
     def __save_vanilla(self):
-        self.data[0x07D8:0x0820] = bytearray(self.heartless)
-        self.data[0x082C:0x082F] = bytearray(self.shortcuts)
-        self.data[0x0836:0x0838] = bytearray(self.cure_on_friends)
-        self.data[0x083E:0x0840] = bytearray(self.heartless_killed)
-        self.data[0x0844:0x0846] = bytearray(self.deflected)
-        self.data[0x0846:0x0848] = bytearray(self.taken_damage)
-        self.data[0x0848:0x084A] = bytearray(self.item_usage)
-        self.data[0x084A:0x084C] = bytearray(self.hits)
-        self.data[0x084C:0x084E] = bytearray(self.friend_ko)
-        self.data[0x084E:0x0850] = bytearray(self.deaths)
-        self.data[0x0856:0x0858] = bytearray(self.weapon_usage)
-        self.data[0xBE78:0xBEE4] = bytearray(self.gummiblocks)
-        self.data[0xBF01:0xBF05] = bytearray(self.gummi_decelerate)
-        self.data[0xBF05:0xBF09] = bytearray(self.gummi_accelerate)
-        self.data[0xBF09:0xBF0D] = bytearray(self.gummi_transform)
-        self.data[0xBF0D:0xBF11] = bytearray(self.gummi_scannon)
-        self.data[0xBF11:0xBF15] = bytearray(self.gummi_mcannon)
-        self.data[0xBF15:0xBF19] = bytearray(self.gummi_lcannon)
-        self.data[0xBF19:0xBF1D] = bytearray(self.gummi_slaser)
-        self.data[0xBF1D:0xBF21] = bytearray(self.gummi_mlaser)
-        self.data[0xBF21:0xBF25] = bytearray(self.gummi_llaser)
+        pass
 
     def __save_fm(self):
-        self.data[0x07D8:0x083E] = bytearray(self.heartless)
-        self.data[0x0844:0x0847] = bytearray(self.shortcuts)
-        self.data[0x084E:0x0850] = bytearray(self.cure_on_friends)
-        self.data[0x0856:0x0858] = bytearray(self.heartless_killed)
-        self.data[0x085C:0x085E] = bytearray(self.deflected)
-        self.data[0x085E:0x0860] = bytearray(self.taken_damage)
-        self.data[0x0860:0x0862] = bytearray(self.item_usage)
-        self.data[0x0862:0x0864] = bytearray(self.hits)
-        self.data[0x0864:0x0866] = bytearray(self.friend_ko)
-        self.data[0x0866:0x0868] = bytearray(self.deaths)
-        self.data[0x086E:0x0870] = bytearray(self.weapon_usage)
-        self.data[0x1118] = self.xemnas
-        self.data[0xBE78:0xBF18] = bytearray(self.gummiblocks)
-        self.data[0xBF41:0xBF45] = bytearray(self.gummi_decelerate)
-        self.data[0xBF45:0xBF49] = bytearray(self.gummi_accelerate)
-        self.data[0xBF49:0xBF4D] = bytearray(self.gummi_transform)
-        self.data[0xBF4D:0xBF51] = bytearray(self.gummi_scannon)
-        self.data[0xBF51:0xBF55] = bytearray(self.gummi_mcannon)
-        self.data[0xBF55:0xBF59] = bytearray(self.gummi_lcannon)
-        self.data[0xBF59:0xBF5D] = bytearray(self.gummi_slaser)
-        self.data[0xBF5D:0xBF61] = bytearray(self.gummi_mlaser)
-        self.data[0xBF61:0xBF65] = bytearray(self.gummi_llaser)
-        self.data[0x1642C:0x16430] = bytearray(self.difficulty)
+        pass
 
     def save(self):
-        if self.sysdata is not None:
-            self.sysdata[0x10:0x14] = bytearray(self.playtime)
-
-        self.__save_characters()
         self.__save_shared()
         if self.fm:
             self.__save_fm()
