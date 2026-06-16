@@ -94,6 +94,8 @@ class KHBBS:
         self.decks = [KHBBSDeckJP.init(decks[i*0xB2:(i+1)*0xB2], i) for i in range(3)]
         self.deck = U8(0x58D8, self.data)
         self.difficulty = U8(0x58FC, self.data)
+        self.total_medals = U32(0xF7B8, self.data)
+        self.arena_missions = Array(U8, 4, 0xF7BC, self.data)
     
     def __parse_data_vanilla_usa(self, data):
         commands = data[0x3488:0x4888]
