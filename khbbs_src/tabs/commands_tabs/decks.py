@@ -125,7 +125,7 @@ def __create_deck(idx):
                     ),
                 ])
             ]),
-        ]) for deck in khbbs.decks
+        ])
     ]),
 
 @callback(
@@ -184,18 +184,18 @@ def shotlock_callback(
     return str(khbbs.commands[deck.shotlock.id])
 
 @callback(
-    Output({"type": "Deck Name", "index": ALL}, "value"),
-    Input({"type": "Deck Name", "index": ALL}, "value"),
+    Output({"type": "Deck Name", "index": MATCH}, "value"),
+    Input({"type": "Deck Name", "index": MATCH}, "value"),
+    State({"type": "Deck Name", "index": MATCH}, "id"),
 )
 def deck_name_callback(
-    names,
+    name,
+    id,
 ):
     khbbs = utils.khbbs
+    idx = id["index"]
     char_limit = 0x10
-    l = []
-    for i in range(len(names)):
-        name = bytearray(names[i], "Shift-JIS")
-        limit = min(len(name), char_limit-1)
-        khbbs.decks[i].name = (c_ubyte*char_limit)(*(name[:limit] + bytearray(char_limit - limit)))
-        l.append(bytearray(khbbs.decks[i].name).decode("Shift-JIS").strip("\0"))
-    return l if len(l) > 0 else names
+    name = bytearray(name, "Shift-JIS")
+    limit = min(len(name), char_limit-1)
+    khbbs.decks[idx].name = (c_ubyte*char_limit)(*(name[:limit] + bytearray(char_limit - limit)))
+    return bytearray(khbbs.decks[idx].name).decode("Shift-JIS").strip("\0")
