@@ -3,7 +3,8 @@
     <head>
         <meta charset="utf-8">
         <title>KH Save Editor</title>
-        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     </head>
     <body>
         <div style="margin-bottom: 10px">
@@ -41,7 +42,7 @@
         </div>
         <div id="app"></div>
         <script type="module">
-            import KH1 from "/kh1_src/kh1.js";
+            import KH1 from "kh1_src/kh1.js";
             let kh1 = 0
             const input = document.getElementById("mainsavefile");
             input.addEventListener("change", () => {
