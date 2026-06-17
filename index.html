@@ -39,17 +39,32 @@
                 <h2 for="mainsavefile">Select Main Save File:</h2>
                 <input type="file" id="mainsavefile">
             </div>
+            <div>
+                <button id="save">Save</button>
+            </div>
         </div>
-        <div id="app"></div>
+        <div id="app" style="white-space: pre-wrap"></div>
         <script type="module">
             import KH1 from "./kh1_src/kh1.js";
-            let kh1 = 0
+            let kh1 = undefined
             const input = document.getElementById("mainsavefile");
-            input.addEventListener("change", () => {
+            input.addEventListener("change", async () => {
                 const app = document.getElementById("app");
-                const data = input.files[0]
-                kh1 = new KH1(data, false);
-                app.innerHTML = kh1.str()
+                const file = input.files[0];
+                kh1 = new KH1(file, false);
+                await kh1.loaded;
+                app.innerHTML = kh1.str();
+            });
+            const save = document.getElementById("save");
+            save.addEventListener("click", async () => {
+                const url = URL.createObjectURL(kh1.save());
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = kh1.file.name;
+                a.style.display = "none";
+                document.body.appendChild(a)
+                a.click();
+                URL.revokeObjectURL(url);
             });
         </script>
     </body>
