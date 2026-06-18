@@ -6,6 +6,7 @@ def dicts(obj):
     world_dicts(obj)
     weapon_dicts(obj)
     command_dicts(obj)
+    game_records_dicts(obj)
 
 def main_dicts(obj):
     obj.character_dict = {
@@ -93,7 +94,7 @@ def weapon_dicts(obj):
             "Ends of the Earth": 0x27,
             "Chaos Ripper": 0x28,
             "Ultima Cannon" if hasattr(self, "version") and self.version == 0 else "Void Gear (Ventus)": 0x29,
-    } | ({
+        } | ({
             "Void Gear (Aqua)": 0x2A,
             "Void Gear (Terra)": 0x2B,
             "No Name (Ventus)": 0x2C,
@@ -104,5 +105,5 @@ def weapon_dicts(obj):
             "Crown Unlimit (Terra)": 0x31,
             "Master's Defender": 0x32,
             "Ultima Cannon": 0x33,
-    } if hasattr(self, "version") and self.version > 0 else {})
+        } if hasattr(self, "version") and self.version > 0 else {})
     type(obj).weapon_dict = weapon_dict
