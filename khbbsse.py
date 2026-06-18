@@ -145,9 +145,9 @@ def tab_switch(tab, encoding):
         if tab == "Commands":
             return create_commands()
         """if tab == "Inventory":
-            return create_inventory()
+            return create_inventory()"""
         if tab == "Journal":
-            return create_journal()"""
+            return create_journal()
         if tab == "Config":
             return create_config()
         """if tab == "Worlds":
