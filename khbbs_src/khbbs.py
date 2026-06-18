@@ -118,6 +118,7 @@ class KHBBS:
         self.difficulty = U8(0x5C84, self.data)
         self.total_medals = U32(0xFBC8, self.data)
         self.arena_missions = Array(U8, 4, 0xFBCC, self.data)
+        self.racing_times = Array(F32, 4, 0x11AFC, self.data)
     
     def __parse_data_fm(self, data):
         key_inventory = data[0x325A:0x32BE]
