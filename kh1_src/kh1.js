@@ -14,15 +14,15 @@ class KH1Character {
         this.maxap = new dt.U8(offset+0x05, data);
         this.strength = new dt.U8(offset+0x06, data);
         this.defense = new dt.U8(offset+0x07, data);
-        this.resistances = Array(dt.U8, 0x10, offset+0x08, data);
+        this.resistances = dt.Array(dt.U8, 0x10, offset+0x08, data);
         this.accessoryslots = new dt.U8(offset+0x18, data);
-        this.accessories = Array(dt.U8, 0x08, offset+0x19, data);
+        this.accessories = dt.Array(dt.U8, 0x08, offset+0x19, data);
         this.itemslots = new dt.U8(offset+0x21, data);
-        this.items = Array(dt.U8, 0x08, offset+0x22, data);
+        this.items = dt.Array(dt.U8, 0x08, offset+0x22, data);
         this.weapon = new dt.U8(offset+0x32, data);
         this.submp = new dt.U16(offset+0x38, data);
         this.exp = new dt.U32(offset+0x3C, data);
-        this.abilities = Array(dt.U8, 0x30, offset+0x40, data);
+        this.abilities = dt.Array(dt.U8, 0x30, offset+0x40, data);
         this.magic = new dt.U8(offset+0x70, data);
     }
     
@@ -79,6 +79,12 @@ export default class KH1 {
         this.jack = new KH1Character("Jack Skellington", 0x04+7*0x74, this.data);
         this.peterpan = new KH1Character("Peter Pan", 0x04+8*0x74, this.data);
         this.beast = new KH1Character("Beast", 0x04+9*0x74, this.data);
+        this.characters = [
+            this.sora, this.donald, this.goofy,
+            this.tarzan, this.pooh, this.aladdin,
+            this.ariel, this.jack, this.peterpan,
+            this.beast,
+        ];
         this.path = new dt.U8(0x048C, this.data);
         this.curve = new dt.U8(0x048D, this.data);
         this.party = dt.Array(dt.U8, 4, 0x048E, this.data);
@@ -133,6 +139,10 @@ export default class KH1 {
             switch (tabs_kh1.value) {
                 case "General": {
                     tabs.create_general();
+                    break;
+                }
+                case "Characters": {
+                    tabs.create_characters();
                     break;
                 }
                 default: {
