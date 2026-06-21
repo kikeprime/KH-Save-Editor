@@ -81,7 +81,7 @@ export function create_general() {
             type="number"
             id="munny"
             min=0
-            max=0xFFFF
+            max=99999
             step=1
             value=${window.kh1.munny.value}
         >

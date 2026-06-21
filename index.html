@@ -104,7 +104,6 @@
                             const writable = await picker.createWritable();
                             await writable.write(kh1.save());
                             await writable.close();
-                            return;
                         } catch (e) {
                             if (e.name == "AbortError") return;
                             return e;
@@ -115,12 +114,12 @@
                                 const writable = await picker.createWritable();
                                 await writable.write(kh1.syssave());
                                 await writable.close();
-                                return;
                             } catch (e) {
                                 if (e.name == "AbortError") return;
                                 return e;
                             }
                         }
+                        break;
                     }
                 }
             });
