@@ -1,7 +1,9 @@
-# Kingdom Hearts Save Editor
+# Kingdom Hearts Save Editor Online
 List of supported games:
 - Kingdom Hearts (all vanilla releases)
 - Kingdom Hearts Final Mix (Remix too)
+
+Only supported in the Dash version:
 - Kingdom Hearts II Japan
 - Kingdom Hearts II USA (EU should be the same as this)
 - Kingdom Hearts II Final Mix (Remix too)
@@ -12,28 +14,23 @@ List of supported games:
 
 The idea to write my own save editor came from the fact that Kingdom Save Editor is abandoned and it is very barebones in terms of knowledge and it can't be run on Android. For a university assignment I had to work with the ipywidgets Python package so I thought I could use it for my save editor. It turned out that it's not optimized for small screens so I was looking for GUI packages. I mostly stayed with Python since it can be easily used on Android. So after multiple restarts and a second university class influence I landed on Dash.
 
+However, I learned about GitHub Pages and the idea of having an online save editor fascinated me so here we go.
+
 So I want to emphasize that the priority is to run the app on smartphones hence the overly vertical alignment.
 
-## How to run
-This is a Plotly Dash app written in Python so you need to have Python installed.
-After then install the dash package via `pip install dash`.
-
-Open a terminal in the repo's folder and run the command `python kh1se.py` alternatively if you have Jupyter Notebook installed you can run the 1st code cell in the ipynb file. I recommend the latter on Android. For KH2 do the same with kh2se.py.
-
-Create a files and a saved folder in the repo's folder. Put your save files or even better save slot folders into the files folder. The app saves modified files into the saved folder. The output will ALWAYS be a folder slot to avoid issues. I changed this to load save files per game subfolders so KH1 save files or save folders must be in files/kh1 and for KH2 in files/kh2. The output is also put into game specific subfolders.
-
-## Dependencies
-- Python (any version that supports the following packages)
-- Plotly Dash (`pip install dash==v3.3.0`)
-- Pandas + NumPy (`pip install pandas`) (NumPy is included with Pandas; the KH1 Gummi Ship viewer needs these)
-- PyCryptodome (`pip install pycryptodome`) (KH3 needs this for the AES encryption)
-- Jupyter Notebook (`pip install jupyter`) (more stable launching on Android)
-- Pydroid 3 (Android app I use to run my apps so on PC you don't need this)
+## How to use
+- Select the game and its version. The dropdown groups the selectable versions by game.
+- Select a file with the browser's file picker.
+- The doesn't care for now what file you provide so BE CAREFUL with the game choice!
+- Make sure the selected game is correct before you press save. The game version doesn't matter but the game does.
 
 # Features
+The feature list reflects the Dash version as of writing.
+
 ## What not to expect
 - Don't expect support for the PC Remix PNG files, use Kingdom Save Editor for them. I have no reason to copy that functionality.
 - No memory card file support. Use folder type memory card and put the save slot's folder into the repo's files folder that YOU need to create.
+- The online version CANNOT attach to emulators.
 
 ## KH1 features
 - Support for both vanilla and Final Mix save files.
@@ -159,7 +156,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Player Script and Player Pawn
 
 # Documentation
-For now, `kh1_src/kh1.py` and `kh2_src/kh2.py` double as save file documentations for the respective games. It's another long term goal to create user-friendly documentations.
+For now, on the `main` branch `kh1_src/kh1.py` and `kh2_src/kh2.py` double as save file documentations for the respective games. It's another long term goal to create user-friendly documentations.
 The repo's wiki is created for that user-friendly documentation but is nowhere near from being up-to-date.
 
 # Known issues
