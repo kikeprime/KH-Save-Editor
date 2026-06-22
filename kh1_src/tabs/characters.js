@@ -45,6 +45,13 @@ function create_character(id, tab) {
             create_abilities(id);
             break;
         }
+        case "Customize": {
+            if (id == 0)
+                create_customize_sora();
+            else
+                create_customize_party(id);
+            break;
+        }
         case "Shared Abilities": {
             create_shared_abilities();
             break;
@@ -462,5 +469,132 @@ function shared_ability_callbacks() {
             else
                 window.kh1.shared_abilities[e.target.value] |= (1 << 7);
         }
+    });
+}
+
+function create_customize_sora() {
+    const kh1chardiv = document.getElementById("kh1chardiv");
+    const shortcut_options = kh1.magicnames
+        .map((label, value) => `\n\t<option value=${value}>${label}</option>`)
+        .join("")
+        + "\n\t<option value=255>Empty</option>";
+    const shortcuts = `
+    <div id="shortcuts" style="display: flex; gap: 20px">
+        <div>
+            <h4>Circle / Triangle:</h4>
+            <select name=0>
+                ${shortcut_options}
+            </select>
+        </div>
+        <div>
+            <h4>Triangle / Square:</h4>
+            <select name=1>
+                ${shortcut_options}
+            </select>
+        </div>
+        <div>
+            <h4>Square / Cross:</h4>
+            <select name=2>
+                ${shortcut_options}
+            </select>
+        </div>
+    </div>`;
+    let magiclevels = `<div id="magiclevels" style="display: flex; gap: 10px">`
+    for (let i = 0; i < 7; i++) {
+        magiclevels += `
+        <select name=${i}>
+            <option value=1>${window.kh1.magicnames[i]}</option>
+            <option value=2>${window.kh1.magicnames2[i]}</option>
+            <option value=3>${window.kh1.magicnames3[i]}</option>
+        </select>`;
+    }
+    magiclevels += "</div>";
+    const summon_options = Object.entries(window.kh1.summon_dict)
+        .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
+        .join("");
+    let summons = `<div id="summons">`
+    for (let i = 0; i < 7; i++) {
+        summons += `
+        <select name=${i}>
+            ${summon_options}
+        </select>`;
+    }
+    summons += "</div>";
+    kh1chardiv.innerHTML = `
+    <div>
+        <h3>Shortcuts:</h3>
+            ${shortcuts}
+        <h3>Magic Levels:</h3>
+            ${magiclevels}
+        <h3>Summons:</h3>
+            ${summons}
+    </div>`;
+    customize_sora_callbacks();
+}
+
+function customize_sora_callbacks() {
+    const shortcuts = document.getElementById("shortcuts");
+    shortcuts.querySelectorAll("select").forEach(select => {
+        select.value = window.kh1.shortcuts[select.name];
+    });
+    shortcuts.addEventListener("change", (e) => {
+        window.kh1.shortcuts[e.target.name] = e.target.value;
+    });
+    const magiclevels = document.getElementById("magiclevels");
+    magiclevels.querySelectorAll("select").forEach(select => {
+        select.value = window.kh1.magiclevels[select.name];
+    });
+    magiclevels.addEventListener("change", (e) => {
+        window.kh1.magiclevels[e.target.name] = e.target.value;
+    });
+    const summons = document.getElementById("summons");
+    summons.querySelectorAll("select").forEach(select => {
+        select.value = window.kh1.summons[select.name];
+    });
+    summons.addEventListener("change", (e) => {
+        window.kh1.summons[e.target.name] = e.target.value;
+    });
+}
+
+function create_customize_party(id) {
+    const c = window.kh1.characters[id];
+    const kh1chardiv = document.getElementById("kh1chardiv");
+    function customize_widgets(label, value) {
+        const options = Object.entries(window.kh1.customize_list[value["dict"]])
+            .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
+            .join("");
+        return `
+        <div>
+            <h3>${label}</h3>
+            <select name="${label}">
+                ${options}
+            </select>
+        </div>`
+    }
+    const customize = Object.entries(window.kh1.customize_dict[c.name])
+        .map(([label, value]) => customize_widgets(label, value))
+        .join("");
+    kh1chardiv.innerHTML = `
+    <div id="customize">
+        ${customize}
+    </div>`
+    customize_party_callbacks(id);
+}
+
+function customize_party_callbacks(id) {
+    const c = window.kh1.characters[id];
+    const customize = document.getElementById("customize");
+    customize.querySelectorAll("select").forEach(select => {
+        const d = window.kh1.customize_dict[c.name][select.name]
+        const offset = d["offset"];
+        const bit = d["bit"];
+        select.value = (window.kh1.buffer[offset] >> bit) & 3;
+    });
+    customize.addEventListener("change", (e) => {
+        const d = window.kh1.customize_dict[c.name][e.target.name]
+        const offset = d["offset"];
+        const bit = d["bit"];
+        window.kh1.buffer[offset] &= ~(3 << bit);
+        window.kh1.buffer[offset] |= (e.target.value << bit);
     });
 }
