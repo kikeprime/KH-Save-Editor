@@ -4,7 +4,7 @@ import * as d from "./dicts/index.js"
 export default function dicts(obj) {
     main_dicts(obj)
     customize_dicts(obj)
-    //inventory_dicts(obj)
+    d.inventory_dicts(obj)
     d.world_dicts(obj)
     //journal_dicts(obj)
     //trinity_dicts(obj)

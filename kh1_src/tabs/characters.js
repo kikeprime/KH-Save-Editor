@@ -37,6 +37,10 @@ function create_character(id, tab) {
             create_stats(id);
             break;
         }
+        case "Equipment": {
+            create_equipment(id);
+            break;
+        }
         default: {
             const kh1chardiv = document.getElementById("kh1chardiv");
             kh1chardiv.innerHTML = "";
@@ -246,5 +250,117 @@ function stats_callbacks(id) {
                 c.resistances[e.target.name] = 100 - e.target.value
             e.target.value = 100 - c.resistances[e.target.name]
         }
+    });
+}
+
+function create_equipment(id) {
+    const c = window.kh1.characters[id];
+    const kh1chardiv = document.getElementById("kh1chardiv");
+    const weapon_options = Object.entries(window.kh1.weapon_dict)
+        .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
+        .join("");
+    const accessory_options = Object.entries(window.kh1.accessory_dict)
+        .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
+        .join("");
+    const item_options = Object.entries(window.kh1.item1_dict)
+        .filter(([label, value]) => value < 0x09)
+        .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
+        .join("");
+    const weapon = `
+    <div>
+        <h3>Weapon:</h3>
+        <select id="weapon">
+            ${weapon_options}
+        </select>
+    </div>`;
+    const accessoryslots = `
+    <div>
+        <h3>Accessory Slots:</h3>
+        <input
+            type="number"
+            id="accessoryslots"
+            min=0
+            max=8
+            step=1
+            value=${c.accessoryslots.value}
+        >
+    </div>`;
+    let accessory = "";
+    let item = "";
+    for (let i = 0; i < 8; i++) {
+        accessory += `
+        <select name=${i}>
+            ${accessory_options}
+        </select>`
+        item += `
+        <select name=${i}>
+            ${item_options}
+        </select>`
+    }
+    const accessories = `
+    <div id="accessories">
+        <h3>Accessories:</h3>
+        ${accessory}
+    </div>`;
+    const itemslots = `
+    <div>
+        <h3>Item Slots:</h3>
+        <input
+            type="number"
+            id="itemslots"
+            min=0
+            max=8
+            step=1
+            value=${c.itemslots.value}
+        >
+    </div>`;
+    const items = `
+    <div id="items">
+        <h3>Items:</h3>
+        ${item}
+    </div>`;
+    kh1chardiv.innerHTML = `
+    <div>
+        ${weapon}
+        ${accessoryslots}
+        ${accessories}
+        ${itemslots}
+        ${items}
+    </div>`;
+    equipment_callbacks(id);
+}
+
+function equipment_callbacks(id) {
+    const c = window.kh1.characters[id];
+    const weapon = document.getElementById("weapon");
+    weapon.value = c.weapon.value;
+    weapon.addEventListener("change", () => {
+        c.weapon.value = weapon.value;
+    });
+    const accessoryslots = document.getElementById("accessoryslots");
+    accessoryslots.addEventListener("change", () => {
+        if (accessoryslots.validity.valid)
+            c.accessoryslots.value = accessoryslots.value;
+        accessoryslots.value = c.accessoryslots.value;
+    });
+    const accessories = document.getElementById("accessories");
+    accessories.querySelectorAll("select").forEach(select => {
+        select.value = c.accessories[select.name]; 
+    });
+    accessories.addEventListener("change", (e) => {
+        c.accessories[e.target.name] = e.target.value
+    });
+    const itemslots = document.getElementById("itemslots");
+    itemslots.addEventListener("change", () => {
+        if (itemslots.validity.valid)
+            c.itemslots.value = itemslots.value;
+        itemslots.value = c.itemslots.value;
+    });
+    const items = document.getElementById("items");
+    items.querySelectorAll("select").forEach(select => {
+        select.value = c.items[select.name]; 
+    });
+    items.addEventListener("change", (e) => {
+        c.items[e.target.name] = e.target.value
     });
 }
