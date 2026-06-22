@@ -41,6 +41,14 @@ function create_character(id, tab) {
             create_equipment(id);
             break;
         }
+        case "Abilities": {
+            create_abilities(id);
+            break;
+        }
+        case "Shared Abilities": {
+            create_shared_abilities();
+            break;
+        }
         default: {
             const kh1chardiv = document.getElementById("kh1chardiv");
             kh1chardiv.innerHTML = "";
@@ -362,5 +370,97 @@ function equipment_callbacks(id) {
     });
     items.addEventListener("change", (e) => {
         c.items[e.target.name] = e.target.value
+    });
+}
+
+function create_abilities(id) {
+    const c = window.kh1.characters[id];
+    const kh1chardiv = document.getElementById("kh1chardiv");
+    const ability_options = Object.entries(window.kh1.ability_dict)
+        .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
+        .join("");
+    let abilities = "";
+    for (let i = 0; i < 48; i++) {
+        const checked = c.abilities[i] & (1 << 7) ? "" : "checked";
+        abilities += `
+        <div style="display: flex; align-items: center">
+            <input type="checkbox" value=${i} ${checked}>
+            <select name=${i}>
+                ${ability_options}
+            </select>
+        </div>`
+    }
+    kh1chardiv.innerHTML = `
+    <div id="abilities">
+        <h3>Abilities:</h3>
+        ${abilities}
+    </div>`;
+    ability_callbacks(id);
+}
+
+function ability_callbacks(id) {
+    const c = window.kh1.characters[id];
+    const abilities = document.getElementById("abilities");
+    abilities.querySelectorAll("select").forEach(select => {
+        select.value = c.abilities[select.name] & ~(1 << 7);
+    });
+    abilities.addEventListener("change", (e) => {
+        if (e.target.type != "checkbox") {
+            const unchecked = c.abilities[e.target.name] & (1 << 7);
+            c.abilities[e.target.name] = e.target.value;
+            if (unchecked)
+                c.abilities[e.target.name] |= (1 << 7);
+        }
+        else {
+            if (e.target.checked)
+                c.abilities[e.target.value] &= ~(1 << 7);
+            else
+                c.abilities[e.target.value] |= (1 << 7);
+        }
+    });
+}
+
+function create_shared_abilities() {
+    const kh1chardiv = document.getElementById("kh1chardiv");
+    const ability_options = Object.entries(window.kh1.ability_dict)
+        .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
+        .join("");
+    let shared_abilities = "";
+    for (let i = 0; i < 48; i++) {
+        const checked = window.kh1.shared_abilities[i] & (1 << 7) ? "" : "checked";
+        shared_abilities += `
+        <div style="display: flex; align-items: center">
+            <input type="checkbox" value=${i} ${checked}>
+            <select name=${i}>
+                ${ability_options}
+            </select>
+        </div>`
+    }
+    kh1chardiv.innerHTML = `
+    <div id="shared_abilities">
+        <h3>Abilities:</h3>
+        ${shared_abilities}
+    </div>`;
+    shared_ability_callbacks();
+}
+
+function shared_ability_callbacks() {
+    const shared_abilities = document.getElementById("shared_abilities");
+    shared_abilities.querySelectorAll("select").forEach(select => {
+        select.value = window.kh1.shared_abilities[select.name] & ~(1 << 7);
+    });
+    shared_abilities.addEventListener("change", (e) => {
+        if (e.target.type != "checkbox") {
+            const unchecked = window.kh1.shared_abilities[e.target.name] & (1 << 7);
+            window.kh1.shared_abilities[e.target.name] = e.target.value;
+            if (unchecked)
+                window.kh1.shared_abilities[e.target.name] |= (1 << 7);
+        }
+        else {
+            if (e.target.checked)
+                window.kh1.shared_abilities[e.target.value] &= ~(1 << 7);
+            else
+                window.kh1.shared_abilities[e.target.value] |= (1 << 7);
+        }
     });
 }
