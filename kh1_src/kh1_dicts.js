@@ -9,7 +9,7 @@ export default function dicts(obj) {
     //journal_dicts(obj)
     //trinity_dicts(obj)
     //minigame_dicts(obj)
-    //gummi_dicts(obj)
+    d.gummi_dicts(obj)
     //treasure_dicts(obj)
 }
 

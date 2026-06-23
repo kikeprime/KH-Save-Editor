@@ -238,6 +238,7 @@ export default class KH1 {
                 <option value="Config">Config</option>
                 <option value="Worlds">Worlds</option>
                 <option value="Misc">Misc</option>
+                <option value="Gummi Ships">Gummi Ships</option>
             </select>
         </div>`;
         app.innerHTML = `${tabs_kh1_html}<div id="kh1div"></div>`;
@@ -260,6 +261,10 @@ export default class KH1 {
                 }
                 case "Config": {
                     tabs.create_config();
+                    break;
+                }
+                case "Gummi Ships": {
+                    tabs.create_gummi();
                     break;
                 }
                 default: {
