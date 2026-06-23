@@ -93,17 +93,127 @@ export default class KH1 {
         this.shared_abilities = dt.Array(dt.U8, 0x30, 0x0599, this.data);
         this.treasures = dt.Array(dt.U8, 0x01FD, 0x05CC, this.data);
         this.summons = dt.Array(dt.U8, 7, 0x07D0, this.data);
+        
         this.heartless = dt.Array(dt.U16, 36, 0x07D8, this.data);
         this.shortcuts = dt.Array(dt.U8, 3, 0x082C, this.data);
+        this.cure_on_friends = new dt.U16(0x0836, this.data);
+        this.heartless_killed = new dt.U16(0x083E, this.data);
+        this.deflected = new dt.U16(0x0844, this.data);
+        this.taken_damage = new dt.U16(0x0846, this.data);
+        this.item_usage = new dt.U16(0x0848, this.data);
+        this.hits = new dt.U16(0x084A, this.data);
+        this.friend_ko = new dt.U16(0x084C, this.data);
+        this.deaths = new dt.U16(0x084E, this.data);
+        this.weapon_usage = new dt.U16(0x0856, this.data);
+        
+        this.dalmatian_event = new dt.U8(0x0E3A, this.data);
+        this.dalmatian_gifts = dt.Array(dt.U8, 10, 0x0E3C, this.data);
+        this.dalmatian_gift_ready = new dt.U8(0x0E47, this.data);
+        
+        this.currentcup = new dt.U8(0x0F26, this.data);
+        this.philcup = new dt.U8(0x0F36, this.data);
+        this.pegasuscup = new dt.U8(0x0F37, this.data);
+        this.herculescup = new dt.U8(0x0F38, this.data);
+        this.hadescup = new dt.U8(0x0F39, this.data);
+        this.oc_minigames = dt.Array(dt.S32, 0x18, 0x0F4C, this.data);
+        this.goldmatch = new dt.U8(0x0F69, this.data);
+        this.platinummatch = new dt.U8(0x0F6A, this.data);
+        
+        this.tiduswins = new dt.U8(0x101B, this.data);
+        this.wakkawins = new dt.U8(0x101C, this.data);
+        this.selphiewins = new dt.U8(0x101D, this.data);
+        
+        this.sorawins = new dt.U16(0x1036, this.data);
+        this.rikuwins = new dt.U16(0x1038, this.data);
+        
+        this.tidus_event = new dt.U8(0x103A, this.data);
+        this.wakka_event = new dt.U8(0x103B, this.data);
+        this.selphie_event = new dt.U8(0x103C, this.data);
+        
+        this.tidus_beaten = new dt.U8(0x105F, this.data);
+        this.wakka_beaten = new dt.U8(0x1060, this.data);
+        this.selphie_beaten = new dt.U8(0x1061, this.data);
+        
+        this.weapon_backup = new dt.U8(0x1114, this.data);
+        
+        this.slides = dt.Array(dt.U8, 6, 0x1207, this.data);
+        this.slides_watched = new dt.U8(0x1212, this.data);
+
+        this.world_progresses = dt.Array(dt.U8, 20, 0x1500, this.data);
+        
+        this.journal_chars = dt.Array(dt.U8, 23, 0x16E3, this.data);
+        this.dalmatians = dt.Array(dt.U8, 13, 0x1703, this.data);
+        this.minigames = dt.Array(dt.S32, 0x46, 0x1728, this.data);
+        this.chronicles = dt.Array(dt.U32, 10, 0x1997, this.data);
+        this.reports = dt.Array(dt.U8, 2, 0x19C0, this.data);
+        this.journal_unlock = new dt.U8(0x19C4, this.data);
+        this.synth_flags = dt.Array(dt.U8, 5, 0x19C8, this.data);
+        
+        this.trinity_unlock = new dt.U8(0x1C1B, this.data);
+        this.trinity_count = dt.Array(dt.U8, 6, 0x1C66, this.data);
+        this.trinity_flags = dt.Array(dt.U8, 0x48, 0x1C6C, this.data);
+        
+        this.clams = dt.Array(dt.U8, 2, 0x1DA9, this.data);
+        this.large_chest_state = new dt.U8(0x1DAB, this.data);
+        
+        this.bigben = dt.Array(dt.U8, 2, 0x1E61, this.data);
+        
+        this.world_statuses = dt.Array(dt.U8, 15, 0x1EF0, this.data);
+        this.landingpoints = dt.Array(dt.U8, 15, 0x1EFF, this.data);
+        
         this.world = new dt.U32(0x2040, this.data);
         this.room = new dt.U32(0x2044, this.data);
         this.flag = new dt.U32(0x2048, this.data);
-        this.munny = new dt.U32(0x1641C, this.data);
         
+        this.gummi_tutorial = new dt.U8(0x2405, this.data);
+        this.selectedship = new dt.U8(0x2410, this.data);
+        
+        this.gummiblocks = dt.Array(dt.U8, 108, 0xBE78, this.data);
+        
+        this.gummi_decelerate = new dt.U32(0xBF01, this.data);
+        this.gummi_accelerate = new dt.U32(0xBF05, this.data);
+        this.gummi_transform = new dt.U32(0xBF09, this.data);
+        this.gummi_scannon = new dt.U32(0xBF0D, this.data);
+        this.gummi_mcannon = new dt.U32(0xBF11, this.data);
+        this.gummi_lcannon = new dt.U32(0xBF15, this.data);
+        this.gummi_slaser = new dt.U32(0xBF19, this.data);
+        this.gummi_mlaser = new dt.U32(0xBF1D, this.data);
+        this.gummi_llaser = new dt.U32(0xBF21, this.data);
+        
+        this.autolock = new dt.U32(0x16400, this.data);
+        this.targetlock = new dt.U32(0x16404, this.data);
+        this.camera = new dt.U32(0x16408, this.data);
+        this.vibration = new dt.U32(0x16410, this.data);
+        this.sound = new dt.U32(0x16414, this.data);
+        this.datainstall = new dt.U32(0x16418, this.data);
+        this.munny = new dt.U32(0x1641C, this.data);
+        this.journal_complete = new dt.U8(0x16474, this.data);
+
         // Final Mix stuff
         if (this.fm) {
             this.heartless = dt.Array(dt.U16, 51, 0x07D8, this.data);
             this.shortcuts = dt.Array(dt.U8, 3, 0x0844, this.data);
+            this.cure_on_friends = new dt.U16(0x084E, this.data);
+            this.heartless_killed = new dt.U16(0x0856, this.data);
+            this.deflected = new dt.U16(0x085C, this.data);
+            this.taken_damage = new dt.U16(0x085E, this.data);
+            this.item_usage = new dt.U16(0x0860, this.data);
+            this.hits = new dt.U16(0x0862, this.data);
+            this.friend_ko = new dt.U16(0x0864, this.data);
+            this.deaths = new dt.U16(0x0866, this.data);
+            this.weapon_usage = new dt.U16(0x086E, this.data);
+            this.xemnas = new dt.U8(0x1118, this.data);
+            this.gummiblocks = dt.Array(dt.U8, 160, 0xBE78, this.data);
+            this.gummi_decelerate = new dt.U32(0xBF41, this.data);
+            this.gummi_accelerate = new dt.U32(0xBF45, this.data);
+            this.gummi_transform = new dt.U32(0xBF49, this.data);
+            this.gummi_scannon = new dt.U32(0xBF4D, this.data);
+            this.gummi_mcannon = new dt.U32(0xBF51, this.data);
+            this.gummi_lcannon = new dt.U32(0xBF55, this.data);
+            this.gummi_slaser = new dt.U32(0xBF59, this.data);
+            this.gummi_mlaser = new dt.U32(0xBF5D, this.data);
+            this.gummi_llaser = new dt.U32(0xBF61, this.data);
+            this.difficulty = new dt.U32(0x1642C, this.data);
         }
     }
 
@@ -129,8 +239,7 @@ export default class KH1 {
                 <option value="Worlds">Worlds</option>
                 <option value="Misc">Misc</option>
             </select>
-        </div>
-        `;
+        </div>`;
         app.innerHTML = `${tabs_kh1_html}<div id="kh1div"></div>`;
         const tabs_kh1 = document.getElementById("tabs_kh1");
         const kh1div = document.getElementById("kh1div");
