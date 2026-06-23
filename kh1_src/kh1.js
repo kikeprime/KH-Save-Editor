@@ -258,6 +258,10 @@ export default class KH1 {
                     tabs.create_inventory();
                     break;
                 }
+                case "Config": {
+                    tabs.create_config();
+                    break;
+                }
                 default: {
                     kh1div.innerHTML = "";
                     break;
