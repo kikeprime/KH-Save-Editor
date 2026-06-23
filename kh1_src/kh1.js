@@ -145,6 +145,10 @@ export default class KH1 {
                     tabs.create_characters();
                     break;
                 }
+                case "Inventory": {
+                    tabs.create_inventory();
+                    break;
+                }
                 default: {
                     kh1div.innerHTML = "";
                     break;
