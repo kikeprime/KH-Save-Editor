@@ -152,7 +152,7 @@ class KH1:
         # For FM the currently loaded save file starts at 0x3F8380 in the memory according to the RetroAchievements code notes.
         # For vanilla USA it starts at 0x3F1C90.
         # For vanilla JP it starts at 0x3F2080.
-        self.header = c_uint(int.from_bytes(data[0x00:0x04][::-1])) # 4 in vanilla, 5 in FM
+        self.header = U32(0x00, self.data) # 4 in vanilla, 5 in FM
         # self.characters = data[0x04:0x048C]
         self.sora = KH1Character.init("Sora", data[0x04:0x04+0x74])
         self.donald = KH1Character.init("Donald", data[0x04+0x74:0x04+2*0x74])
@@ -248,7 +248,7 @@ class KH1:
         self.dalmatians = Array(U8, 13, 0x1703, self.data)
         # needs to be signed because no record is -1
         self.minigames = Array(S32, 0x46, 0x1728, self.data)
-        self.chronicles = (c_ubyte*10)(*data[0x1997:0x19BF:4])
+        self.chronicles = Array(U32, 10, 0x1997, self.data)
         self.reports = Array(U8, 2, 0x19C0, self.data)
         self.journal_unlock = U8(0x19C4, self.data) # bit index 3, 0x1F for completed game so needs further investigation
         self.synth_flags = Array(U8, 5, 0x19C8, self.data)
