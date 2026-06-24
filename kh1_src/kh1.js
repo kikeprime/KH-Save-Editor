@@ -44,6 +44,71 @@ class KH1Character {
     }
 }
 
+class KH1GummiBlock {
+    constructor(offset, data) {
+        this.offset = offset;
+        this.data = data;
+        this.xz = new dt.U8(offset+0x00, data);
+        this.y = new dt.U8(offset+0x01, data);
+        this.r = new dt.U16(offset+0x02, data);
+        this.id = new dt.U8(offset+0x04, data);
+        this.color = new dt.U8(offset+0x08, data);
+    }
+    
+    get x() {
+        return this.xz.value % 16;
+    }
+    
+    set x(v) {
+        this.xz.value = this.z * 16 + v;
+    }
+    
+    get z() {
+        return Math.floor(this.xz.value / 16);
+    }
+    
+    set z(v) {
+        this.xz.value = v * 16 + this.x;
+    }
+    
+    static colors = [
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+        "black", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
+    ]
+    
+    get colors() {
+        return KH1GummiBlock.colors;
+    }
+    
+    toString() {
+        dicts(this);
+        const r = this.r.value.toString(16).toUpperCase().padStart(4, "0");
+        return `${this.gummi_block_dict[this.id.value]}(X=${this.x}, Y=${this.y.value}, Z=${this.z}, R=${r}, C=${this.color.value})`;
+    }
+}
+
+class KH1GummiShip {
+    constructor(offset, data) {
+        this.offset = offset;
+        this.data = data;
+        this.blockcount = new dt.U16(offset+0x00, data);
+        this.x = new dt.U16(offset+0x02, data);
+        this.y = new dt.U16(offset+0x04, data);
+        this.z = new dt.U16(offset+0x06, data);
+        this.transformpair = new dt.U16(offset+0x08, data);
+        this.blocks = [];
+        for (let i = 0; i < 200; i++) {
+            this.blocks.push(new KH1GummiBlock(offset+0x6C+i*0x0C, data));
+        }
+    }
+}
+
 export default class KH1 {
     constructor(file, fm) {
         this.file = file
@@ -167,7 +232,10 @@ export default class KH1 {
         
         this.gummi_tutorial = new dt.U8(0x2405, this.data);
         this.selectedship = new dt.U8(0x2410, this.data);
-        
+        this.gummiships = [];
+        for (let i = 0; i < 10; i++) {
+            this.gummiships.push(new KH1GummiShip(0x241C+i*0x0F70, this.data));
+        }
         this.gummiblocks = dt.Array(dt.U8, 108, 0xBE78, this.data);
         
         this.gummi_decelerate = new dt.U32(0xBF01, this.data);
@@ -257,6 +325,10 @@ export default class KH1 {
                 }
                 case "Inventory": {
                     tabs.create_inventory();
+                    break;
+                }
+                case "Jiminy's Journal": {
+                    tabs.create_journal();
                     break;
                 }
                 case "Config": {

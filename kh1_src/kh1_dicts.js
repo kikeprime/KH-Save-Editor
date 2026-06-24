@@ -6,9 +6,9 @@ export default function dicts(obj) {
     customize_dicts(obj)
     d.inventory_dicts(obj)
     d.world_dicts(obj)
-    //journal_dicts(obj)
-    //trinity_dicts(obj)
-    //minigame_dicts(obj)
+    d.journal_dicts(obj)
+    d.trinity_dicts(obj)
+    d.minigame_dicts(obj)
     d.gummi_dicts(obj)
     //treasure_dicts(obj)
 }
