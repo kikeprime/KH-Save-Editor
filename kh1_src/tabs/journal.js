@@ -41,6 +41,10 @@ export function create_journal() {
                 tabs.create_dalmatians();
                 break;
             }
+            case "Synthesis": {
+                tabs.create_synthesis();
+                break;
+            }
             default: {
                 kh1jdiv.innerHTML = "";
                 break;
