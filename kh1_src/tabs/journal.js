@@ -37,6 +37,10 @@ export function create_journal() {
                 tabs.create_reports();
                 break;
             }
+            case "Characters": {
+                tabs.create_journal_characters();
+                break;
+            }
             case "101 Dalmatians": {
                 tabs.create_dalmatians();
                 break;

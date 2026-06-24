@@ -48,6 +48,8 @@ export function create_dalmatians() {
     for (let i = 0; i < 99; i++) {
         const idx = Math.floor(i / 8);
         const bit = i % 8;
+        if (i % 7 == 0 && i < 49 || i % 7 == 1 && i >= 49)
+            dalmatians += `<div style="display: flex; gap: 10px">`;
         dalmatians += `
         <label style="display: flex; align-items: center">
             <input
@@ -58,6 +60,8 @@ export function create_dalmatians() {
             >
             ${"Puppy " + String(i + 1)}
         </label>`;
+        if (i % 7 == 6 && i < 49 || i % 7 == 0 && i >= 49)
+            dalmatians += "</div>";
     }
     dalmatians += "</div>";
     kh1jdiv.innerHTML = `
