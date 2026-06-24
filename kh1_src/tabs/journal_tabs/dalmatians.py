@@ -37,16 +37,22 @@ def create_dalmatians():
             id="Dalmatian Gifts",
         ),
     ])
-    dalmatians = [
-        dcc.Checklist(
-            options=[
-                {"label": f"Puppy {i*8+j+1}", "value": (1 << 7 - j)}\
-                for j in range(8) if i*8+j+1 < 100
-            ],
-            value=[kh1.dalmatians[i] & (1 << j) for j in range(8)],
+    dalmatians = []
+    div = html.Div([])
+    for i in range(99):
+        idx = i // 8
+        bit = i % 8
+        if (i % 7 == 0 and i < 49 or i % 7 == 1 and i >= 49):
+            div = html.Div([], style={"display": "flex", "gap": 5, "margin-bottom": 10})
+        puppy = dcc.Checklist(
+            options=[{"label": f"Puppy {i+1}", "value": (1 << 7 - bit)}],
+            value=[kh1.dalmatians[idx] & (1 << 7 - bit)],
             id={"type": "Dalmatian", "index": i},
-        ) for i in range(len(kh1.dalmatians))
-    ]
+        )
+        div.children.append(puppy)
+        if (i % 7 == 6 and i < 49 or i % 7 == 0 and i >= 49):
+            dalmatians.append(div)
+            div = html.Div([], style={"display": "flex", "gap": 5, "margin-bottom": 10})
     return html.Div([
         dalmatians_flags,
         html.H3("Puppy Flags"),
@@ -68,5 +74,10 @@ def dalmatians_callback(event, gifts, ready, puppies):
             kh1.dalmatian_gifts[i] = 1
         else:
             kh1.dalmatian_gifts[i] = 0
-    for i in range(len(kh1.dalmatians)):
-        kh1.dalmatians[i] = sum(puppies[i])
+    for i in range(99):
+        idx = i // 8
+        bit = i % 8
+        if (1 << 7 - bit) in puppies[i]:
+            kh1.dalmatians[idx] |= (1 << 7 - bit)
+        else:
+            kh1.dalmatians[idx] &= ~(1 << 7 - bit)
