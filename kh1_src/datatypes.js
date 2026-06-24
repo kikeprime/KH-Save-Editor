@@ -10,7 +10,8 @@ export function Array(datatype, n, offset, data) {
             return a[idx].value;
         },
         set(a, idx, value) {
-            return a[idx].value = value;
+            a[idx].value = value;
+            return true;
         },
     });
 }
