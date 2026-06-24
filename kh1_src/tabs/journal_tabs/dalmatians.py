@@ -4,7 +4,7 @@ import kh1_src.kh1_utils as utils
 def create_dalmatians():
     kh1 = utils.kh1
     dalmatians_flags = html.Div([
-        html.H3("Event Flag"),
+        html.H3("Event Flags"),
         dcc.Checklist(
             options=[
                 {"label": "Watched all puppies event", "value": 1},
