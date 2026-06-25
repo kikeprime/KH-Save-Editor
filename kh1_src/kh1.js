@@ -1,5 +1,6 @@
 import * as dt from "./datatypes.js"
 import dicts from "./kh1_dicts.js"
+import KH1String from "./kh1codec.js"
 import * as tabs from "./tabs/index.js"
 
 class KH1Character {
@@ -94,14 +95,16 @@ class KH1GummiBlock {
 }
 
 class KH1GummiShip {
-    constructor(offset, data) {
+    constructor(offset, data, buffer) {
         this.offset = offset;
         this.data = data;
+        this.buffer = buffer;
         this.blockcount = new dt.U16(offset+0x00, data);
         this.x = new dt.U16(offset+0x02, data);
         this.y = new dt.U16(offset+0x04, data);
         this.z = new dt.U16(offset+0x06, data);
         this.transformpair = new dt.U16(offset+0x08, data);
+        this.name = new KH1String(10, offset+0x4C, buffer);
         this.blocks = [];
         for (let i = 0; i < 200; i++) {
             this.blocks.push(new KH1GummiBlock(offset+0x6C+i*0x0C, data));
@@ -206,6 +209,8 @@ export default class KH1 {
 
         this.world_progresses = dt.Array(dt.U8, 20, 0x1500, this.data);
         
+        this.raft = new KH1String(10, 0x16D1, this.buffer);
+        
         this.journal_chars = dt.Array(dt.U8, 23, 0x16E3, this.data);
         this.dalmatians = dt.Array(dt.U8, 13, 0x1703, this.data);
         this.minigames = dt.Array(dt.S32, 0x46, 0x1728, this.data);
@@ -234,7 +239,7 @@ export default class KH1 {
         this.selectedship = new dt.U8(0x2410, this.data);
         this.gummiships = [];
         for (let i = 0; i < 10; i++) {
-            this.gummiships.push(new KH1GummiShip(0x241C+i*0x0F70, this.data));
+            this.gummiships.push(new KH1GummiShip(0x241C+i*0x0F70, this.data, this.buffer));
         }
         this.gummiblocks = dt.Array(dt.U8, 108, 0xBE78, this.data);
         
@@ -333,6 +338,10 @@ export default class KH1 {
                 }
                 case "Config": {
                     tabs.create_config();
+                    break;
+                }
+                case "Misc": {
+                    tabs.create_misc();
                     break;
                 }
                 case "Gummi Ships": {
