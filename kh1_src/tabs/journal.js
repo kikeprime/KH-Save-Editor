@@ -45,6 +45,14 @@ export function create_journal() {
                 tabs.create_dalmatians();
                 break;
             }
+            case "—Battle Record—": {
+                tabs.create_battle_record();
+                break;
+            }
+            case "Treasures": {
+                tabs.create_treasures();
+                break;
+            }
             case "Synthesis": {
                 tabs.create_synthesis();
                 break;

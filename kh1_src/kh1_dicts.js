@@ -10,7 +10,7 @@ export default function dicts(obj) {
     d.trinity_dicts(obj)
     d.minigame_dicts(obj)
     d.gummi_dicts(obj)
-    //treasure_dicts(obj)
+    d.treasure_dicts(obj)
 }
 
 function main_dicts(obj) {

@@ -1,4 +1,5 @@
 export * from "./inventory.js"
 export * from "./journal.js"
+export * from "./treasures.js"
 export * from "./worlds.js"
 export * from "./gummi.js"
