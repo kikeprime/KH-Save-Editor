@@ -1,7 +1,7 @@
 # Courtesy of the KH1FM Randomizer team
 def treasure_dicts(obj):
     # For now it reflects FM
-    # I havw to research vanilla differences
+    # I have to research vanilla differences
     @property
     def treasure_chests(self):
         item_0200 = "Power Up"
@@ -370,7 +370,7 @@ def treasure_dicts(obj):
                 "Atlantica: AP Up": 0x1D80,
                 f"Halloween Town: {item_1D81}": 0x1D81,
                 f"Neverland: {item_1D82}": 0x1D82,
-                f"Hundred Acre Woods: Megalixir": 0x1D83,
+                "Hundred Acre Woods: Megalixir": 0x1D83,
                 f"Hollow Bastion: {item_1DC0}": 0x1DC0,
                 "Final Rest: Megalixir": 0x1DC1,
             },
