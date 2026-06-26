@@ -6,7 +6,7 @@ export function create_misc() {
         <input
             type="text"
             id="raft"
-            value=${window.kh1.raft.decode().replace(/\{0x00\}$/, "")}
+            value=${window.kh1.raft.decode()}
         >
     </div>`;
     const weapon_options = Object.entries(window.kh1.weapon_dict)
@@ -34,8 +34,7 @@ function misc_callbacks() {
         const n = window.kh1.raft.n;
         const offset = window.kh1.raft.offset;
         window.kh1.raft.encode(raft.value);
-        window.kh1.raft.buffer[offset + n - 1] = 0;
-        raft.value = window.kh1.raft.decode().replace(/\{0x00\}$/, "");
+        raft.value = window.kh1.raft.decode();
     });
     const weapon_backup = document.getElementById("weapon_backup");
     weapon_backup.value = window.kh1.weapon_backup.value;

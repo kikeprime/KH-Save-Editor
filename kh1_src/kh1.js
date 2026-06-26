@@ -209,7 +209,7 @@ export default class KH1 {
 
         this.world_progresses = dt.Array(dt.U8, 20, 0x1500, this.data);
         
-        this.raft = new KH1String(10, 0x16D1, this.buffer);
+        this.raft = new KH1String(9, 0x16D1, this.buffer);
         
         this.journal_chars = dt.Array(dt.U8, 23, 0x16E3, this.data);
         this.dalmatians = dt.Array(dt.U8, 13, 0x1703, this.data);

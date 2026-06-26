@@ -45,6 +45,10 @@ export function create_journal() {
                 tabs.create_dalmatians();
                 break;
             }
+            case "Trinity List": {
+                tabs.create_trinity();
+                break;
+            }
             case "—Battle Record—": {
                 tabs.create_battle_record();
                 break;
