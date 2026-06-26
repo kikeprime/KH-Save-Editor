@@ -49,6 +49,10 @@ export function create_journal() {
                 tabs.create_trinity();
                 break;
             }
+            case "Mini Games": {
+                tabs.create_minigames();
+                break;
+            }
             case "—Battle Record—": {
                 tabs.create_battle_record();
                 break;

@@ -556,6 +556,9 @@ export function minigame_dicts(obj) {
             "4th Place": 0x110,
             "5th Place": 0x114,
         },
+        "Olympus Coliseum": {
+            ...obj.oc_minigame_dict,
+        }
     }
     obj.minigames_with_sub = [
         "Jungle Slider",
