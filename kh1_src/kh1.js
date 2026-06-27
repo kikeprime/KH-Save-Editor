@@ -340,6 +340,10 @@ export default class KH1 {
                     tabs.create_config();
                     break;
                 }
+                case "Worlds": {
+                    tabs.create_worlds();
+                    break;
+                }
                 case "Misc": {
                     tabs.create_misc();
                     break;
