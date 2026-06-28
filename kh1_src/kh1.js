@@ -61,6 +61,7 @@ class KH1GummiBlock {
     }
     
     set x(v) {
+        v = Number(v);
         this.xz.value = this.z * 16 + v;
     }
     
@@ -69,6 +70,7 @@ class KH1GummiBlock {
     }
     
     set z(v) {
+        v = Number(v);
         this.xz.value = v * 16 + this.x;
     }
     
@@ -104,7 +106,7 @@ class KH1GummiShip {
         this.y = new dt.U16(offset+0x04, data);
         this.z = new dt.U16(offset+0x06, data);
         this.transformpair = new dt.U16(offset+0x08, data);
-        this.name = new KH1String(10, offset+0x4C, buffer);
+        this.name = new KH1String(9, offset+0x4C, buffer);
         this.blocks = [];
         for (let i = 0; i < 200; i++) {
             this.blocks.push(new KH1GummiBlock(offset+0x6C+i*0x0C, data));

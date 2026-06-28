@@ -35,7 +35,279 @@ export function create_gummi() {
 
 function create_gummi_ships() {
     const kh1gdiv = document.getElementById("kh1gdiv");
-    kh1gdiv.innerHTML = "<h2>Coming Soon!</h2>The other 2 subtabs work.";
+    let ship_options = "";
+    for (let i = 0; i < 10; i++) {
+        ship_options += `<option value=${i}>Gummi Ship ${i + 1}</option>`;
+    }
+    kh1gdiv.innerHTML = `
+    <div>
+        <h3>Selected Gummi Ship:</h3>
+        <select id="selectedship">
+            ${ship_options}
+        </select>
+        <h3>Ship:</h3>
+        <select id="kh1gshtabs">
+            ${ship_options}
+        </select>
+        <div id="kh1gshdiv"></div>
+    </div>`;
+    const kh1gshtabs = document.getElementById("kh1gshtabs");
+    function tab_sel() {
+        create_ship(kh1gshtabs.value);
+    }
+    kh1gshtabs.addEventListener("change", tab_sel);
+    tab_sel();
+    
+    const selectedship = document.getElementById("selectedship");
+    selectedship.value = window.kh1.selectedship.value;
+    selectedship.addEventListener("change", () => {
+        window.kh1.selectedship.value = selectedship.value;
+    });
+}
+
+function create_ship(idx) {
+    const kh1gshdiv = document.getElementById("kh1gshdiv");
+    const ship = window.kh1.gummiships[idx];
+    const blockcount = `
+    <div>
+        <h3>Block Count:</h3>
+        <input
+            type="number"
+            id="blockcount"
+            min=0
+            max=200
+            step=1
+            value=${ship.blockcount.value}
+        >
+    </div>`;
+    const area = `
+    <h3>Assembly Area:</h3>
+    <div id="assemblyarea" style="display: flex; align-items: center; gap: 10px">
+        <h4>X:</h4>
+        <input
+            type="number"
+            name=x
+            min=0
+            max=10
+            step=1
+            value=${ship.x.value}
+        >
+        <h4>Y:</h4>
+        <input
+            type="number"
+            name=y
+            min=0
+            max=10
+            step=1
+            value=${ship.y.value}
+        >
+        <h4>Z:</h4>
+        <input
+            type="number"
+            name=z
+            min=0
+            max=10
+            step=1
+            value=${ship.z.value}
+        >
+    </div>`;
+    let ship_options = "<option value=0>No Pair</option>";
+    for (let i = 0; i < 10; i++) {
+        ship_options += `<option value=${i + 1}>Gummi Ship ${i + 1}</option>`;
+    }
+    const transformpair = `
+    <div>
+        <h3>Transform Pair:</h3>
+        <select id="transformpair">
+            ${ship_options}
+        </select>
+    </div>`;
+    const name = `
+    <div>
+        <h3>Name:</h3>
+        <input
+            type="text"
+            id="ship_name"
+            value="${ship.name.decode()}"
+        >
+    </div>`;
+    let block_options = "";
+    for (let i = 0; i < 200; i++) {
+        block_options += `<option value=${i}>Block ${i + 1}</option>`;
+    }
+    kh1gshdiv.innerHTML = `
+    <div>
+        ${blockcount}
+        ${area}
+        ${transformpair}
+        ${name}
+        <h3>Gummi Block:</h3>
+        <select id="kh1gbtabs">
+            ${block_options}
+        </select>
+        <div id="kh1gbdiv"></div>
+    </div>`;
+    gummi_ship_callbacks(ship);
+    const kh1gbtabs = document.getElementById("kh1gbtabs");
+    function tab_sel() {
+        create_block(ship, kh1gbtabs.value);
+    }
+    kh1gbtabs.addEventListener("change", tab_sel);
+    tab_sel();
+}
+
+function create_block(ship, idx) {
+    const kh1gbdiv = document.getElementById("kh1gbdiv");
+    const block = ship.blocks[idx];
+    const block_type_options = Object.entries(window.kh1.gummi_block_dict)
+        .map(([value, label]) => `<option value=${value}>${label}</option>`)
+        .join("");
+    const block_type = `
+    <h3>Block Type:</h3>
+    <select id="block_type">
+        ${block_type_options}
+    </select>`;
+    const block_coordinates = `
+    <h3>Coordinates:</h3>
+    <div id="block_coordinates" style="display: flex; align-items: center; gap: 10px">
+        <h4>X:</h4>
+        <input
+            type="number"
+            name=x
+            min=0
+            max=9
+            step=1
+            value=${block.x}
+        >
+        <h4>Y:</h4>
+        <input
+            type="number"
+            name=y
+            min=0
+            max=255
+            step=1
+            value=${block.y.value}
+        >
+        <h4>Z:</h4>
+        <input
+            type="number"
+            name=z
+            min=0
+            max=9
+            step=1
+            value=${block.z}
+        >
+    </div>`;
+    const rotation_dict = {
+        "Normal": 0x0420,
+        "Left": 0x0124,
+        "Right": 0x0025,
+        "Back": 0x0521,
+        "Up": 0x0250,
+        "Down": 0x0340,
+        "Up Up or Down Down": 0x0530,
+        "Tilt Left": 0x0412,
+        "Tilt Right": 0x0403,
+        "Upside Down": 0x0431,
+        "Left then Up": 0x0204,
+        "Left then Down": 0x0314,
+        "Left then Up Up": 0x0034,
+        "Left then Tilt Left": 0x0252,
+        "Left then Tilt Right": 0x0143,
+        "Right then Up": 0x0215,
+        "Right then Down": 0x0305,
+        "Right then Up Up": 0x0135,
+        "Right then Tilt Left": 0x0042,
+        "Right then Tilt Right": 0x0053,
+        "Back then Up": 0x0241,
+        "Back then Down": 0x0351,
+        "Back then Tilt Left": 0x0502,
+        "Back then Tilt Right": 0x0513,
+        "None-G": 0x0000,
+    };
+    const rotation_options = Object.entries(rotation_dict)
+        .map(([label, value]) => `<option value=${value}>${label}</option>`)
+        .join("");
+    const rotation = `
+    <h3>Orientation:</h3>
+    <select id="block_r">
+        ${rotation_options}
+    </select>`;
+    const color = `
+    <h3>Color:</h3>
+    <input
+        type="number"
+        id="block_color"
+        min=0
+        max=63
+        step=1
+        value=${block.color.value}
+    >`;
+    kh1gbdiv.innerHTML = `
+    <div>
+        ${block_type}
+        ${block_coordinates}
+        ${rotation}
+        ${color}
+    </div>`;
+    gummi_block_callbacks(block);
+}
+
+function gummi_ship_callbacks(ship) {
+    const blockcount = document.getElementById("blockcount");
+    blockcount.addEventListener("change", () => {
+        if (blockcount.validity.valid)
+            ship.blockcount.value = blockcount.value;
+        blockcount.value = ship.blockcount.value;
+    });
+    const assemblyarea = document.getElementById("assemblyarea");
+    assemblyarea.addEventListener("change", (e) => {
+        if (e.target.validity.valid)
+            ship[e.target.name].value = e.target.value;
+        e.target.value = ship[e.target.name].value;
+    });
+    const transformpair = document.getElementById("transformpair");
+    transformpair.value = ship.transformpair.value;
+    transformpair.addEventListener("change", () => {
+        ship.transformpair.value = transformpair.value;
+    });
+    const name = document.getElementById("ship_name");
+    name.addEventListener("change", () => {
+        ship.name.encode(name.value);
+        name.value = ship.name.decode();
+    });
+}
+
+function gummi_block_callbacks(block) {
+    const block_type = document.getElementById("block_type");
+    block_type.value = block.id.value;
+    block_type.addEventListener("change", () => {
+        block.id.value = block_type.value;
+    });
+    const block_coordinates = document.getElementById("block_coordinates");
+    block_coordinates.addEventListener("change", (e) => {
+        if (e.target.name == "y") {
+            if (e.target.validity.valid)
+                block.y.value = e.target.value;
+            e.target.value = block.y.value;
+        }
+        else {
+            if (e.target.validity.valid)
+                block[e.target.name] = e.target.value;
+            e.target.value = block[e.target.name];
+        }
+    });
+    const rotation = document.getElementById("block_r");
+    rotation.value = block.r.value & ~0x1000;
+    rotation.addEventListener("change", () => {
+        block.r.value = rotation.value | (block.r.value & 0x1000);
+    });
+    const color = document.getElementById("block_color");
+    color.addEventListener("change", () => {
+        if (color.validity.valid)
+            block.color.value = color.value;
+        color.value = block.color.value;
+    });
 }
 
 function create_gummi_inventory() {

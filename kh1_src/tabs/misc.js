@@ -6,7 +6,7 @@ export function create_misc() {
         <input
             type="text"
             id="raft"
-            value=${window.kh1.raft.decode()}
+            value="${window.kh1.raft.decode()}"
         >
     </div>`;
     const weapon_options = Object.entries(window.kh1.weapon_dict)
@@ -31,8 +31,6 @@ export function create_misc() {
 function misc_callbacks() {
     const raft = document.getElementById("raft");
     raft.addEventListener("change", () => {
-        const n = window.kh1.raft.n;
-        const offset = window.kh1.raft.offset;
         window.kh1.raft.encode(raft.value);
         raft.value = window.kh1.raft.decode();
     });
