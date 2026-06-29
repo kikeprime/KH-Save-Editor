@@ -54,3 +54,22 @@ export class KH2FMCharacter extends KH2Character {
         this.abilitystyles = dt.Array(dt.U8, 0x04, offset+0xFC, data);
     }
 }
+
+export class KH2PlaceScript {
+    constructor(offset, data) {
+        this.map = new dt.U8(offset+0x00, data);
+        this.battle = new dt.U8(offset+0x01, data);
+        this.event = new dt.U8(offset+0x02, data);
+    }
+}
+
+export class KH2FMPlaceScript {
+    constructor(offset, data) {
+        this.map = new dt.U8(offset+0x00, data);
+        this.map2 = new dt.U8(offset+0x01, data);
+        this.battle = new dt.U8(offset+0x02, data);
+        this.battle2 = new dt.U8(offset+0x03, data);
+        this.event = new dt.U8(offset+0x04, data);
+        this.event2 = new dt.U8(offset+0x05, data);
+    }
+}
