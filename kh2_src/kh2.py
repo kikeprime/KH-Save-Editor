@@ -161,8 +161,8 @@ class KH2:
         self.synthesis_inventory = Array(U32, 0x32, 0x375C, self.data)
         self.synthesis_log = Array(U32, 0x32, 0x3824, self.data)
         
-        self.gummi_treasure_percents = (c_float*0x01A1)(*struct.unpack("<417f", bytearray(data[0xACE0:0xB364])))
-    
+        self.gummi_treasure_percents = Array(F32, 0x01A1, 0xACE0, self.data)
+
     def __parse_data_fm(self, data):
         placescripts = data[0x10:0x1C90]
         self.placescripts = {
