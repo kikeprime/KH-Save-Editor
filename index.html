@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>KH Save Editor</title>
+        <title>KH Save Editor Online</title>
         <link rel="stylesheet" type="text/css" href="static/style.css">
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     </head>
@@ -54,6 +54,7 @@
         <div id="app"></div>
         <script type="module">
             import KH1 from "./kh1_src/kh1.js";
+            import KH2 from "./kh2_src/kh2.js";
             const app = document.getElementById("app");
             const game = document.getElementById("game");
             const mainsavefile = document.getElementById("mainsavefile");
@@ -78,6 +79,36 @@
                         await window.kh1.loaded;
                         console.log(String(kh1));
                         kh1.menu();
+                        break;
+                    }
+                    case "kh2jp": {
+                        window.kh1 = null;
+                        window.kh2 = new KH2(file, 0);
+                        window.kh3 = null;
+                        window.khbbs = null;
+                        await window.kh2.loaded;
+                        console.log(String(kh2));
+                        kh2.menu();
+                        break;
+                    }
+                    case "kh2us": {
+                        window.kh1 = null;
+                        window.kh2 = new KH2(file, 1);
+                        window.kh3 = null;
+                        window.khbbs = null;
+                        await window.kh2.loaded;
+                        console.log(String(kh2));
+                        kh2.menu();
+                        break;
+                    }
+                    case "kh2fm": {
+                        window.kh1 = null;
+                        window.kh2 = new KH2(file, 2);
+                        window.kh3 = null;
+                        window.khbbs = null;
+                        await window.kh2.loaded;
+                        console.log(String(kh2));
+                        kh2.menu();
                         break;
                     }
                     default:
@@ -120,6 +151,20 @@
                                 if (e.name == "AbortError") return;
                                 return e;
                             }
+                        }
+                        break;
+                    }
+                    case "kh2jp":
+                    case "kh2us":
+                    case "kh2fm": {
+                        try {
+                            const picker = await window.showSaveFilePicker({suggestedName: kh2.file.name});
+                            const writable = await picker.createWritable();
+                            await writable.write(kh2.save());
+                            await writable.close();
+                        } catch (e) {
+                            if (e.name == "AbortError") return;
+                            return e;
                         }
                         break;
                     }
