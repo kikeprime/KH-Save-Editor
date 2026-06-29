@@ -1,4 +1,4 @@
-import * as dt from "/kh1_src/datatypes.js"
+import * as dt from "../kh1_src/datatypes.js"
 import dicts from "./kh2_dicts.js"
 
 export class KH2Character {

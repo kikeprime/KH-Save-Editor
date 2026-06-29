@@ -1,4 +1,4 @@
-import * as dt from "/kh1_src/datatypes.js"
+import * as dt from "../kh1_src/datatypes.js"
 import dicts from "./kh2_dicts.js"
 import * as h from "./kh2_helper.js"
 import * as tabs from "./tabs/index.js"
