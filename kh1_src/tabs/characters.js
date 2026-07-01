@@ -139,6 +139,29 @@ function create_stats(id) {
             value=${c.maxmp.value}
         >
     </div>`;
+    const submp = `
+    <div>
+        <h3>Sub MP:</h3>
+        <div style="display: flex; align-items: center; gap: 10px">
+            <input
+                type="number"
+                id="submp1"
+                min=0
+                max=255
+                step=1
+                value=${Math.floor(c.submp.value / 30)}
+            >
+            :
+            <input
+                type="number"
+                id="submp2"
+                min=0
+                max=29
+                step=1
+                value=${c.submp.value % 30}
+            >
+        </div>
+    </div>`;
     const maxap = `
     <div>
         <h3>Max AP:</h3>
@@ -224,6 +247,7 @@ function create_stats(id) {
             ${mp}
             ${maxmp}
         </div>
+        ${submp}
         ${maxap}
         <div style="display: flex; gap: 20px">
             ${strength}
@@ -248,6 +272,58 @@ function stats_callbacks(id) {
         if (level.validity.valid)
             c.level.value = level.value;
         level.value = c.level.value;
+    });
+    const hp = document.getElementById("hp");
+    hp.addEventListener("change", () => {
+        if (hp.validity.valid)
+            c.hp.value = hp.value;
+        hp.value = c.hp.value;
+    });
+    const maxhp = document.getElementById("maxhp");
+    maxhp.addEventListener("change", () => {
+        if (maxhp.validity.valid)
+            c.maxhp.value = maxhp.value;
+        maxhp.value = c.maxhp.value;
+    });
+    const mp = document.getElementById("mp");
+    mp.addEventListener("change", () => {
+        if (mp.validity.valid)
+            c.mp.value = mp.value;
+        mp.value = c.mp.value;
+    });
+    const maxmp = document.getElementById("maxmp");
+    maxmp.addEventListener("change", () => {
+        if (maxmp.validity.valid)
+            c.maxmp.value = maxmp.value;
+        maxmp.value = c.maxmp.value;
+    });
+    const submp1 = document.getElementById("submp1");
+    const submp2 = document.getElementById("submp2");
+    function submp_callback() {
+        if (submp1.validity.valid && submp2.validity.valid)
+            c.submp.value = Number(submp1.value) * 30 + Number(submp2.value);
+        submp1.value = Math.floor(c.submp.value / 30);
+        submp2.value = c.submp.value % 30;
+    }
+    submp1.addEventListener("change", submp_callback);
+    submp2.addEventListener("change", submp_callback);
+    const maxap = document.getElementById("maxap");
+    maxap.addEventListener("change", () => {
+        if (maxap.validity.valid)
+            c.maxap.value = maxap.value;
+        maxap.value = c.maxap.value;
+    });
+    const strength = document.getElementById("strength");
+    strength.addEventListener("change", () => {
+        if (strength.validity.valid)
+            c.strength.value = strength.value;
+        strength.value = c.strength.value;
+    });
+    const defense = document.getElementById("defense");
+    defense.addEventListener("change", () => {
+        if (defense.validity.valid)
+            c.defense.value = defense.value;
+        defense.value = c.defense.value;
     });
     const magic = document.getElementById("magic");
     magic.addEventListener("change", (e) => {
