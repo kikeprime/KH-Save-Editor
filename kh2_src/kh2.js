@@ -223,11 +223,11 @@ export default class KH2 {
                     tabs.create_general();
                     break;
                 }
-                /*
                 case "Characters": {
                     tabs.create_characters();
                     break;
                 }
+                /*
                 case "Drive Forms": {
                     tabs.create_forms();
                     break;
@@ -280,7 +280,7 @@ export default class KH2 {
     }
     
     get fm() {
-        return version == 2;
+        return this.version == 2;
     }
     
     toString() {

@@ -7,10 +7,16 @@ export function Array(datatype, n, offset, data) {
     }
     return new Proxy(array, {
         get(a, idx) {
-            return a[idx].value;
+            if (typeof idx == "string" && Number.isInteger(Number(idx)))
+                return a[idx].value;
+            return a[idx];
         },
         set(a, idx, value) {
-            a[idx].value = value;
+            if (typeof idx == "string" && Number.isInteger(Number(idx))) {
+                a[idx].value = value;
+                return true;
+            }
+            a[idx] = value;
             return true;
         },
     });
