@@ -501,7 +501,7 @@ function create_customize(id) {
         .map((label) => `\n\t<option value=${window.kh2.command_dict[label]}>${label}</option>`)
         .join("");
     const shortcuts = `
-    <h3>Shortcuts:</h3>
+    <h3 style="margin-bottom: 0px">Shortcuts:</h3>
     <div id="shortcuts" style="display: flex; gap: 20px">
         <div>
             <h4>Circle:</h4>

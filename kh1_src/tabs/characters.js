@@ -598,7 +598,7 @@ function create_customize_sora() {
     summons += "</div>";
     kh1chardiv.innerHTML = `
     <div>
-        <h3>Shortcuts:</h3>
+        <h3 style="margin-bottom: 0px">Shortcuts:</h3>
             ${shortcuts}
         <h3>Magic Levels:</h3>
             ${magiclevels}

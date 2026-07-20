@@ -60,7 +60,7 @@ export default class KH2 {
         this.forms = [];
         Object.entries(this.drive_form_dict)
             .forEach(([name, i]) => {
-                //this.forms.push(new h.KH2DriveForm(name, 0x2360 + i * 0x28, this.data));
+                this.forms.push(new h.KH2DriveForm(name, 0x2360 + i * 0x28, this.data));
             });
         this.current_form = new dt.U8(0x24C8, this.data);
         this.current_summon = new dt.U8(0x24C9, this.data);
@@ -94,6 +94,11 @@ export default class KH2 {
         Object.entries(this.character_dict)
             .forEach(([name, i]) => {
                 this.characters.push(new h.KH2Character(name, 0x1660 + i * 0xF4, this.data));
+            });
+        this.forms = [];
+        Object.entries(this.drive_form_dict)
+            .forEach(([name, i]) => {
+                this.forms.push(new h.KH2DriveForm(name, 0x22C4 + i * 0x28, this.data));
             });
         this.current_form = new dt.U8(0x242C, this.data);
         this.current_summon = new dt.U8(0x242D, this.data);
@@ -135,6 +140,11 @@ export default class KH2 {
         Object.entries(this.character_dict)
             .forEach(([name, i]) => {
                 this.characters.push(new h.KH2FMCharacter(name, 0x24F0 + i * 0x114, this.data));
+            });
+        this.forms = [];
+        Object.entries(this.drive_form_fm_dict)
+            .forEach(([name, i]) => {
+                this.forms.push(new h.KH2FMDriveForm(name, 0x32F4 + i * 0x38, this.data));
             });
         this.current_form = new dt.U8(0x3524, this.data);
         this.current_summon = new dt.U8(0x3525, this.data);
@@ -227,11 +237,11 @@ export default class KH2 {
                     tabs.create_characters();
                     break;
                 }
-                /*
                 case "Drive Forms": {
                     tabs.create_forms();
                     break;
                 }
+                /*
                 case "Inventory": {
                     tabs.create_inventory();
                     break;

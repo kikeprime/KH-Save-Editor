@@ -55,6 +55,33 @@ export class KH2FMCharacter extends KH2Character {
     }
 }
 
+export class KH2DriveForm {
+    constructor(name, offset, data) {
+        this.name = name;
+        this.data = data;
+        this.weapon = new dt.U16(offset+0x00, data);
+        this.level = new dt.U8(offset+0x02, data);
+        this.abilitylevel = new dt.U8(offset+0x03, data);
+        this.exp = new dt.U32(offset+0x04, data);
+        this.abilities = dt.Array(dt.U16, 0x10, offset+0x08, data);
+    }
+    
+    toString() {
+        return `${this.name}(
+    Level: ${this.level.value}
+    Ability Level: ${this.abilitylevel.value}
+    ${this.name != "Antiform" ? "EXP" : "Antipoints"}: ${this.exp.value}
+)`;
+    }
+}
+
+export class KH2FMDriveForm extends KH2DriveForm {
+    constructor(name, offset, data) {
+        super(name, offset, data);
+        this.abilities = dt.Array(dt.U16, 0x18, offset+0x08, data);
+    }
+}
+
 export class KH2PlaceScript {
     constructor(offset, data) {
         this.map = new dt.U8(offset+0x00, data);
@@ -71,5 +98,40 @@ export class KH2FMPlaceScript {
         this.battle2 = new dt.U8(offset+0x03, data);
         this.event = new dt.U8(offset+0x04, data);
         this.event2 = new dt.U8(offset+0x05, data);
+    }
+}
+
+export class KH2Minigame {
+    constructor(name, offset, data) {
+        this.name = name;
+        this.data = data;
+        this.type = new dt.U32(offset+0x00, data);
+        this.score = new dt.U32(offset+0x04, data);
+    }
+    
+    get value() {
+        switch (this.type.value) {
+            case 0: {
+                return `No Score (${this.score.value})`;
+            }
+            case 2: {
+                return `Round ${this.score.value}`;
+            }
+            case 3: {
+                return `${this.score.value} Points`;
+            }
+            case 4: {
+                const m = Math.floor(self.score.value / 3600);
+                const s = Math.floor((self.score.value % 3600) / 60);
+                const f = Math.floor(((self.score.value % 3600) % 60) * 100 / 60);
+                return `Time: ${m}'${s}''${f}`;
+            }
+            case 6: {
+                return `${this.score.value} Swings`;
+            }
+            default: {
+                return `${this.score.value} Points, Type: ${this.type.value}`;
+            }
+        }
     }
 }
