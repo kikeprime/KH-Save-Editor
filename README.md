@@ -40,7 +40,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - Playtime: Hours, minutes, seconds and the modulo 60 since it's stored in frames which are seconds times 60 (in NTSC builds; I haven't tested any PAL versions).
 - Characters:
     - Base Stats
-    - Sub MP: The orange MP bar. Remix versions are bugged, they might not load this.
+    - Sub MP: The orange MP bar. See the repo's wiki for how it works.
     - Elemental Resistances
     - Abilities
     - Equipment
@@ -78,9 +78,9 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - The kh1.py file documents more known fields than the current app can edit. You can for example reset the Xemnas fight.
 - PCSX2 attach:
     - Set slot to 0.
-    - Set if you play vanilla or FM; vanilla means the USA ROM, won't work with other vanilla ROMs
+    - Set if you play vanilla or FM; vanilla means the USA ROM, won't work with other vanilla ROMs.
     - Compatible with BOTH PCSX2 1.6.0 and PCSX2 Qt!
-    - Windows only
+    - Windows only.
     - Dumps the memory to file.
 
 ## KH2 features
@@ -138,10 +138,10 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - Munny
 - Difficulty
 - PPSSPP attach
-    - Works like the KH1 and KH2 PCSX2 attaches
+    - Works like the KH1 and KH2 PCSX2 attaches.
     - However, PSP KHBBSFM seems to have some kind of memory protection so you need to load the dumped save file to see the changes.
     - Works with both 32 bit and 64 bit exes.
-    - Windows only
+    - Windows only.
 
 ## KH3 features
 - Support for both raw encrypted and decrypted save files
