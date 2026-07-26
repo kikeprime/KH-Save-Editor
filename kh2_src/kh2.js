@@ -241,11 +241,11 @@ export default class KH2 {
                     tabs.create_forms();
                     break;
                 }
-                /*
                 case "Inventory": {
                     tabs.create_inventory();
                     break;
                 }
+                /*
                 case "Jiminy's Journal": {
                     tabs.create_journal();
                     break;

@@ -270,7 +270,7 @@ export function stock_dicts(obj) {
         .sort();
     const l = [];
     for (const k in obj.stock_dict) {
-        l.push(obj.stock_dict[k]);
+        l.push(...obj.stock_dict[k]);
     }
     obj.stock_dict["Key Items"] = Object.keys(obj.inventory_dict)
         .filter((k) => !l.includes(k))
