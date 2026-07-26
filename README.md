@@ -21,7 +21,7 @@ So I want to emphasize that the priority is to run the app on smartphones hence 
 ## How to use
 - Select the game and its version. The dropdown groups the selectable versions by game.
 - Select a file with the browser's file picker.
-- The doesn't care for now what file you provide so BE CAREFUL with the game choice!
+- The parser doesn't care for now what file you provide so BE CAREFUL with the game and version choices!
 - Make sure the selected game is correct before you press save. The game version doesn't matter but the game does.
 
 # Features
@@ -37,7 +37,7 @@ The feature list reflects the Dash version as of writing.
 - Playtime: Hours, minutes, seconds and the modulo 60 since it's stored in frames which are seconds times 60 (in NTSC builds; I haven't tested any PAL versions).
 - Characters:
     - Base Stats
-    - Sub MP: The orange MP bar. Remix versions are bugged, they might not load this.
+    - Sub MP: The orange MP bar. See the repo's wiki for how it works.
     - Elemental Resistances
     - Abilities
     - Equipment
