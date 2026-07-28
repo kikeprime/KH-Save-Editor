@@ -245,11 +245,11 @@ export default class KH2 {
                     tabs.create_inventory();
                     break;
                 }
-                /*
                 case "Jiminy's Journal": {
                     tabs.create_journal();
                     break;
                 }
+                /*
                 case "Config": {
                     tabs.create_config();
                     break;

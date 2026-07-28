@@ -107,7 +107,6 @@ export function create_general() {
 
 function create_playtime() {
     const playtime = window.kh2.get_playtime(window.kh2.playtimes[0]);
-    console.log(`Playtime: ${playtime}`);
     return `
     <h3>Playtime:</h3>
     <div id="playtime" style="display: flex; gap: 20px">
