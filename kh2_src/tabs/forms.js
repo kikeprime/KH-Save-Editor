@@ -132,49 +132,6 @@ function stats_callbacks(id) {
     });
 }
 
-function equipment_callbacks(id) {
-    const c = window.kh2.characters[id];
-    const armorslots = document.getElementById("armorslots");
-    armorslots.addEventListener("change", () => {
-        if (armorslots.validity.valid)
-            c.armorslots.value = armorslots.value;
-        armorslots.value = c.armorslots.value;
-    });
-    const armors = document.getElementById("armors");
-    armors.querySelectorAll("select").forEach(select => {
-        select.value = c.armors[select.name]; 
-    });
-    armors.addEventListener("change", (e) => {
-        c.armors[e.target.name] = e.target.value
-    });
-    const accessoryslots = document.getElementById("accessoryslots");
-    accessoryslots.addEventListener("change", () => {
-        if (accessoryslots.validity.valid)
-            c.accessoryslots.value = accessoryslots.value;
-        accessoryslots.value = c.accessoryslots.value;
-    });
-    const accessories = document.getElementById("accessories");
-    accessories.querySelectorAll("select").forEach(select => {
-        select.value = c.accessories[select.name]; 
-    });
-    accessories.addEventListener("change", (e) => {
-        c.accessories[e.target.name] = e.target.value
-    });
-    const itemslots = document.getElementById("itemslots");
-    itemslots.addEventListener("change", () => {
-        if (itemslots.validity.valid)
-            c.itemslots.value = itemslots.value;
-        itemslots.value = c.itemslots.value;
-    });
-    const items = document.getElementById("items");
-    items.querySelectorAll("select").forEach(select => {
-        select.value = c.items[select.name]; 
-    });
-    items.addEventListener("change", (e) => {
-        c.items[e.target.name] = e.target.value
-    });
-}
-
 function create_abilities(id) {
     const c = window.kh2.forms[id];
     const kh2formdiv = document.getElementById("kh2formdiv");
@@ -186,7 +143,7 @@ function create_abilities(id) {
         const checked = c.abilities[i] & (1 << 15) ? "checked" : "";
         abilities += `
         <div style="display: flex; align-items: center">
-            <input type="checkbox" value=${i} ${checked}>
+            <input class="kh2-ability" type="checkbox" value=${i} ${checked}>
             <select name=${i}>
                 ${ability_options}
             </select>

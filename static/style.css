@@ -8,3 +8,20 @@ label, select, input, button {
   font-size: 15px;
   height: 40px;
 }
+
+.kh2-ability {
+  appearance: none;
+  width: 40px;
+  height: 40px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.kh2-ability:checked {
+  background-image: url("ability-equip.png");
+}
+
+.kh2-ability:not(:checked) {
+  background-image: url("ability-unequip.png");
+}

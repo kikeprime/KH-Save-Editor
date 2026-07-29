@@ -415,7 +415,7 @@ function create_abilities(id) {
         const checked = c.abilities[i] & (1 << 15) ? "checked" : "";
         abilities += `
         <div style="display: flex; align-items: center">
-            <input type="checkbox" value=${i} ${checked}>
+            <input class="kh2-ability" type="checkbox" value=${i} ${checked}>
             <select name=${i}>
                 ${ability_options}
             </select>
