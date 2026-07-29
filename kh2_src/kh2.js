@@ -76,6 +76,13 @@ export default class KH2 {
         this.nobodies = dt.Array(dt.U32, 0x0C, 0x286C, this.data);
         this.rc_usage = dt.Array(dt.U16, 0x30, 0x28EE, this.data);
         this.limit_usage = dt.Array(dt.U16, 0x15, 0x2CEC, this.data);
+
+        this.minigames = [];
+        this.minigame_list
+            .filter((name, i) => i < 0x1C)
+            .forEach((name, i) => {
+                this.minigames.push(new h.KH2Minigame(name, 0x2E5C + i * 0x08, this.data));
+            });
     }
     
     parse_data_vanilla_usa() {
@@ -114,6 +121,13 @@ export default class KH2 {
         this.nobodies = dt.Array(dt.U32, 0x0C, 0x27D0, this.data);
         this.rc_usage = dt.Array(dt.U16, 0x30, 0x2852, this.data);
         this.limit_usage = dt.Array(dt.U16, 0x15, 0x2C50, this.data);
+ 
+        this.minigames = [];
+        this.minigame_list
+            .filter((name, i) => i < 0x1C)
+            .forEach((name, i) => {
+                this.minigames.push(new h.KH2Minigame(name, 0x2DC0 + i * 0x08, this.data));
+            });
         
         this.synthesis_creations = dt.Array(dt.U8, 5, 0x3741, this.data);
         this.synthesis_exp = new dt.U32(0x3758, this.data);
@@ -169,6 +183,12 @@ export default class KH2 {
         this.nobodies = dt.Array(dt.U32, 0x0C, 0x38C8, this.data);
         this.rc_usage = dt.Array(dt.U16, 0x33, 0x394A, this.data);
         this.limit_usage = dt.Array(dt.U16, 0x15, 0x3D48, this.data);
+
+        this.minigames = [];
+        this.minigame_list
+            .forEach((name, i) => {
+                this.minigames.push(new h.KH2Minigame(name, 0x3DB4 + i * 0x08, this.data));
+            });
         
         this.form_usage = dt.Array(dt.U16, 0x0A, 0x3FD6, this.data);
         this.weapon_backup = new dt.U16(0x3FEA, this.data);

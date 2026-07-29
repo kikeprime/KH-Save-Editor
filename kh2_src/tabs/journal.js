@@ -48,11 +48,11 @@ export function create_journal() {
                 tabs.create_treasures();
                 break;
             }
+            */
             case "Minigames": {
                 tabs.create_minigames();
                 break;
             }
-            */
             /*
             case "Synthesis Notes": {
                 tabs.create_synthesis_notes();

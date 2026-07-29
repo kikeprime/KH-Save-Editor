@@ -121,10 +121,13 @@ export class KH2Minigame {
                 return `${this.score.value} Points`;
             }
             case 4: {
-                const m = Math.floor(self.score.value / 3600);
-                const s = Math.floor((self.score.value % 3600) / 60);
-                const f = Math.floor(((self.score.value % 3600) % 60) * 100 / 60);
+                const m = Math.floor(this.score.value / 3600);
+                const s = Math.floor((this.score.value % 3600) / 60);
+                const f = Math.floor(((this.score.value % 3600) % 60) * 100 / 60);
                 return `Time: ${m}'${s}''${f}`;
+            }
+            case 5: {
+                return `${this.score.value} Points (Pooh)`;
             }
             case 6: {
                 return `${this.score.value} Swings`;
