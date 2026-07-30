@@ -253,6 +253,7 @@ def __create_abilities(c):
                 options=[{"label": "", "value": 0}],
                 value=[c.abilities[i] & (1 << 7)],
                 id={"type": "AbilityCheck", "index": c.name + ":" + str(i)},
+                inputClassName="kh2-ability",
             ),
             dcc.Dropdown(
                 options=[
@@ -367,6 +368,7 @@ def __create_shared_abilities():
                 options=[{"label": "", "value": 0}],
                 value=[kh1.shared_abilities[i] & (1 << 7)],
                 id={"type": "SharedAbilityCheck", "index": i},
+                inputClassName="kh2-ability",
             ),
             dcc.Dropdown(
                 options=[
