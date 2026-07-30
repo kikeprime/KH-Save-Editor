@@ -220,6 +220,7 @@ def __create_abilities(c):
                 options=[{"label": "", "value": (1 << 15)}],
                 value=[c.abilities[i] & (1 << 15)],
                 id={"type": "AbilityCheck", "index": c.name + ":" + str(i)},
+                inputClassName="kh2-ability",
             ),
             dcc.Dropdown(
                 options=[
