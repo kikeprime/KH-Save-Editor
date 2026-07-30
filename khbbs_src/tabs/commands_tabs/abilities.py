@@ -43,6 +43,8 @@ def create_abilities():
                     ],
                     value=[i for i in range(1, 6) if ability.active(i)],
                     id={"type": "Ability Active", "index": name},
+                    inputClassName="kh2-ability",
+                    labelStyle={"display": "flex", "align-items": "center"},
                 ),
             ]),
             html.Div([
