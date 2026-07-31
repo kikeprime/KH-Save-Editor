@@ -10,6 +10,14 @@ export function create_flags() {
             >
             Jiminy's Journal unlocked
         </label>
+        <label style="display: flex; align-items: center">
+            <input
+                type="checkbox"
+                value=${1 << 0}
+                ${window.kh1.journal_unlock.value & (1 << 0) ? "checked" : ""}
+            >
+            Heartless are powered up
+        </label>
     </div>`;
     kh1jdiv.innerHTML = `
     <div>

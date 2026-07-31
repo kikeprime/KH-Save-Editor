@@ -47,6 +47,8 @@ The feature list reflects the Dash version as of writing.
 - Magic levels
 - Unlocked Summons
 - Jiminy's Journal:
+    - Journal unlock flag
+    - Heartless are powered up (Battle Level increase) flag
     - Ansem's Report unlock flags
     - Character and Heartless journal entries
     - Heartless kill counts
