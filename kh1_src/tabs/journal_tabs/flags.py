@@ -7,9 +7,10 @@ def create_flags():
     unlocked = html.Div([
         dcc.Checklist(
             options=[
-                {"label": "Jiminy's Journal unlocked", "value": (1 << 3)}
+                {"label": "Jiminy's Journal unlocked", "value": (1 << 3)},
+                {"label": "Heartless are powered up", "value": (1 << 0)},
             ],
-            value=[kh1.journal_unlock.value & (1 << 3)],
+            value=[kh1.journal_unlock.value & (1 << i) for i in range(8)],
             id="Journal Unlock",
         ),
     ],
@@ -24,7 +25,8 @@ def create_flags():
 )
 def journal_unlock_callback(value):
     kh1 = utils.kh1
-    if (1 << 3) in value:
-        kh1.journal_unlock.value |= (1 << 3)
-    else:
-        kh1.journal_unlock.value &= ~(1 << 3)
+    for i in range(8):
+        if (1 << i) in value:
+            kh1.journal_unlock.value |= (1 << i)
+        else:
+            kh1.journal_unlock.value &= ~(1 << i)
