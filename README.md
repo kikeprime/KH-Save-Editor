@@ -50,6 +50,8 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 - Magic levels
 - Unlocked Summons
 - Jiminy's Journal:
+    - Journal unlock flag
+    - Heartless are powered up (Battle Level increase) flag
     - Ansem's Report unlock flags
     - Character and Heartless journal entries
     - Heartless kill counts
