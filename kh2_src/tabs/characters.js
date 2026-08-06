@@ -498,8 +498,8 @@ function create_customize(id) {
     </div>`;
     const shortcut_options = window.kh2.shortcut_list
         .filter((label) => window.kh2.fm || label != "Limit Form")
-        .map((label) => `\n\t<option value=${window.kh2.command_dict[label]}>${label}</option>`)
-        .join("");
+        .map((label) => `<option value=${window.kh2.command_dict[label]}>${label}</option>`)
+        .join("\n");
     const shortcuts = `
     <h3 style="margin-bottom: 0px">Shortcuts:</h3>
     <div id="shortcuts" style="display: flex; gap: 20px">
@@ -528,6 +528,69 @@ function create_customize(id) {
             </select>
         </div>
     </div>`;
+    let shortcut_sets = `<h3>Shortcut Sets (ReFined):</h3>\n<div id="shortcut_sets">`;
+    for (let i = 0; i < 3; i++) {
+        shortcut_sets += `
+        <h4 style="margin-bottom: 0px">Shortcut Set ${["A", "B", "C"][i]}:</h4>
+        <div style="display: flex; gap: 20px">
+            <div>
+                <h4>Circle:</h4>
+                <select name=${i*4+0}>
+                    ${shortcut_options}
+                </select>
+            </div>
+            <div>
+                <h4>Triangle:</h4>
+                <select name=${i*4+1}>
+                    ${shortcut_options}
+                </select>
+            </div>
+            <div>
+                <h4>Square:</h4>
+                <select name=${i*4+2}>
+                    ${shortcut_options}
+                </select>
+            </div>
+            <div>
+                <h4>Cross:</h4>
+                <select name=${i*4+3}>
+                    ${shortcut_options}
+                </select>
+            </div>
+        </div>`;
+    }
+    shortcut_sets += "</div>";
+    const limit_form_shortcut_options = window.kh2.limit_form_shortcut_list
+        .map((label) => `<option value=${window.kh2.command_dict[label]}>${label}</option>`)
+        .join("\n");
+    const limit_form_shortcuts = `
+    <h3 style="margin-bottom: 0px">Limit Form Limit Shortcuts (ReFined):</h3>
+    <div id="limit_form_shortcuts" style="display: flex; gap: 20px">
+        <div>
+            <h4>Circle:</h4>
+            <select name=0>
+                ${limit_form_shortcut_options}
+            </select>
+        </div>
+        <div>
+            <h4>Triangle:</h4>
+            <select name=1>
+                ${limit_form_shortcut_options}
+            </select>
+        </div>
+        <div>
+            <h4>Square:</h4>
+            <select name=2>
+                ${limit_form_shortcut_options}
+            </select>
+        </div>
+        <div>
+            <h4>Cross:</h4>
+            <select name=3>
+                ${limit_form_shortcut_options}
+            </select>
+        </div>
+    </div>`;
     kh2chardiv.innerHTML = `
     <div>
         <div style="display: flex; gap: 20px">
@@ -538,6 +601,8 @@ function create_customize(id) {
             </div>
         </div>
         ${id == 0 ? shortcuts : ""}
+        ${id == 0 && window.kh2.fm ? shortcut_sets : ""}
+        ${id == 0 && window.kh2.fm ? limit_form_shortcuts : ""}
     </div>`;
     customize_callbacks(id);
     if (id == 0)
@@ -575,4 +640,20 @@ function customize_sora_callbacks() {
     shortcuts.addEventListener("change", (e) => {
         window.kh2.shortcuts[e.target.name] = e.target.value
     });
+    if (window.kh2.fm) {
+        const limit_form_shortcuts = document.getElementById("limit_form_shortcuts");
+        limit_form_shortcuts.querySelectorAll("select").forEach(select => {
+            select.value = window.kh2.limit_form_shortcuts_refined[select.name]; 
+        });
+        limit_form_shortcuts.addEventListener("change", (e) => {
+            window.kh2.limit_form_shortcuts_refined[e.target.name] = e.target.value
+        });
+        const shortcut_sets = document.getElementById("shortcut_sets");
+        shortcut_sets.querySelectorAll("select").forEach(select => {
+            select.value = window.kh2.shortcut_sets_refined[select.name]; 
+        });
+        shortcut_sets.addEventListener("change", (e) => {
+            window.kh2.shortcut_sets_refined[e.target.name] = e.target.value
+        });
+    }
 }

@@ -194,6 +194,7 @@ export default class KH2 {
         this.shortcuts = dt.Array(dt.U16, 4, 0x36F8, this.data);
         this.bonuslevel = new dt.U32(0x3700, this.data);
         
+        this.limit_form_shortcuts_refined = dt.Array(dt.U16, 4, 0x371C, this.data);
         this.heartless = dt.Array(dt.U32, 0x48, 0x3748, this.data);
         this.nobodies = dt.Array(dt.U32, 0x0C, 0x38C8, this.data);
         this.rc_usage = dt.Array(dt.U16, 0x33, 0x394A, this.data);
@@ -207,6 +208,7 @@ export default class KH2 {
         
         this.form_usage = dt.Array(dt.U16, 0x0A, 0x3FD6, this.data);
         this.weapon_backup = new dt.U16(0x3FEA, this.data);
+        this.shortcut_sets_refined = dt.Array(dt.U16, 3*4, 0x10108, this.data);
     }
     
     __calculate_checksum(crc_table, offset, length, checksum) {
