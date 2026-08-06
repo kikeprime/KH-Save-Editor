@@ -332,7 +332,7 @@ def __create_customize_sora(c):
         )
         shortcut_sets = html.Div([
             html.Div([
-                html.H4(f"Shortcut Set {i+1}"),
+                html.H4(f"Shortcut Set {['A', 'B', 'C'][i]}"),
                 dcc.Markdown("Circle:"),
                 dcc.Dropdown(
                     options=[
