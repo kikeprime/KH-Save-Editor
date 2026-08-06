@@ -11,7 +11,7 @@ export function create_general() {
         </select>
     </div>`;
     const world_options = Object.entries(window.kh2.world_dict)
-        .map(([value, label]) => `\n\t<option value=${value}>${label}</option>`)
+        .map(([label, value]) => `\n\t<option value=${value}>${label}</option>`)
         .join("");
     const world = `
     <div>

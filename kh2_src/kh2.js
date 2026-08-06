@@ -43,11 +43,16 @@ export default class KH2 {
     parse_data_vanilla_jp() {
         this.placescripts = {};
         Object.entries(this.world_dict)
-            .forEach(([i, w]) => {
+            .forEach(([w, i]) => {
                 this.placescripts[w] = [];
                 for (let j = 0; j < 64; j++) {
                     this.placescripts[w].push(new h.KH2PlaceScript(0x10+i*64*3+j*3, this.data));
                 }
+            });
+        this.progress = {};
+        Object.entries(this.world_dict)
+            .forEach(([w, i]) => {
+                this.progress[w] = dt.Array(dt.U8, 0x20, 0x0E50 + i * 0x20, this.data);
             });
         this.munny = new dt.U32(0x1600, this.data);
         this.playtimes = dt.Array(dt.U32, 0x15, 0x1604, this.data);
@@ -88,11 +93,16 @@ export default class KH2 {
     parse_data_vanilla_usa() {
         this.placescripts = {};
         Object.entries(this.world_dict)
-            .forEach(([i, w]) => {
+            .forEach(([w, i]) => {
                 this.placescripts[w] = [];
                 for (let j = 0; j < 64; j++) {
                     this.placescripts[w].push(new h.KH2PlaceScript(0x10+i*64*3+j*3, this.data));
                 }
+            });
+        this.progress = {};
+        Object.entries(this.world_dict)
+            .forEach(([w, i]) => {
+                this.progress[w] = dt.Array(dt.U8, 0x20, 0x0E50 + i * 0x20, this.data);
             });
         this.munny = new dt.U32(0x1600, this.data);
         this.playtimes = dt.Array(dt.U32, 0x15, 0x1604, this.data);
@@ -140,11 +150,16 @@ export default class KH2 {
     parse_data_fm() {
         this.placescripts = {};
         Object.entries(this.world_dict)
-            .forEach(([i, w]) => {
+            .forEach(([w, i]) => {
                 this.placescripts[w] = [];
                 for (let j = 0; j < 64; j++) {
                     this.placescripts[w].push(new h.KH2FMPlaceScript(0x10+i*64*6+j*6, this.data));
                 }
+            });
+        this.progress = {};
+        Object.entries(this.world_dict)
+            .forEach(([w, i]) => {
+                this.progress[w] = dt.Array(dt.U8, 0x20, 0x1C90 + i * 0x20, this.data);
             });
         this.munny = new dt.U32(0x2440, this.data);
         this.playtimes = dt.Array(dt.U32, 0x15, 0x2444, this.data);
@@ -269,7 +284,6 @@ export default class KH2 {
                     tabs.create_journal();
                     break;
                 }
-                /*
                 case "Config": {
                     tabs.create_config();
                     break;
@@ -278,6 +292,7 @@ export default class KH2 {
                     tabs.create_worlds();
                     break;
                 }
+                /*
                 case "Misc": {
                     tabs.create_misc();
                     break;
