@@ -68,8 +68,7 @@ class KH2:
         placescripts = data[0x10:0x0E50]
         self.placescripts = {
             w: [
-                KH2PlaceScript(placescripts[i*64*3+j*3:i*64*3+j*3+3])\
-                for j in range(64)
+                KH2PlaceScript(i*64*3+j*3, self.data) for j in range(64)
             ]\
             for i, w in self.world_dict.items()
         }
@@ -113,8 +112,7 @@ class KH2:
         placescripts = data[0x10:0x0E50]
         self.placescripts = {
             w: [
-                KH2PlaceScript(placescripts[i*64*3+j*3:i*64*3+j*3+3])\
-                for j in range(64)
+                KH2PlaceScript(i*64*3+j*3, self.data) for j in range(64)
             ]\
             for i, w in self.world_dict.items()
         }
@@ -167,8 +165,7 @@ class KH2:
         placescripts = data[0x10:0x1C90]
         self.placescripts = {
             w: [
-                KH2FMPlaceScript(placescripts[i*64*6+j*6:i*64*6+j*6+6])\
-                for j in range(64)
+                KH2FMPlaceScript(i*64*6+j*6, self.data) for j in range(64)
             ] for i, w in self.world_dict.items()
         }
         # with open("saved/KH2FMPlaceScripts.json", "w") as jf:

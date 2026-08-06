@@ -2,6 +2,7 @@ import struct
 
 from ctypes import *
 from .kh2_dicts import *
+from kh1_src.datatypes import *
 
 
 class KH2Character:
@@ -70,7 +71,7 @@ class KH2Character:
 
     def __repr__(self):
         dicts(self)
-        return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.item_dict.keys())[self.weapon.value]})"
+        return f"{self.name}(Level: {self.level.value}, Weapon: {list(self.weapon_dict.keys())[self.weapon.value]})"
 
 
 class KH2FMCharacter(KH2Character):
@@ -131,26 +132,26 @@ class KH2FMDriveForm(KH2DriveForm):
 
 
 class KH2PlaceScript:
-    def __init__(self, data):
-        self.map = data[0]
-        self.battle = data[1]
-        self.event = data[2]
+    def __init__(self, offset, data):
+        self.map = U8(offset+0x00, data)
+        self.battle = U8(offset+0x01, data)
+        self.event = U8(offset+0x02, data)
 
     def __repr__(self):
-        return f"KH2PlaceScript({self.map}, {self.battle}, {self.event})"
+        return f"KH2PlaceScript({self.map.value}, {self.battle.value}, {self.event.value})"
 
 
 class KH2FMPlaceScript:
-    def __init__(self, data):
-        self.map = data[0]
-        self.map2 = data[1]
-        self.battle = data[2]
-        self.battle2 = data[3]
-        self.event = data[4]
-        self.event2 = data[5]
+    def __init__(self, offset, data):
+        self.map = U8(offset+0x00, data)
+        self.map2 = U8(offset+0x01, data)
+        self.battle = U8(offset+0x02, data)
+        self.battle2 = U8(offset+0x03, data)
+        self.event = U8(offset+0x04, data)
+        self.event2 = U8(offset+0x05, data)
     
     def __repr__(self):
-        return f"KH2FMPlaceScript({self.map}, {self.map2}, {self.battle}, {self.battle2}, {self.event}, {self.event2})"
+        return f"KH2FMPlaceScript({self.map.value}, {self.map2.value}, {self.battle.value}, {self.battle2.value}, {self.event.value}, {self.event2.value})"
 
 
 class KH2Minigame:
