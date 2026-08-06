@@ -113,6 +113,13 @@ def command_dicts(obj):
         "Valor Form", "Wisdom Form", "Limit Form",
         "Master Form", "Final Form", "Antiform",
     ]
+    obj.limit_form_shortcut_list = [
+        "Empty",
+        "Sonic Blade",
+        "Ars Arcanum",
+        "Strike Raid",
+        "Ragnarok",
+    ]
 
 def bestiary_dicts(obj):
     obj.heartless_dict = heartless_dict
