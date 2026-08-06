@@ -203,6 +203,7 @@ class KH2:
         self.shortcuts = Array(U16, 4, 0x36F8, self.data)
         self.bonuslevel = U32(0x3700, self.data)
         self.heartless = Array(U32, 0x48, 0x3748, self.data)
+        self.limit_form_shortcuts_refined = Array(U16, 4, 0x371C, self.data)
         self.nobodies = Array(U32, 0x0C, 0x38C8, self.data)
         self.rc_usage = Array(U16, 0x33, 0x394A, self.data)
         self.limit_usage = Array(U16, 0x15, 0x3D48, self.data)
@@ -215,6 +216,7 @@ class KH2:
         # At 0x4C42 starts The Nobodies tab's "New" flags.
         # After 0x4D40 there are Journal "New" flags.
         # From 0x4DA0 these affect the Puzzle Pieces tab.
+        self.shortcut_sets_refined = Array(U16, 3*4, 0x10108, self.data)
     
     def __save_shared(self):
         for c in self.characters:
