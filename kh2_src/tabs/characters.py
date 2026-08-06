@@ -243,7 +243,7 @@ def __create_customize_sora(c):
     circle = dcc.Dropdown(
         options=[
             {"label": k, "value": kh2.command_dict[k]}\
-            for k in kh2.shortcut_list if kh2.version == 2 or k != "Limit Form"
+            for k in kh2.shortcut_list if kh2.fm or k != "Limit Form"
         ],
         value=kh2.shortcuts[0],
         id="Circle Shortcut",
@@ -254,7 +254,7 @@ def __create_customize_sora(c):
     triangle = dcc.Dropdown(
         options=[
             {"label": k, "value": kh2.command_dict[k]}\
-            for k in kh2.shortcut_list if kh2.version == 2 or k != "Limit Form"
+            for k in kh2.shortcut_list if kh2.fm or k != "Limit Form"
         ],
         value=kh2.shortcuts[1],
         id="Triangle Shortcut",
@@ -265,7 +265,7 @@ def __create_customize_sora(c):
     square = dcc.Dropdown(
         options=[
             {"label": k, "value": kh2.command_dict[k]}\
-            for k in kh2.shortcut_list if kh2.version == 2 or k != "Limit Form"
+            for k in kh2.shortcut_list if kh2.fm or k != "Limit Form"
         ],
         value=kh2.shortcuts[2],
         id="Square Shortcut",
@@ -276,7 +276,7 @@ def __create_customize_sora(c):
     cross = dcc.Dropdown(
         options=[
             {"label": k, "value": kh2.command_dict[k]}\
-            for k in kh2.shortcut_list if kh2.version == 2 or k != "Limit Form"
+            for k in kh2.shortcut_list if kh2.fm or k != "Limit Form"
         ],
         value=kh2.shortcuts[3],
         id="Cross Shortcut",
@@ -284,12 +284,120 @@ def __create_customize_sora(c):
         clearable=False,
         style={"width": 200},
     )
+    # ReFined stuff
+    if kh2.fm:
+        lcircle = dcc.Dropdown(
+            options=[
+                {"label": k, "value": kh2.command_dict[k]}\
+                for k in kh2.limit_form_shortcut_list
+            ],
+            value=kh2.limit_form_shortcuts_refined[0],
+            id="Circle Limit Form Shortcut",
+            searchable=False,
+            clearable=False,
+            style={"width": 200},
+        )
+        ltriangle = dcc.Dropdown(
+            options=[
+                {"label": k, "value": kh2.command_dict[k]}\
+                for k in kh2.limit_form_shortcut_list
+            ],
+            value=kh2.limit_form_shortcuts_refined[1],
+            id="Triangle Limit Form Shortcut",
+            searchable=False,
+            clearable=False,
+            style={"width": 200},
+        )
+        lsquare = dcc.Dropdown(
+            options=[
+                {"label": k, "value": kh2.command_dict[k]}\
+                for k in kh2.limit_form_shortcut_list
+            ],
+            value=kh2.limit_form_shortcuts_refined[2],
+            id="Square Limit Form Shortcut",
+            searchable=False,
+            clearable=False,
+            style={"width": 200},
+        )
+        lcross = dcc.Dropdown(
+            options=[
+                {"label": k, "value": kh2.command_dict[k]}\
+                for k in kh2.limit_form_shortcut_list
+            ],
+            value=kh2.limit_form_shortcuts_refined[3],
+            id="Cross Limit Form Shortcut",
+            searchable=False,
+            clearable=False,
+            style={"width": 200},
+        )
+        shortcut_sets = html.Div([
+            html.Div([
+                html.H4(f"Shortcut Set {i+1}"),
+                dcc.Markdown("Circle:"),
+                dcc.Dropdown(
+                    options=[
+                        {"label": k, "value": kh2.command_dict[k]}\
+                        for k in kh2.shortcut_list
+                    ],
+                    value=kh2.shortcut_sets_refined[i*4+0],
+                    id={"type": "Shortcut Set", "index": i*4+0},
+                    searchable=False,
+                    clearable=False,
+                    style={"width": 200},
+                ),
+                dcc.Markdown("Triangle:"),
+                dcc.Dropdown(
+                    options=[
+                        {"label": k, "value": kh2.command_dict[k]}\
+                        for k in kh2.shortcut_list
+                    ],
+                    value=kh2.shortcut_sets_refined[i*4+1],
+                    id={"type": "Shortcut Set", "index": i*4+1},
+                    searchable=False,
+                    clearable=False,
+                    style={"width": 200},
+                ),
+                dcc.Markdown("Square:"),
+                dcc.Dropdown(
+                    options=[
+                        {"label": k, "value": kh2.command_dict[k]}\
+                        for k in kh2.shortcut_list
+                    ],
+                    value=kh2.shortcut_sets_refined[i*4+2],
+                    id={"type": "Shortcut Set", "index": i*4+2},
+                    searchable=False,
+                    clearable=False,
+                    style={"width": 200},
+                ),
+                dcc.Markdown("Cross:"),
+                dcc.Dropdown(
+                    options=[
+                        {"label": k, "value": kh2.command_dict[k]}\
+                        for k in kh2.shortcut_list
+                    ],
+                    value=kh2.shortcut_sets_refined[i*4+3],
+                    id={"type": "Shortcut Set", "index": i*4+3},
+                    searchable=False,
+                    clearable=False,
+                    style={"width": 200},
+                ),
+            ]) for i in range(3)
+        ])
     return html.Div([
         html.Div([html.H3("Shortcuts:")]),
         html.Div([dcc.Markdown("Circle:"), circle]),
         html.Div([dcc.Markdown("Triangle:"), triangle]),
         html.Div([dcc.Markdown("Square:"), square]),
         html.Div([dcc.Markdown("Cross:"), cross]),
+        html.Div([
+            html.H3("Shortcut Sets (ReFined):"),
+            shortcut_sets,
+            html.H3("Limit Form Shortcuts (ReFined):"),
+            html.Div([dcc.Markdown("Circle:"), lcircle]),
+            html.Div([dcc.Markdown("Triangle:"), ltriangle]),
+            html.Div([dcc.Markdown("Square:"), lsquare]),
+            html.Div([dcc.Markdown("Cross:"), lcross]),
+        ]) if kh2.fm else None,
     ])
 
 def __create_customize(c):
@@ -470,6 +578,28 @@ def customize_sora_callback(circle, triangle, square, cross):
     kh2.shortcuts[1] = triangle
     kh2.shortcuts[2] = square
     kh2.shortcuts[3] = cross
+
+@callback(
+    Input("Circle Limit Form Shortcut", "value"),
+    Input("Triangle Limit Form Shortcut", "value"),
+    Input("Square Limit Form Shortcut", "value"),
+    Input("Cross Limit Form Shortcut", "value"),
+    Input({"type": "Shortcut Set", "index": ALL}, "value"),
+)
+def refined_shortcuts_callback(
+    circle,
+    triangle,
+    square,
+    cross,
+    shortcut_sets,
+):
+    kh2 = utils.kh2
+    kh2.limit_form_shortcuts_refined[0] = circle
+    kh2.limit_form_shortcuts_refined[1] = triangle
+    kh2.limit_form_shortcuts_refined[2] = square
+    kh2.limit_form_shortcuts_refined[3] = cross
+    for i in range(len(kh2.shortcut_sets_refined)):
+        kh2.shortcut_sets_refined[i] = shortcut_sets[i]
 
 @callback(
     Input({"type": "AutoReload", "character": ALL, "index": ALL}, "value"),
