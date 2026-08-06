@@ -42,4 +42,8 @@ command_dict = {
     "Mega-Ether": 0xF3,
     "Megalixir": 0xF4,
     "Limit Form": 0x02A1,
+    "Ragnarok": 0x02AB,
+    "Sonic Blade": 0x02BA,
+    "Ars Arcanum": 0x02BD,
+    "Strike Raid": 0x02C0,
 }
