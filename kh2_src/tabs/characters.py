@@ -330,9 +330,21 @@ def __create_customize_sora(c):
             clearable=False,
             style={"width": 200},
         )
+        shortcut_set = dcc.Dropdown(
+            options=[
+                {"label": "Shortcut Set A", "value": 0},
+                {"label": "Shortcut Set B", "value": 1},
+                {"label": "Shortcut Set C", "value": 2},
+            ],
+            value=kh2.shortcut_set_refined.value,
+            id="Current Shortcut Set",
+            searchable=False,
+            clearable=False,
+            style={"width": 200},
+        )
         shortcut_sets = html.Div([
             html.Div([
-                html.H4(f"Shortcut Set {['A', 'B', 'C'][i]}"),
+                html.H4(f"Shortcut Set {['A', 'B', 'C'][i]}:"),
                 dcc.Markdown("Circle:"),
                 dcc.Dropdown(
                     options=[
@@ -391,6 +403,7 @@ def __create_customize_sora(c):
         html.Div([dcc.Markdown("Cross:"), cross]),
         html.Div([
             html.H3("Shortcut Sets (ReFined):"),
+            html.Div([dcc.Markdown("Current Shortcut Set:"), shortcut_set]),
             shortcut_sets,
             html.H3("Limit Form Shortcuts (ReFined):"),
             html.Div([dcc.Markdown("Circle:"), lcircle]),
@@ -584,6 +597,7 @@ def customize_sora_callback(circle, triangle, square, cross):
     Input("Triangle Limit Form Shortcut", "value"),
     Input("Square Limit Form Shortcut", "value"),
     Input("Cross Limit Form Shortcut", "value"),
+    Input("Current Shortcut Set", "value"),
     Input({"type": "Shortcut Set", "index": ALL}, "value"),
 )
 def refined_shortcuts_callback(
@@ -591,6 +605,7 @@ def refined_shortcuts_callback(
     triangle,
     square,
     cross,
+    shortcut_set,
     shortcut_sets,
 ):
     kh2 = utils.kh2
@@ -598,6 +613,7 @@ def refined_shortcuts_callback(
     kh2.limit_form_shortcuts_refined[1] = triangle
     kh2.limit_form_shortcuts_refined[2] = square
     kh2.limit_form_shortcuts_refined[3] = cross
+    kh2.shortcut_set_refined.value = shortcut_set
     for i in range(len(kh2.shortcut_sets_refined)):
         kh2.shortcut_sets_refined[i] = shortcut_sets[i]
 
