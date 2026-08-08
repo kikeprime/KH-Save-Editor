@@ -208,6 +208,8 @@ export default class KH2 {
         
         this.form_usage = dt.Array(dt.U16, 0x0A, 0x3FD6, this.data);
         this.weapon_backup = new dt.U16(0x3FEA, this.data);
+        
+        this.shortcut_set_refined = new dt.U8(0x10104, this.data);
         this.shortcut_sets_refined = dt.Array(dt.U16, 3*4, 0x10108, this.data);
     }
     

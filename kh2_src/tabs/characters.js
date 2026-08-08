@@ -528,7 +528,15 @@ function create_customize(id) {
             </select>
         </div>
     </div>`;
-    let shortcut_sets = `<h3>Shortcut Sets (ReFined):</h3>\n<div id="shortcut_sets">`;
+    let shortcut_sets = `
+    <h3>Shortcut Sets (ReFined):</h3>
+    <h4>Current Shortcut Set:</h4>
+    <select id="shortcut_set">
+        <option value=0>Shortcut Set A</option>
+        <option value=1>Shortcut Set B</option>
+        <option value=2>Shortcut Set C</option>
+    </select>
+    <div id="shortcut_sets">`;
     for (let i = 0; i < 3; i++) {
         shortcut_sets += `
         <h4 style="margin-bottom: 0px">Shortcut Set ${["A", "B", "C"][i]}:</h4>
@@ -647,6 +655,11 @@ function customize_sora_callbacks() {
         });
         limit_form_shortcuts.addEventListener("change", (e) => {
             window.kh2.limit_form_shortcuts_refined[e.target.name] = e.target.value
+        });
+        const shortcut_set = document.getElementById("shortcut_set");
+        shortcut_set.value = window.kh2.shortcut_set_refined.value; 
+        shortcut_set.addEventListener("change", () => {
+            window.kh2.shortcut_set_refined.value = shortcut_set.value
         });
         const shortcut_sets = document.getElementById("shortcut_sets");
         shortcut_sets.querySelectorAll("select").forEach(select => {
