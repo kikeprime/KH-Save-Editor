@@ -216,6 +216,9 @@ class KH2:
         # At 0x4C42 starts The Nobodies tab's "New" flags.
         # After 0x4D40 there are Journal "New" flags.
         # From 0x4DA0 these affect the Puzzle Pieces tab.
+        
+        # Area around 0x10000, 0x10020 and 0x10030 are proved to be used by ReFined.
+        self.shortcut_set_refined = U8(0x10104, self.data)
         self.shortcut_sets_refined = Array(U16, 3*4, 0x10108, self.data)
     
     def __save_shared(self):
