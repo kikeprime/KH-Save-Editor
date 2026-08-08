@@ -9,6 +9,7 @@ def create_flags():
             options=[
                 {"label": "Jiminy's Journal unlocked", "value": (1 << 3)},
                 {"label": "Heartless are powered up", "value": (1 << 0)},
+                {"label": "Gummi Ship Save Point option is usable", "value": (1 << 1)},
             ],
             value=[kh1.journal_unlock.value & (1 << i) for i in range(8)],
             id="Journal Unlock",
