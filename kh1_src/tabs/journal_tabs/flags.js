@@ -18,6 +18,14 @@ export function create_flags() {
             >
             Heartless are powered up
         </label>
+        <label style="display: flex; align-items: center">
+            <input
+                type="checkbox"
+                value=${1 << 1}
+                ${window.kh1.journal_unlock.value & (1 << 1) ? "checked" : ""}
+            >
+            Gummi Ship Save Point option is usable
+        </label>
     </div>`;
     kh1jdiv.innerHTML = `
     <div>
