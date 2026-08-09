@@ -4,6 +4,7 @@ from .dicts import *
 def dicts(obj):
     main_dicts(obj)
     item_dicts(obj)
+    stock_dicts(obj)
     command_dicts(obj)
     world_dicts(obj)
     bestiary_dicts(obj)
@@ -76,62 +77,3 @@ def main_dicts(obj):
         "Stitch": 0x03,
         "Peter Pan": 0x04,
     }
-
-def item_dicts(obj):
-    obj.item_dict = item_dict
-    obj.weapon_dict = weapon_dict
-    obj.armor_list = armor_list
-    obj.accessory_list = accessory_list
-    obj.ability_list = ability_list
-    
-    obj.inventory_dict = inventory_dict
-    obj.stock_dict = stock_dict.copy()
-    obj.stock_dict["Unused"] = sorted([
-        k for k in obj.inventory_dict\
-        if "Unused" in k\
-        or "Dummy" in k\
-        and k != "Antiform Dummy"
-    ])
-    l = []
-    for k in obj.stock_dict:
-        l += obj.stock_dict[k]
-    obj.stock_dict["Key Items"] = sorted([k for k in obj.inventory_dict if k not in l])
-
-def command_dicts(obj):
-    obj.command_dict = command_dict
-    obj.shortcut_list = [
-        "Empty",
-        "Fire", "Fira", "Firaga",
-        "Blizzard", "Blizzara", "Blizzaga",
-        "Thunder", "Thundara", "Thundaga",
-        "Cure", "Cura", "Curaga",
-        "Magnet", "Magnera", "Magnega",
-        "Reflect", "Reflera", "Reflega",
-        "Potion", "Hi-Potion", "Mega-Potion",
-        "Ether", "Mega-Ether",
-        "Elixir", "Megalixir",
-        "Valor Form", "Wisdom Form", "Limit Form",
-        "Master Form", "Final Form", "Antiform",
-    ]
-    obj.limit_form_shortcut_list = [
-        "Empty",
-        "Sonic Blade",
-        "Ars Arcanum",
-        "Strike Raid",
-        "Ragnarok",
-    ]
-
-def bestiary_dicts(obj):
-    obj.heartless_dict = heartless_dict
-    obj.heartless_list = heartless_list
-    obj.nobody_dict = nobody_dict
-    obj.nobody_list = nobody_list
-    obj.rc_dict = rc_dict
-    obj.rc_list_dict = rc_list_dict
-    obj.limit_dict = limit_dict
-    obj.limit_list = limit_list
-
-def minigame_dicts(obj):
-    obj.minigame_list = minigame_list
-    obj.minigame_list_dict = minigame_list_dict
-    obj.minigame_type_dict = minigame_type_dict
