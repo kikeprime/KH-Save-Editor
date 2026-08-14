@@ -270,19 +270,19 @@ def viewer_callback(idx):
     fig = go.Figure()
     for i in range(kh1.gummiships[idx].blockcount.value):
         block = kh1.gummiships[idx].blocks[i]
-        color = block.colors[block.color]
-        if block.id in d:
-            r, b = kh1_rotation(block.r & ~0x1000)
-            v = d[block.id]["v"]
+        color = block.colors[block.color.value]
+        if block.id.value in d:
+            r, b = kh1_rotation(block.r.value & ~0x1000)
+            v = d[block.id.value]["v"]
             v = v @ r.T + b
             fig.add_trace(
                 go.Mesh3d(
                     x=v[:,0]+block.x,
                     y=v[:,1]+block.y,
                     z=v[:,2]+block.z,
-                    i=d[block.id]["f"][:,0],
-                    j=d[block.id]["f"][:,1],
-                    k=d[block.id]["f"][:,2],
+                    i=d[block.id.value]["f"][:,0],
+                    j=d[block.id.value]["f"][:,1],
+                    k=d[block.id.value]["f"][:,2],
                     color=color,
                 )
             )

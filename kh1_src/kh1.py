@@ -7,79 +7,77 @@ from .kh1_dicts import dicts
 from .pcsx2 import PCSX2
 
 
-class KH1Character(Structure):
+class KH1Character:
     """
     Class for representing the character struct.
     So in C/C++ I'd use a struct instead.
     The structure is 0x74 bytes long.
     """
-    _fields_ = [
-        ("level", c_ubyte),
-        ("hp", c_ubyte),
-        ("maxhp", c_ubyte),
-        ("mp", c_ubyte),
-        ("maxmp", c_ubyte),
-        ("maxap", c_ubyte),
-        ("strength", c_ubyte),
-        ("defense", c_ubyte),
-        ("resistances", c_ubyte*16),
-        ("accessoryslots", c_ubyte),
-        ("accessories", c_ubyte*8),
-        ("itemslots", c_ubyte),
-        ("items", c_ubyte*8),
-        ("unk2a", c_ubyte*8),
-        ("weapon", c_ubyte),
-        ("unk33", c_ubyte*5),
-        ("submp", c_ushort),
-        ("unk3a", c_ubyte*2),
-        ("exp", c_uint),
-        ("abilities", c_ubyte*48),
-        ("magic", c_ubyte),
-        ("unk71", c_ubyte*3),
-    ]
-    
-    def init(name, data):
-        obj = KH1Character.from_buffer_copy(bytearray(data))
-        obj.name = name
-        return obj
+    def __init__(self, name, offset, data):
+        self.name = name
+        self.offset = offset
+        self.data = data
+        self.level = U8(offset+0x00, data)
+        self.hp = U8(offset+0x01, data)
+        self.maxhp = U8(offset+0x02, data)
+        self.mp = U8(offset+0x03, data)
+        self.maxmp = U8(offset+0x04, data)
+        self.maxap = U8(offset+0x05, data)
+        self.strength = U8(offset+0x06, data)
+        self.defense = U8(offset+0x07, data)
+        self.resistances = Array(U8, 0x10, offset+0x08, data)
+        self.accessoryslots = U8(offset+0x18, data)
+        self.accessories = Array(U8, 0x08, offset+0x19, data)
+        self.itemslots = U8(offset+0x21, data)
+        self.items = Array(U8, 0x08, offset+0x22, data)
+        # data[0x2A:0x32] is unknown
+        self.weapon = U8(offset+0x32, data)
+        # data[0x33:0x38] is unknown
+        self.submp = U16(offset+0x38, data)
+        # data[0x3A:0x3C] is unknown
+        self.exp = U32(offset+0x3C, data)
+        self.abilities = Array(U8, 0x30, offset+0x40, data)
+        self.magic = U8(offset+0x70, data)
+        # data[0x71:0x74] is unknown
 
 
-class KH1GummiBlock(Structure):
+class KH1GummiBlock:
     """
     Class for representing the Gummi Blocks of Gummi Ships.
     The structure is 0x0C bytes long.
     """
-    _fields_ = [
-        ("xz", c_ubyte),
-        ("y", c_ubyte),
-        ("r", c_ushort),
-        ("id", c_ubyte),
-        # data[6] is always 0x21
-        ("unk5", c_ubyte*3),
-        ("color", c_ubyte),
-        # data[0x09:0x0C] seems to be unused
-        ("unk9", c_ubyte*3),
-    ]
-    
-    def init(data):
-        obj = KH1GummiBlock.from_buffer_copy(bytearray(data))
-        return obj
+    def __init__(self, offset, data):
+        self.offset = offset
+        self.data = data
+        self.xz = U8(offset+0x00, data)
+        self._y = U8(offset+0x01, data)
+        self.r = U16(offset+0x02, data)
+        self.id = U8(offset+0x04, data)
+        self.color = U8(offset+0x08, data)
 
     @property
     def x(self):
-        return self.xz % 16
+        return self.xz.value % 16
     
     @x.setter
     def x(self, value):
-        self.xz = self.z * 16 + value
+        self.xz.value = self.z * 16 + value
+
+    @property
+    def y(self):
+        return self._y.value
+    
+    @y.setter
+    def y(self, value):
+        self._y.value = value
     
     @property
     def z(self):
-        return self.xz // 16
+        return self.xz.value // 16
     
     @z.setter
     def z(self, value):
-        self.xz = value * 16 + self.x
+        self.xz.value = value * 16 + self.x
     
     colors = [
         "white", "yellow", "orange", "red", "purple", "blue", "lightblue", "green",
@@ -94,7 +92,7 @@ class KH1GummiBlock(Structure):
     
     def __repr__(self):
         dicts(self)
-        return f"{self.gummi_block_dict[self.id]}(X={self.x}, Y={self.y}, Z={self.z}, R={self.r:04X}, C={self.color})"
+        return f"{self.gummi_block_dict[self.id.value]}(X={self.x}, Y={self.y}, Z={self.z}, R={self.r.value:04X}, C={self.color.value})"
 
 
 class KH1GummiShip:
@@ -102,22 +100,35 @@ class KH1GummiShip:
     Class for representing the Gummi Ships.
     The structure is 0x0F70 bytes long.
     """
-    def __init__(self, data):
-        self.data = (c_ubyte*0x0F70)(*data)
-        self.blockcount = U16(0x00, self.data)
-        self.x = U16(0x02, self.data)
-        self.y = U16(0x04, self.data)
-        self.z = U16(0x06, self.data)
-        self.transformpair = U16(0x08, self.data)
-        self.name = bytearray(data[0x4C:0x56])
-        blocks = data[0x6C:0x09CC]
-        self.blocks = [KH1GummiBlock.init(blocks[i*0x0C:(i+1)*0x0C]) for i in range(200)]
+    def __init__(self, offset, data):
+        self.offset = offset
+        self.data = data
+        self.blockcount = U16(offset+0x00, data)
+        self.x = U16(offset+0x02, data)
+        self.y = U16(offset+0x04, data)
+        self.z = U16(offset+0x06, data)
+        self.transformpair = U16(offset+0x08, data)
+        self.name = bytearray(data[offset+0x4C:offset+0x56])
+        blocks = data[offset+0x6C:offset+0x09CC]
+        self.blocks = [KH1GummiBlock(offset+0x6C+i*0x0C, data) for i in range(200)]
     
     def save(self):
-        self.data[0x4C:0x56] = self.name
-        for i in range(len(self.blocks)):
-            self.data[0x6C+i*0x0C:0x6C+(i+1)*0x0C] = bytearray(self.blocks[i])
-        return self.data
+        self.data[self.offset+0x4C:self.offset+0x56] = self.name
+
+
+class KH1GummiMission:
+    def __init__(self, offset, data):
+        self.offset = offset
+        self.data = data
+        self.enemies = U32(offset+0x00, data)
+        self.obstacles = U32(offset+0x04, data)
+        self.power = U32(offset+0x08, data)
+        self.armor = U32(offset+0x0C, data)
+        self.shields = U32(offset+0x10, data)
+        self.special = U32(offset+0x14, data)
+        self.blocks = U32(offset+0x18, data)
+        self.blueprints = U32(offset+0x1C, data)
+        self.state = U32(offset+0x20, data)
 
 
 class KH1:
@@ -135,35 +146,40 @@ class KH1:
             else:
                 with open("files/kh1/" + self.filename, "rb") as file:
                     self.data = (c_ubyte*0x16C00)(*file.read())
-            self.__parse_data(self.data)
+            self.__parse_data()
             self.sysdata = None
             if os.path.exists(os.path.join("files", "kh1", self.filename, "system.bin")):
                 with open(os.path.join("files", "kh1", self.filename, "system.bin"), "rb") as sysfile:
                     self.sysdata = (c_ubyte*0x400)(*sysfile.read())
+                self.level_sys = U32(0x08, self.sysdata)
+                self.munny_sys = U32(0x0C, self.sysdata)
                 # Playtime in seconds * 60 but possibly in seconds * 50 in PAL versions
                 self.playtime = U32(0x10, self.sysdata)
+                self.difficulty_sys = U32(0x14, self.sysdata)
+                if self.fm:
+                    self.difficulty_sys = U32(0x38, self.sysdata)
         if attach:
             self.sysdata = None
             self.addr = 0x3F8380 if self.fm else 0x3F1C90
             self.pcsx2 = PCSX2(self.addr, 0x16C00, self)
-            self.__parse_data(self.data)
+            self.__parse_data()
 
-    def __parse_data(self, data):
+    def __parse_data(self):
         # For FM the currently loaded save file starts at 0x3F8380 in the memory according to the RetroAchievements code notes.
         # For vanilla USA it starts at 0x3F1C90.
         # For vanilla JP it starts at 0x3F2080.
         self.header = U32(0x00, self.data) # 4 in vanilla, 5 in FM
         # self.characters = data[0x04:0x048C]
-        self.sora = KH1Character.init("Sora", data[0x04:0x04+0x74])
-        self.donald = KH1Character.init("Donald", data[0x04+0x74:0x04+2*0x74])
-        self.goofy = KH1Character.init("Goofy", data[0x04+2*0x74:0x04+3*0x74])
-        self.tarzan = KH1Character.init("Tarzan", data[0x04+3*0x74:0x04+4*0x74])
-        self.pooh = KH1Character.init("Winnie the Pooh", data[0x04+4*0x74:0x04+5*0x74])
-        self.aladdin = KH1Character.init("Aladdin", data[0x04+5*0x74:0x04+6*0x74])
-        self.ariel = KH1Character.init("Ariel", data[0x04+6*0x74:0x04+7*0x74])
-        self.jack = KH1Character.init("Jack Skellington", data[0x04+7*0x74:0x04+8*0x74])
-        self.peterpan = KH1Character.init("Peter Pan", data[0x04+8*0x74:0x04+9*0x74])
-        self.beast = KH1Character.init("Beast", data[0x04+9*0x74:0x04+10*0x74])
+        self.sora = KH1Character("Sora", 0x04, self.data)
+        self.donald = KH1Character("Donald", 0x04+0x74, self.data)
+        self.goofy = KH1Character("Goofy", 0x04+2*0x74, self.data)
+        self.tarzan = KH1Character("Tarzan", 0x04+3*0x74, self.data)
+        self.pooh = KH1Character("Winnie the Pooh", 0x04+4*0x74, self.data)
+        self.aladdin = KH1Character("Aladdin", 0x04+5*0x74, self.data)
+        self.ariel = KH1Character("Ariel", 0x04+6*0x74, self.data)
+        self.jack = KH1Character("Jack Skellington", 0x04+7*0x74, self.data)
+        self.peterpan = KH1Character("Peter Pan", 0x04+8*0x74, self.data)
+        self.beast = KH1Character("Beast", 0x04+9*0x74, self.data)
         self.characters = [
             self.sora, self.donald, self.goofy,
             self.tarzan, self.pooh, self.aladdin,
@@ -237,7 +253,7 @@ class KH1:
 
         self.world_progresses = Array(U8, 20, 0x1500, self.data)
         
-        self.raft = bytearray(data[0x16D1:0x16DB])
+        self.raft = bytearray(self.data[0x16D1:0x16DB])
         
         # Entries existing since vanilla JP use data[0x16E3:0x16F3]
         # Sephiroth, Ice Titan, Jasmine 2 use 0x16F7
@@ -271,14 +287,14 @@ class KH1:
         self.room = U32(0x2044, self.data)
         self.flag = U32(0x2048, self.data)
 
-        self.GUMI = bytearray(data[0x2400:0x2404]).decode() # ASCII string "GUMI"
+        self.GUMI = bytearray(self.data[0x2400:0x2404]).decode() # ASCII string "GUMI"
         # data[0x2404] seems to be a version code, 0 for vanilla and 1 for FM, needs further investigation.
         self.gummi_tutorial = U8(0x2405, self.data)
         # data[0x2409:0x2410] is [1, 2, 3, 4, 5, 6, 7] for me
         self.selectedship = U8(0x2410, self.data)
         # self.gummiships = data[0x241C:0xBE7C], based on the start offsets of each ship
         # which I've confirmed but the last ship overlaps with the 1st 4 blocks which are also confirmed.
-        self.gummiships = [KH1GummiShip(data[0x241C+i*0x0F70:0x241C+(i+1)*0x0F70]) for i in range(10)]
+        self.gummiships = [KH1GummiShip(0x241C+i*0x0F70, self.data) for i in range(10)]
         self.gummiblocks = Array(U8, 108, 0xBE78, self.data)
 
         self.gummi_decelerate = U32(0xBF01, self.data)
@@ -300,9 +316,8 @@ class KH1:
         self.datainstall = U32(0x16418, self.data) # JP/FM
         self.difficulty = U32(0x16418, self.data) # USA/EU
         self.munny = U32(0x1641C, self.data)
-        self.journal_complete = U8(0x16474, self.data) # 0x0A if complete
         # 4 bytes for each party member; I've found the rule so I'll update the dicts later
-        self.customize = data[0x16804:0x16828]
+        self.customize = self.data[0x16804:0x16828]
 
         # Final Mix stuff
         if self.fm:
@@ -328,15 +343,15 @@ class KH1:
             self.gummi_slaser = U32(0xBF59, self.data)
             self.gummi_mlaser = U32(0xBF5D, self.data)
             self.gummi_llaser = U32(0xBF61, self.data)
+            gummi_missions = self.data[0xC0E0:0xCC60]
+            self.gummi_missions = [KH1GummiMission(0xC0E0+i*16*4, self.data) for i in range(46)]
             self.difficulty = U32(0x1642C, self.data)
+            self.journal_complete = U8(0x16474, self.data)
     
     def __save_shared(self):
-        for i in range(len(self.characters)):
-            self.data[0x04+i*0x74:0x04+(i+1)*0x74] = bytearray(self.characters[i])
         self.data[0x16D1:0x16DB] = self.raft
-        self.data[0x1997:0x19BF:4] = bytearray(self.chronicles)
-        for i in range(len(self.gummiships)):
-            self.data[0x241C+i*0x0F70:0x241C+(i+1)*0x0F70] = bytearray(self.gummiships[i].save())
+        for gummiship in self.gummiships:
+            gummiship.save()
         # self.data[0x16804:0x16828] = bytearray(self.customize)
 
     def __save_vanilla(self):
