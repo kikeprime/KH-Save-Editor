@@ -128,7 +128,7 @@ class KH1GummiMission:
         self.special = U32(offset+0x14, data)
         self.blocks = U32(offset+0x18, data)
         self.blueprints = U32(offset+0x1C, data)
-        self.state = U32(offset+0x20, data)
+        self.world = U32(offset+0x20, data)
 
 
 class KH1:
