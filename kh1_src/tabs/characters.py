@@ -26,7 +26,7 @@ def __create_stats(c):
     exp = dcc.Input(
         id={"type": "EXP", "index": c.name},
         type="number",
-        value=c.exp,
+        value=c.exp.value,
         min=0,
         max=999999,
         step=1,
@@ -35,7 +35,7 @@ def __create_stats(c):
     level = dcc.Input(
         id={"type": "Level", "index": c.name},
         type="number",
-        value=c.level,
+        value=c.level.value,
         min=1,
         max=100,
         step=1,
@@ -45,7 +45,7 @@ def __create_stats(c):
         dcc.Input(
             id={"type": "HP", "index": c.name},
             type="number",
-            value=c.hp,
+            value=c.hp.value,
             min=0,
             max=255,
             step=1,
@@ -55,7 +55,7 @@ def __create_stats(c):
         dcc.Input(
             id={"type": "Max HP", "index": c.name},
             type="number",
-            value=c.maxhp,
+            value=c.maxhp.value,
             min=0,
             max=255,
             step=1,
@@ -68,7 +68,7 @@ def __create_stats(c):
         dcc.Input(
             id={"type": "MP", "index": c.name},
             type="number",
-            value=c.mp,
+            value=c.mp.value,
             min=0,
             max=255,
             step=1,
@@ -78,7 +78,7 @@ def __create_stats(c):
         dcc.Input(
             id={"type": "Max MP", "index": c.name},
             type="number",
-            value=c.maxmp,
+            value=c.maxmp.value,
             min=0,
             max=255,
             step=1,
@@ -91,9 +91,9 @@ def __create_stats(c):
         dcc.Input(
             id={"type": "Sub MP 1", "index": c.name},
             type="number",
-            value=c.submp // 30,
+            value=c.submp.value // 30,
             min=0,
-            max=c.mp,
+            max=c.mp.value,
             step=1,
             style={"width": 50},
         ),
@@ -101,7 +101,7 @@ def __create_stats(c):
         dcc.Input(
             id={"type": "Sub MP 2", "index": c.name},
             type="number",
-            value=c.submp % 30,
+            value=c.submp.value % 30,
             min=0,
             max=29,
             step=1,
@@ -113,7 +113,7 @@ def __create_stats(c):
     maxap = dcc.Input(
         id={"type": "Max AP", "index": c.name},
         type="number",
-        value=c.maxap,
+        value=c.maxap.value,
         min=0,
         max=255,
         step=1,
@@ -122,7 +122,7 @@ def __create_stats(c):
     strength = dcc.Input(
         id={"type": "Strength", "index": c.name},
         type="number",
-        value=c.strength,
+        value=c.strength.value,
         min=0,
         max=255,
         step=1,
@@ -131,7 +131,7 @@ def __create_stats(c):
     defense = dcc.Input(
         id={"type": "Defense", "index": c.name},
         type="number",
-        value=c.defense,
+        value=c.defense.value,
         min=0,
         max=255,
         step=1,
@@ -139,7 +139,7 @@ def __create_stats(c):
     )
     magic = dcc.Checklist(
         [{"label": kh1.magicnames[i], "value": (1 << i)} for i in range(7)],
-        [(1 << i) for i in range(7) if c.magic & (1 << i)],
+        [(1 << i) for i in range(7) if c.magic.value & (1 << i)],
         id={"type": "Magic", "index": c.name},
         style={"margin-bottom": 10},
     )
@@ -189,7 +189,7 @@ def __create_equipment(c):
         options=[
             {"label": k, "value": v} for k, v in kh1.weapon_dict.items()
         ],
-        value=c.weapon,
+        value=c.weapon.value,
         id={"type": "Weapon", "index": c.name},
         searchable=False,
         clearable=False,
@@ -198,7 +198,7 @@ def __create_equipment(c):
     accessoryslots = dcc.Input(
         id={"type": "Accessory Slots", "index": c.name},
         type="number",
-        value=c.accessoryslots,
+        value=c.accessoryslots.value,
         min=0,
         max=8,
         step=1,
@@ -219,7 +219,7 @@ def __create_equipment(c):
     itemslots = dcc.Input(
         id={"type": "Item Slots", "index": c.name},
         type="number",
-        value=c.itemslots,
+        value=c.itemslots.value,
         min=0,
         max=8,
         step=1,
@@ -436,17 +436,17 @@ def stats_callback(
     kh1 = utils.kh1
     id = kh1.character_dict[ids[0]["index"]]
     try:
-        kh1.characters[id].exp = exp[0]
-        kh1.characters[id].level = level[0]
-        kh1.characters[id].hp = hp[0]
-        kh1.characters[id].maxhp = maxhp[0]
-        kh1.characters[id].mp = mp[0]
-        kh1.characters[id].maxmp = maxmp[0]
-        kh1.characters[id].submp = submp1[0] * 30 + submp2[0]
-        kh1.characters[id].maxap = maxap[0]
-        kh1.characters[id].strength = strength[0]
-        kh1.characters[id].defense = defense[0]
-        kh1.characters[id].magic = sum(magic[0]) if len(magic[0]) > 0 else 0
+        kh1.characters[id].exp.value = exp[0]
+        kh1.characters[id].level.value = level[0]
+        kh1.characters[id].hp.value = hp[0]
+        kh1.characters[id].maxhp.value = maxhp[0]
+        kh1.characters[id].mp.value = mp[0]
+        kh1.characters[id].maxmp.value = maxmp[0]
+        kh1.characters[id].submp.value = submp1[0] * 30 + submp2[0]
+        kh1.characters[id].maxap.value = maxap[0]
+        kh1.characters[id].strength.value = strength[0]
+        kh1.characters[id].defense.value = defense[0]
+        kh1.characters[id].magic.value = sum(magic[0]) if len(magic[0]) > 0 else 0
     except:
         pass
 
@@ -462,9 +462,9 @@ def equipment_callback(weapon, accessoryslots, accessories, itemslots, items, id
     kh1 = utils.kh1
     id = kh1.character_dict[ids[0]["index"]]
     try:
-        kh1.characters[id].weapon = weapon[0]
-        kh1.characters[id].accessoryslots = accessoryslots[0]
-        kh1.characters[id].itemslots = itemslots[0]
+        kh1.characters[id].weapon.value = weapon[0]
+        kh1.characters[id].accessoryslots.value = accessoryslots[0]
+        kh1.characters[id].itemslots.value = itemslots[0]
         for i in range(8):
             kh1.characters[id].accessories[i] = accessories[i]
             kh1.characters[id].items[i] = items[i]
