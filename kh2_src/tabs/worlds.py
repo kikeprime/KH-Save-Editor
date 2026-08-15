@@ -73,7 +73,7 @@ def __create_worlds(w, tab):
             html.H3("Progress Flags:"),
             html.Div([
                 dcc.Checklist(
-                    options=[{"label": k, "value":(1 << v % 16)}],
+                    options=[{"label": k, "value": (1 << v % 16)}],
                     value=[kh2.progress[w][v//16] & (1 << v % 16)],
                     id={"type": "Progress", "world": w, "index": v},
                     style={"margin-bottom": 10},
@@ -97,6 +97,7 @@ def __create_placescripts(w):
             html.Table([
                 html.Thead([
                     html.Tr([
+                        html.Th("ID", scope="col"),
                         html.Th("Map", scope="col"),
                         html.Th("Map 2", scope="col"),
                         html.Th("Battle", scope="col"),
@@ -107,6 +108,9 @@ def __create_placescripts(w):
                 ]),
                 html.Tbody([
                     html.Tr([
+                        html.Td([
+                            html.Label(i),
+                        ]),
                         html.Td([
                             dcc.Input(
                                 id={"type": "Place Script Map", "world": w, "index": i},
@@ -188,6 +192,7 @@ def __create_placescripts(w):
             html.Table([
                 html.Thead([
                     html.Tr([
+                        html.Th("ID", scope="col"),
                         html.Th("Map", scope="col"),
                         html.Th("Battle", scope="col"),
                         html.Th("Event", scope="col"),
@@ -195,6 +200,9 @@ def __create_placescripts(w):
                 ]),
                 html.Tbody([
                     html.Tr([
+                        html.Td([
+                            html.Label(i),
+                        ]),
                         html.Td([
                             dcc.Input(
                                 id={"type": "Place Script Map", "world": w, "index": i},
