@@ -87,6 +87,16 @@ function create_placescripts(w) {
                 <td>
                     <input
                         type="number"
+                        min=0
+                        max=63
+                        step=1
+                        value=${i}
+                        disabled=true
+                    >
+                </td>
+                <td>
+                    <input
+                        type="number"
                         name="map"
                         min=0
                         max=255
@@ -151,6 +161,7 @@ function create_placescripts(w) {
             <h3>Place Scripts:</h3>
             <table style="border-collapse: collapse; border: 2px solid">
                 <thead>
+                    <th scope="col">ID</th>
                     <th scope="col">Map</th>
                     <th scope="col">Map 2</th>
                     <th scope="col">Battle</th>
@@ -169,6 +180,16 @@ function create_placescripts(w) {
         for (let i = 0; i < window.kh2.placescripts[w].length; i++) {
             tbody += `
             <tr>
+                <td>
+                    <input
+                        type="number"
+                        min=0
+                        max=63
+                        step=1
+                        value=${i}
+                        disabled=true
+                    >
+                </td>
                 <td>
                     <input
                         type="number"
@@ -206,6 +227,7 @@ function create_placescripts(w) {
             <h3>Place Scripts:</h3>
             <table style="border-collapse: collapse; border: 2px solid">
                 <thead>
+                    <th scope="col">ID</th>
                     <th scope="col">Map</th>
                     <th scope="col">Battle</th>
                     <th scope="col">Event</th>

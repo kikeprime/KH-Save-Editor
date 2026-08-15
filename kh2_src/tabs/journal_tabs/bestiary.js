@@ -60,12 +60,38 @@ function create_heartless() {
                 .join("")
         }
     </div>`;
+    function world(x) {
+        return window.kh2.boss_dict[x]["world"]
+    }
+    function flag(x) {
+        return window.kh2.progress_dict[world(x)][window.kh2.boss_dict[x]["flag"]]
+    }
+    const bosses = `
+    <div id="progress">
+        ${
+            window.kh2.boss_list
+                .filter((k) => k != "Twilight Thorn")
+                .map((label) => `
+                <label style="display: flex; align-items: center">
+                    <input
+                        type="checkbox"
+                        name="${world(label)}"
+                        value=${flag(label)}
+                        ${window.kh2.progress[world(label)][Math.floor(flag(label) / 16)] & (1 << flag(label) % 16) ? "checked" : ""}
+                    >
+                    ${label}
+                </label>`)
+                .join("")
+        }
+    </div>`;
     kh2jbdiv.innerHTML = `
     <div>
         <h3>Heartless Kill Counts:</h3>
         ${heartless}
+        ${bosses}
     </div>`;
     heartless_callbacks();
+    progress_flags_callbacks();
 }
 
 function heartless_callbacks() {
@@ -98,12 +124,49 @@ function create_nobodies() {
                 .join("")
         }
     </div>`;
+    function world(x) {
+        return window.kh2.boss_dict[x]["world"]
+    }
+    function flag(x) {
+        return window.kh2.progress_dict[world(x)][window.kh2.boss_dict[x]["flag"]]
+    }
+    const bosses = `
+    <div id="progress">
+        ${
+            window.kh2.boss_list
+                .filter((k) => k == "Twilight Thorn")
+                .map((label) => `
+                <label style="display: flex; align-items: center">
+                    <input
+                        type="checkbox"
+                        name="${world(label)}"
+                        value=${flag(label)}
+                        ${window.kh2.progress[world(label)][Math.floor(flag(label) / 16)] & (1 << flag(label) % 16) ? "checked" : ""}
+                    >
+                    ${label}
+                </label>`)
+                .join("")
+        }
+    </div>`;
     kh2jbdiv.innerHTML = `
     <div>
         <h3>Nobody Kill Counts:</h3>
         ${nobodies}
+        ${bosses}
     </div>`;
     nobodies_callbacks();
+    progress_flags_callbacks();
+}
+
+function progress_flags_callbacks() {
+    const progress = document.getElementById("progress");
+    progress.addEventListener("change", (e) => {
+        const w = e.target.name
+        if (e.target.checked)
+            window.kh2.progress[w][Math.floor(e.target.value / 16)] |= (1 << e.target.value % 16);
+        else
+            window.kh2.progress[w][Math.floor(e.target.value / 16)] &= ~(1 << e.target.value % 16);
+    });
 }
 
 function nobodies_callbacks() {

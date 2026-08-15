@@ -6,6 +6,7 @@ import * as tabs from "./tabs/index.js"
 class KH1Character {
     constructor(name, offset, data) {
         this.name = name;
+        this.offset = offset;
         this.data = data;
         this.level = new dt.U8(offset+0x00, data);
         this.hp = new dt.U8(offset+0x01, data);
@@ -134,7 +135,13 @@ export default class KH1 {
         const buffer = await this.sysfile.arrayBuffer();
         this.sysbuffer = new Uint8Array(buffer);
         this.sysdata = new DataView(buffer);
+        
+        this.level_sys = new dt.U32(0x08, this.sysdata);
+        this.munny_sys = new dt.U32(0x0C, this.sysdata);
         this.playtime = new dt.U32(0x10, this.sysdata);
+        this.difficulty_sys = new dt.U32(0x14, this.sysdata);
+        if (this.fm)
+            this.difficulty_sys = new dt.U32(0x38, this.sysdata);
     }
     
     parse_data() {
@@ -262,7 +269,6 @@ export default class KH1 {
         this.sound = new dt.U32(0x16414, this.data);
         this.datainstall = new dt.U32(0x16418, this.data);
         this.munny = new dt.U32(0x1641C, this.data);
-        this.journal_complete = new dt.U8(0x16474, this.data);
 
         // Final Mix stuff
         if (this.fm) {
@@ -289,6 +295,7 @@ export default class KH1 {
             this.gummi_mlaser = new dt.U32(0xBF5D, this.data);
             this.gummi_llaser = new dt.U32(0xBF61, this.data);
             this.difficulty = new dt.U32(0x1642C, this.data);
+            this.journal_complete = new dt.U8(0x16474, this.data);
         }
     }
 
