@@ -34,8 +34,22 @@ def __create_the_heartless():
             style={"margin-top": 20, "gap": 10},
         ) for k in kh2.heartless_list if kh2.heartless_dict[k] < len(kh2.heartless)
     ])
+    world = lambda x: kh2.boss_dict[x]["world"]
+    flag = lambda x: kh2.progress_dict[world(x)][kh2.boss_dict[x]["flag"]]
+    bosses = html.Div([
+        html.Div([
+            dcc.Checklist(
+                id={"type": "Progress", "world": world(k), "index": flag(k)},
+                options=[{"label": k, "value": (1 << flag(k) % 16)}],
+                value=[kh2.progress[world(k)][flag(k)//16] & (1 << flag(k) % 16)],
+            ),
+        ],
+            style={"margin-top": 20, "gap": 10},
+        ) for k in kh2.boss_list[:-1]
+    ])
     return html.Div([
         heartless,
+        bosses,
     ])
 
 def __create_nobodies():
@@ -56,8 +70,22 @@ def __create_nobodies():
             style={"margin-top": 20, "gap": 10},
         ) for k in kh2.nobody_list
     ])
+    world = lambda x: kh2.boss_dict[x]["world"]
+    flag = lambda x: kh2.progress_dict[world(x)][kh2.boss_dict[x]["flag"]]
+    bosses = html.Div([
+        html.Div([
+            dcc.Checklist(
+                id={"type": "Progress", "world": world(k), "index": flag(k)},
+                options=[{"label": k, "value": (1 << flag(k) % 16)}],
+                value=[kh2.progress[world(k)][flag(k)//16] & (1 << flag(k) % 16)],
+            ),
+        ],
+            style={"margin-top": 20, "gap": 10},
+        ) for k in kh2.boss_list[-1:]
+    ])
     return html.Div([
         nobodies,
+        bosses,
     ])
 
 def __create_rcs():
