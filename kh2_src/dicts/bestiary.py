@@ -121,18 +121,54 @@ def bestiary_dicts(obj):
         "Necromancer",
         "Aerial Champ",
     ]
+    obj.boss_dict = {
+        "Twilight Thorn": {
+            "world": "Twilight Town",
+            "flag": "TT_008_END_L",
+        },
+        "Shadow Stalker & Dark Thorn": {
+            "world": "Beast's Castle",
+            "flag": "BB_119_END",
+        },
+        "Thresholder & Possessor": {
+            "world": "Beast's Castle",
+            "flag": "BB_bb11_ms102",
+        },
+        "Volcanic Lord & Blizzard Lord": {
+            "world": "Agrabah",
+            "flag": "AL_117_END",
+        },
+        "Storm Rider": {
+            "world": "The Land of Dragons",
+            "flag": "MU_215_END_L",
+        },
+        "Groundshaker": {
+            "world": "Pride Lands",
+            "flag": "LK_214_END",
+        },
+        "Prison Keeper": {
+            "world": "Halloween Town",
+            "flag": "NM_nm03_ms103",
+        },
+        "Illuminator": {
+            "world": "Port Royal",
+            "flag": "CA_125_END",
+        },
+        "Grim Reaper": {
+            "world": "Port Royal",
+            "flag": "CA_216_END",
+        },
+    }
     obj.boss_list = [
-        "Volcanic Lord",
-        "Blizzard Lord",
-        "Thresholder",
-        "Possessor",
-        "Shadow Stalker",
-        "Dark Thorn",
+        "Volcanic Lord & Blizzard Lord",
+        "Thresholder & Possessor",
+        "Shadow Stalker & Dark Thorn",
         "Illuminator",
         "Grim Reaper",
         "Groundshaker",
         "Prison Keeper",
         "Storm Rider",
+        "Twilight Thorn",
     ]
     obj.nobody_dict = {
         "Dusk": 0x00,
