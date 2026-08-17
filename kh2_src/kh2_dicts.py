@@ -9,6 +9,7 @@ def dicts(obj):
     world_dicts(obj)
     bestiary_dicts(obj)
     minigame_dicts(obj)
+    treasure_dicts(obj)
 
 def main_dicts(obj):
     obj.character_dict = {

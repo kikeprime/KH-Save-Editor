@@ -74,8 +74,10 @@ class KH2:
         }
         # with open("saved/KH2PlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
-        progress = data[0x0E50:0x10B0]
+        progress = data[0x0E50:0x1090]
         self.progress = {w: Array(U8, 0x20, 0x0E50 + i*0x20, self.data) for i, w in self.world_dict.items()}
+        treasures = data[0x156C:0x159D]
+        self.treasures = Array(U8, 0x31, 0x156C, self.data)
         self.munny = U32(0x1600, self.data)
         self.playtimes = Array(U32, 0x15, 0x1604, self.data)
         self.difficulty = U8(0x1658, self.data)
@@ -118,8 +120,10 @@ class KH2:
         }
         # with open("saved/KH2PlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
-        progress = data[0x0E50:0x10B0]
+        progress = data[0x0E50:0x1090]
         self.progress = {w: Array(U8, 0x20, 0x0E50 + i*0x20, self.data) for i, w in self.world_dict.items()}
+        treasures = data[0x156C:0x159D]
+        self.treasures = Array(U8, 0x31, 0x156C, self.data)
         self.munny = U32(0x1600, self.data)
         self.playtimes = Array(U32, 0x15, 0x1604, self.data)
         self.difficulty = U8(0x1658, self.data)
@@ -154,7 +158,9 @@ class KH2:
         minigames = data[0x2DC0:0x2EA0]
         self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
         
-        self.synthesis_creations = Array(U8, 5, 0x3741, self.data)
+        self.item_command = U8(0x36E8, self.data)
+        
+        self.synthesis_creations = Array(U8, 6, 0x3740, self.data)
         self.synthesis_exp = U32(0x3758, self.data)
         self.synthesis_inventory = Array(U32, 0x32, 0x375C, self.data)
         self.synthesis_log = Array(U32, 0x32, 0x3824, self.data)
@@ -170,8 +176,10 @@ class KH2:
         }
         # with open("saved/KH2FMPlaceScripts.json", "w") as jf:
             # json.dump(self.placescripts, jf, indent=4, default=str)
-        progress = data[0x1C90:0x2150]
+        progress = data[0x1C90:0x1ED0]
         self.progress = {w: Array(U8, 0x20, 0x1C90 + i*0x20, self.data) for i, w in self.world_dict.items()}
+        treasures = data[0x23AC:0x23E0]
+        self.treasures = Array(U8, 0x34, 0x23AC, self.data)
         self.munny = U32(0x2440, self.data)
         self.playtimes = Array(U32, 0x15, 0x2444, self.data)
         self.difficulty = U8(0x2498, self.data)
@@ -212,6 +220,10 @@ class KH2:
         self.form_usage = Array(U16, 0x0A, 0x3FD6, self.data)
         self.weapon_backup = U16(0x3FEA, self.data)
         # At 0x4438 starts something like a 0x60 long struct 15? times.
+        self.synthesis_creations = Array(U8, 8, 0x4A10, self.data)
+        self.synthesis_exp = U32(0x4A30, self.data)
+        self.synthesis_inventory = Array(U32, 0x3C, 0x4A34, self.data)
+        self.synthesis_log = Array(U32, 0x3C, 0x4B34, self.data)
         # At 0x4C38 starts The Heartless tab's "New" flags.
         # At 0x4C42 starts The Nobodies tab's "New" flags.
         # After 0x4D40 there are Journal "New" flags.
