@@ -55,6 +55,7 @@
         <script type="module">
             import KH1 from "./kh1_src/kh1.js";
             import KH2 from "./kh2_src/kh2.js";
+            import KH3 from "./kh3_src/kh3.js";
             const app = document.getElementById("app");
             const game = document.getElementById("game");
             const mainsavefile = document.getElementById("mainsavefile");
@@ -109,6 +110,16 @@
                         await window.kh2.loaded;
                         console.log(String(kh2));
                         kh2.menu();
+                        break;
+                    }
+                    case "kh3rmpc": {
+                        window.kh1 = null;
+                        window.kh2 = null;
+                        window.kh3 = new KH3(file, 3, "");
+                        window.khbbs = null;
+                        await window.kh3.loaded;
+                        console.log(String(kh3));
+                        kh3.menu();
                         break;
                     }
                     default:
@@ -168,6 +179,27 @@
                         }
                         break;
                     }
+                    case "kh3rmpc": {
+                        try {
+                            const picker = await window.showSaveFilePicker({suggestedName: kh3.file.name});
+                            const writable = await picker.createWritable();
+                            await writable.write(kh3.save(true));
+                            await writable.close();
+                        } catch (e) {
+                            if (e.name == "AbortError") return;
+                            return e;
+                        }
+                        try {
+                            const picker = await window.showSaveFilePicker({suggestedName: kh3.file.name+".decrypted"});
+                            const writable = await picker.createWritable();
+                            await writable.write(kh3.save(false));
+                            await writable.close();
+                        } catch (e) {
+                            if (e.name == "AbortError") return;
+                            return e;
+                        }
+                        break;
+                    }
                 }
             });
         </script>
@@ -180,5 +212,8 @@
             });
             eruda.position({x: 500, y: 20});
         </script>
+        <script src="https://cdn.sheetjs.com/crc-32-latest/package/crc32.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-md5"></script>
+        <script src="https://cdn.jsdelivr.net/npm/aes-js/index.js"></script>
     </body>
 </html>
