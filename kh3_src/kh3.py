@@ -7,6 +7,7 @@ import zlib
 from Crypto.Cipher import AES
 from ctypes import *
 from .kh3_dicts import dicts
+from kh1_src.datatypes import *
 
 
 class KH3Character:
@@ -31,54 +32,39 @@ class KH3:
             if self.data[:4] != bytearray("S@vE", "utf-8"):
                 self.decrypt()
                 assert(self.data[:4] == bytearray("S@vE", "utf-8"))
-            self.__parse_data(memoryview(self.data))
+            self.mv = memoryview(self.data)
+            self.__parse_data()
     
-    def __parse_data(self, data):
-        self.header = bytearray(data[0x00:0x04]).decode() # "S@vE"
-        self.filesize = c_uint(int.from_bytes(data[0x04:0x08][::-1]))
-        self.major_version = c_ushort(int.from_bytes(data[0x08:0x0A][::-1]))
-        self.minor_version = c_ushort(int.from_bytes(data[0x0A:0x0C][::-1]))
-        self.checksum = c_uint(int.from_bytes(data[0x0C:0x10][::-1]))
-        self.difficulty = c_ubyte(data[0x14])
-        self.world_logo = c_ubyte(data[0x18])
-        self.playtime = c_uint(int.from_bytes(data[0x20:0x24][::-1]))
-        self.exp = c_uint(int.from_bytes(data[0x24:0x28][::-1]))
-        self.munny = c_uint(int.from_bytes(data[0x28:0x2C][::-1]))
-        self.level = c_ubyte(data[0x2C])
-        self.desire = c_ubyte(data[0x30])
-        self.power = c_ubyte(data[0x31])
-        self.party = (c_ubyte*5)(*data[0x32:0x37])
-        self.save_clear = c_ubyte(data[0x39])
-        self.save_location = c_ubyte(data[0x54])
-        self.save_icon = c_ubyte(data[0x60])
-        self.save_icon_dlc = c_ubyte(data[0x68])
-        characters = data[0x1880:0xB480]
-        self.keychain_upgrades = (c_ubyte*24)(*data[0xBB78:0xBB90])
-        self.map_path = bytearray(data[0xBBA0:0xBCA0])
-        self.map_spawn = bytearray(data[0xBCA0:0xBCE0])
-        self.player_script = bytearray(data[0xBCE0:0xBDE0])
-        self.player_pawn = bytearray(data[0xBDE0:0xBEE0])
+    def __parse_data(self):
+        self.header = bytearray(self.mv[0x00:0x04]).decode() # "S@vE"
+        self.filesize = U32(0x04, self.mv)
+        self.major_version = U16(0x08, self.mv)
+        self.minor_version = U16(0x0A, self.mv)
+        self.checksum = U32(0x0C, self.mv)
+        self.difficulty = U8(0x14, self.mv)
+        self.world_logo = U8(0x18, self.mv)
+        self.playtime = U32(0x20, self.mv)
+        self.exp = U32(0x24, self.mv)
+        self.munny = U32(0x28, self.mv)
+        self.level = U8(0x2C, self.mv)
+        self.desire = U8(0x30, self.mv)
+        self.power = U8(0x31, self.mv)
+        self.party = Array(U8, 5, 0x32, self.mv)
+        self.save_clear = U8(0x39, self.mv)
+        self.save_location = U8(0x54, self.mv)
+        self.save_icon = U8(0x60, self.mv)
+        self.save_icon_dlc = U8(0x68, self.mv)
+        characters = self.mv[0x1880:0xB480]
+        self.keychain_upgrades = Array(U8, 24, 0xBB78, self.mv)
+        self.map_path = bytearray(self.mv[0xBBA0:0xBCA0])
+        self.map_spawn = bytearray(self.mv[0xBCA0:0xBCE0])
+        self.player_script = bytearray(self.mv[0xBCE0:0xBDE0])
+        self.player_pawn = bytearray(self.mv[0xBDE0:0xBEE0])
     
     def save(self):
-        mv = memoryview(self.data)
-        mv[0x14] = self.difficulty.value
-        mv[0x18] = self.world_logo.value
-        mv[0x20:0x24] = bytearray(self.playtime)
-        mv[0x24:0x28] = bytearray(self.exp)
-        mv[0x28:0x2C] = bytearray(self.munny)
-        mv[0x2C] = self.level.value
-        mv[0x30] = self.desire.value
-        mv[0x31] = self.power.value
-        mv[0x32:0x37] = bytearray(self.party)
-        mv[0xBBA0:0xBCA0] = self.map_path
-        mv[0xBCA0:0xBCE0] = self.map_spawn
-        mv[0xBCE0:0xBDE0] = self.player_script
-        mv[0xBDE0:0xBEE0] = self.player_pawn
-        
         # Checksum calculation right before dumping
         self.checksum.value = zlib.crc32(bytearray(self.data[0x10:0x10+self.filesize.value]))
-        mv[0x0C:0x10] = bytearray(self.checksum)
-        
+
         os.makedirs("saved/kh3/decrypted", exist_ok=True)
         with open(os.path.join("saved", "kh3", "decrypted", self.filename), "wb") as file:
             file.write(self.data)
