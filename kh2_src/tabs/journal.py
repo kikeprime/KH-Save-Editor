@@ -15,10 +15,13 @@ def __create_journal(tab):
         return create_character_files()
     if tab == "Bestiary":
         return create_bestiary()
+    if tab == "Treasures":
+        return create_treasures()
     if tab == "Minigames":
         return create_minigames()
 
 def create_journal():
+    kh2 = utils.kh2
     jtabs = dcc.Tabs(id="JournalTabs", value="Journal Flags")
     jtabs.children = [
         dcc.Tab(label="Journal Flags", value="Journal Flags"),
@@ -26,7 +29,7 @@ def create_journal():
         dcc.Tab(label="Character Files", value="Character Files"),
         dcc.Tab(label="Bestiary", value="Bestiary"),
         dcc.Tab(label="Treasures", value="Treasures"),
-        dcc.Tab(label="Puzzle Pieces", value="Puzzle Pieces"),
+        *([dcc.Tab(label="Puzzle Pieces", value="Puzzle Pieces")] if kh2.fm else []),
         dcc.Tab(label="Maps", value="Maps"),
         dcc.Tab(label="Missions", value="Missions"),
         dcc.Tab(label="Minigames", value="Minigames"),
