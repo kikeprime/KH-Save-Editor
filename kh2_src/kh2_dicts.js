@@ -2,13 +2,14 @@ import * as d from "./dicts/index.js"
 
 
 export default function dicts(obj) {
-    main_dicts(obj)
-    d.item_dicts(obj)
-    d.stock_dicts(obj)
-    d.command_dicts(obj)
-    d.world_dicts(obj)
-    d.bestiary_dicts(obj)
-    d.minigame_dicts(obj)
+    main_dicts(obj);
+    d.item_dicts(obj);
+    d.stock_dicts(obj);
+    d.command_dicts(obj);
+    d.world_dicts(obj);
+    d.bestiary_dicts(obj);
+    d.minigame_dicts(obj);
+    d.treasure_dicts(obj);
 }
 
 function main_dicts(obj) {
@@ -26,7 +27,7 @@ function main_dicts(obj) {
         "Simba": 0x0A,
         "Tron": 0x0B,
         "Riku": 0x0C,
-    }
+    };
     // Drive Form structs
     obj.drive_form_dict = {
         "Valor Form": 0x00,
@@ -38,7 +39,7 @@ function main_dicts(obj) {
         "Unused 0x06": 0x06,
         "Unused 0x07": 0x07,
         "Dual Wield Roxas": 0x08,
-    }
+    };
     obj.drive_form_fm_dict = {
         "Valor Form": 0x00,
         "Wisdom Form": 0x01,
@@ -50,7 +51,7 @@ function main_dicts(obj) {
         "Unused 0x07": 0x07,
         "Unused 0x08": 0x08,
         "Dual Wield Roxas": 0x09,
-    }
+    };
     // Current Drive Form
     obj.form_dict = {
         "Base Sora": 0x00,
@@ -60,7 +61,7 @@ function main_dicts(obj) {
         "Final Form": 0x04,
         "Antiform": 0x05,
         "King Mickey": 0x06,
-    }
+    };
     obj.form_fm_dict = {
         "Base Sora": 0x00,
         "Valor Form": 0x01,
@@ -70,12 +71,12 @@ function main_dicts(obj) {
         "Final Form": 0x05,
         "Antiform": 0x06,
         "King Mickey": 0x07,
-    }
+    };
     obj.summon_dict = {
         "None": 0x00,
         "Chicken Little": 0x01,
         "Genie": 0x02,
         "Stitch": 0x03,
         "Peter Pan": 0x04,
-    }
+    };
 }

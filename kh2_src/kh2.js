@@ -54,8 +54,8 @@ export default class KH2 {
             .forEach(([w, i]) => {
                 this.progress[w] = dt.Array(dt.U8, 0x20, 0x0E50 + i * 0x20, this.data);
             });
+        this.treasures = dt.Array(dt.U8, 0x31, 0x156C, this.data);
         this.munny = new dt.U32(0x1600, this.data);
-        this.playtimes = dt.Array(dt.U32, 0x15, 0x1604, this.data);
         this.difficulty = new dt.U8(0x1658, this.data);
         this.characters = [];
         Object.entries(this.character_dict)
@@ -104,6 +104,7 @@ export default class KH2 {
             .forEach(([w, i]) => {
                 this.progress[w] = dt.Array(dt.U8, 0x20, 0x0E50 + i * 0x20, this.data);
             });
+        this.treasures = dt.Array(dt.U8, 0x31, 0x156C, this.data);
         this.munny = new dt.U32(0x1600, this.data);
         this.playtimes = dt.Array(dt.U32, 0x15, 0x1604, this.data);
         this.difficulty = new dt.U8(0x1658, this.data);
@@ -161,6 +162,7 @@ export default class KH2 {
             .forEach(([w, i]) => {
                 this.progress[w] = dt.Array(dt.U8, 0x20, 0x1C90 + i * 0x20, this.data);
             });
+        this.treasures = dt.Array(dt.U8, 0x34, 0x23AC, this.data);
         this.munny = new dt.U32(0x2440, this.data);
         this.playtimes = dt.Array(dt.U32, 0x15, 0x2444, this.data);
         this.difficulty = new dt.U8(0x2498, this.data);

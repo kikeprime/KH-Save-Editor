@@ -99,8 +99,10 @@ export function create_general() {
     kh3div.innerHTML = `
     <div>
         ${playtime}
-        ${power}
-        ${desire}
+        <div style="display: flex; gap: 20px">
+            ${power}
+            ${desire}
+        </div>
         ${munny}
         ${exp}
         ${difficulty}

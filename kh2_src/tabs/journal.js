@@ -43,12 +43,10 @@ export function create_journal() {
                 tabs.create_bestiary();
                 break;
             }
-            /*
             case "Treasures": {
                 tabs.create_treasures();
                 break;
             }
-            */
             case "Minigames": {
                 tabs.create_minigames();
                 break;
