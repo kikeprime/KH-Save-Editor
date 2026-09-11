@@ -114,6 +114,9 @@ export class KH2Minigame {
             case 0: {
                 return `No Score (${this.score.value})`;
             }
+            case 1: {
+                return `No Score, Type: 1 (${this.score.value})`;
+            }
             case 2: {
                 return `Round ${this.score.value}`;
             }
