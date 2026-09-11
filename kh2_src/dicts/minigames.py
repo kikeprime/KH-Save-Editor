@@ -109,6 +109,7 @@ def minigame_dicts(obj):
     }
     obj.minigame_type_dict = {
         0x00: "No Score",
+        0x01: "No Score (Mushroom XIII)",
         0x02: "Round",
         0x03: "Points",
         0x04: "Time",
