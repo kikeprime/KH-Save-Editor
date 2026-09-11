@@ -83,13 +83,13 @@ class KH2:
         self.difficulty = U8(0x1658, self.data)
         characters = data[0x1660:0x2360]
         self.characters = [
-            KH2Character(k, characters[v*0x100:(v+1)*0x100])\
+            KH2Character(k, 0x1660 + v * 0x100, self.data)\
             for k, v in self.character_dict.items()
         ]
         self.path = U8(0x166E, self.data) # One of Sora's unknown values
         forms = data[0x2360:0x24C8]
         self.forms = [
-            KH2DriveForm(k, forms[v*0x28:(v+1)*0x28])\
+            KH2DriveForm(k, 0x2360 + v * 0x28, self.data)\
             for k, v in self.drive_form_dict.items()
         ]
         self.current_form = U8(0x24C8, self.data)
@@ -108,7 +108,7 @@ class KH2:
         self.limit_usage = Array(U16, 0x15, 0x2CEC, self.data)
         
         minigames = data[0x2E5C:0x2F3C]
-        self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
+        self.minigames = [KH2Minigame(self.minigame_list[i], 0x2E5C + i * 8, self.data) for i in range(len(minigames)//8)]
     
     def __parse_data_vanilla_usa(self, data):
         placescripts = data[0x10:0x0E50]
@@ -129,13 +129,13 @@ class KH2:
         self.difficulty = U8(0x1658, self.data)
         characters = data[0x1660:0x22C4]
         self.characters = [
-            KH2Character(k, characters[v*0xF4:(v+1)*0xF4])\
+            KH2Character(k, 0x1660 + v * 0xF4, self.data)\
             for k, v in self.character_dict.items()
         ]
         self.path = U8(0x166E, self.data) # One of Sora's unknown values
         forms = data[0x22C4:0x242C]
         self.forms = [
-            KH2DriveForm(k, forms[v*0x28:(v+1)*0x28])\
+            KH2DriveForm(k, 0x22C4 + v * 0x28, self.data)\
             for k, v in self.drive_form_dict.items()
         ]
         self.current_form = U8(0x242C, self.data)
@@ -156,7 +156,7 @@ class KH2:
         self.limit_usage = Array(U16, 0x15, 0x2C50, self.data)
         
         minigames = data[0x2DC0:0x2EA0]
-        self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
+        self.minigames = [KH2Minigame(self.minigame_list[i], 0x2DC0 + i * 8, self.data) for i in range(len(minigames)//8)]
         
         self.item_command = U8(0x36E8, self.data)
         
@@ -186,13 +186,13 @@ class KH2:
         self.puzzles = Array(U8, 0x30, 0x24A0, self.data)
         characters = data[0x24F0:0x32F4]
         self.characters = [
-            KH2FMCharacter(k, characters[v*0x114:(v+1)*0x114])\
+            KH2FMCharacter(k, 0x24F0 + v * 0x114, self.data)\
             for k, v in self.character_dict.items()
         ]
         self.path = U8(0x24FE, self.data) # One of Sora's unknown values
         forms = data[0x32F4:0x3524]
         self.forms = [
-            KH2FMDriveForm(k, forms[v*0x38:(v+1)*0x38])\
+            KH2DriveForm(k, 0x32F4 + v * 0x38, self.data)\
             for k, v in self.drive_form_fm_dict.items()
         ]
         self.current_form = U8(0x3524, self.data)
@@ -216,7 +216,7 @@ class KH2:
         self.rc_usage = Array(U16, 0x33, 0x394A, self.data)
         self.limit_usage = Array(U16, 0x15, 0x3D48, self.data)
         minigames = data[0x3DB4:0x3EF4]
-        self.minigames = [KH2Minigame(self.minigame_list[i], minigames[i*8:(i+1)*8]) for i in range(len(minigames)//8)]
+        self.minigames = [KH2Minigame(self.minigame_list[i], 0x3DB4 + i * 8, self.data) for i in range(len(minigames)//8)]
         self.form_usage = Array(U16, 0x0A, 0x3FD6, self.data)
         self.weapon_backup = U16(0x3FEA, self.data)
         # At 0x4438 starts something like a 0x60 long struct 15? times.
@@ -234,13 +234,8 @@ class KH2:
         self.shortcut_sets_refined = Array(U16, 3*4, 0x10108, self.data)
     
     def __save_shared(self):
-        for c in self.characters:
-            c.save(self)
-        for f in self.forms:
-            f.save(self)
-        for mg in self.minigames:
-            mg.save(self)
-    
+        pass
+
     def __save_vanilla_jp(self):
         for i, w in self.world_dict.items():
             for j in range(len(self.progress[w])):
