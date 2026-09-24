@@ -215,7 +215,7 @@ encode_table = {v: k for k, v in decode_table.items()} | \
                {"{" + f"{i:#02X}" + "}": i for i in range(0xFF) if i not in decode_table.keys()} | \
                {"{" + f"0X{i:02x}" + "}": i for i in range(0xFF) if i not in decode_table.keys()}
 decode_table_jp = {
-    0x01: " ",
+   0x01: " ",
    0x21: "0",
    0x22: "1",
    0x23: "2",
@@ -459,25 +459,35 @@ def kh1us_encode(input_str):
 def kh1us_decode(input_bytes):
     isseq = False
     iscolor = False
+    isunk = False
     s = 0
     seq = []
     out_chars = []
     for b in input_bytes:
         if b == 0x00 and not isseq:
+            out_chars.append(decode_table.get(b, " "))
             break
         if b == 0x09:
             isseq = True
         if b == 0x08:
             iscolor = True
             isseq = True
+        if b == 0x0D:
+            isunk = True
+            isseq = True
         if isseq:
             seq.append(b)
             s += 1
-        if not iscolor and s == 2:
+        if not iscolor and not isunk and s == 2:
             b = int.from_bytes(seq)
             s = 0
             seq = []
             isseq = False
+        if isunk and s == 3:
+            b = int.from_bytes(seq)
+            s = 0
+            isseq = False
+            isunk = False
         if s == 5:
             b = int.from_bytes(seq)
             s = 0
