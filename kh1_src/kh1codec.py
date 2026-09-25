@@ -5,9 +5,9 @@
 import codecs
 
 decode_table = {
-    0x00: "\x00",
+    0x00: "{eol}",
     0x01: " ",
-    0x02: "\n", # the encode table will include Crazycatz00's {lf}
+    0x02: "{lf}", # the encode table will include Crazycatz00's {lf}
     # 0x08 will be handled in the functions
     # 0x08 is the color control code
     # color is RGBA so 0x08 + 4 bytes
