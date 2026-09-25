@@ -210,10 +210,10 @@ decode_table = {
 decode_table = decode_table | \
                {i: "{" + f"0x{i:02X}" + "}" for i in range(0xFF) if i not in decode_table.keys()}
 encode_table = {v: k for k, v in decode_table.items()} | \
-               {"{" + f"0x{i:02X}" + "}": i for i in range(0xFF) if i not in decode_table.keys()} | \
-               {"{" + f"{i:#02x}" + "}": i for i in range(0xFF) if i not in decode_table.keys()} | \
-               {"{" + f"{i:#02X}" + "}": i for i in range(0xFF) if i not in decode_table.keys()} | \
-               {"{" + f"0X{i:02x}" + "}": i for i in range(0xFF) if i not in decode_table.keys()}
+               {"{" + f"0x{i:02X}" + "}": i for i in range(0xFF)} | \
+               {"{" + f"{i:#02x}" + "}": i for i in range(0xFF)} | \
+               {"{" + f"{i:#02X}" + "}": i for i in range(0xFF)} | \
+               {"{" + f"0X{i:02x}" + "}": i for i in range(0xFF)}
 decode_table_jp = {
    0x01: " ",
    0x21: "0",
@@ -452,6 +452,8 @@ def kh1us_encode(input_str):
         if not isseq:
             n = encode_table.get(ch, 0x01)
             out_bytes += bytearray(n.to_bytes((n.bit_length() + 7) // 8, "big"))
+            if (n == 0):
+                out_bytes += b"\0"
         i += 1
     out_bytes.append(0x00)
     return (bytes(out_bytes), len(input_str))
