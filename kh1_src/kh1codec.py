@@ -208,12 +208,12 @@ decode_table = {
     0xfc: "《",
 }
 decode_table = decode_table | \
-               {i: "{" + f"0x{i:02X}" + "}" for i in range(0xFF) if i not in decode_table.keys()}
+               {i: "{" + f"0x{i:02X}" + "}" for i in range(0x100) if i not in decode_table.keys()}
 encode_table = {v: k for k, v in decode_table.items()} | \
-               {"{" + f"0x{i:02X}" + "}": i for i in range(0xFF)} | \
-               {"{" + f"{i:#02x}" + "}": i for i in range(0xFF)} | \
-               {"{" + f"{i:#02X}" + "}": i for i in range(0xFF)} | \
-               {"{" + f"0X{i:02x}" + "}": i for i in range(0xFF)}
+               {"{" + f"0x{i:02X}" + "}": i for i in range(0x100)} | \
+               {"{" + f"{i:#02x}" + "}": i for i in range(0x100)} | \
+               {"{" + f"{i:#02X}" + "}": i for i in range(0x100)} | \
+               {"{" + f"0X{i:02x}" + "}": i for i in range(0x100)}
 decode_table_jp = {
    0x01: " ",
    0x21: "0",
@@ -437,6 +437,7 @@ encode_table_jp = {v: k for k, v in decode_table_jp.items() if k != 0x00}
 def kh1us_encode(input_str):
     isseq = False
     seq = []
+    i = 0
     out_bytes = bytearray()
     for ch in input_str:
         if ch == "{" and "}" in input_str[i:]:
@@ -451,6 +452,8 @@ def kh1us_encode(input_str):
         if not isseq:
             n = encode_table.get(ch, 0x01)
             out_bytes += bytearray(n.to_bytes((n.bit_length() + 7) // 8 if n != 0 else 1, "big"))
+        i += 1
+    # out_bytes.append(0x00)
     return (bytes(out_bytes), len(input_str))
 
 def kh1us_decode(input_bytes):
