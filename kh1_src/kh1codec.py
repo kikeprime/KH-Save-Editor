@@ -437,7 +437,6 @@ encode_table_jp = {v: k for k, v in decode_table_jp.items() if k != 0x00}
 def kh1us_encode(input_str):
     isseq = False
     seq = []
-    i = 0
     out_bytes = bytearray()
     for ch in input_str:
         if ch == "{" and "}" in input_str[i:]:
@@ -451,11 +450,7 @@ def kh1us_encode(input_str):
             seq = []
         if not isseq:
             n = encode_table.get(ch, 0x01)
-            out_bytes += bytearray(n.to_bytes((n.bit_length() + 7) // 8, "big"))
-            if (n == 0):
-                out_bytes += b"\0"
-        i += 1
-    out_bytes.append(0x00)
+            out_bytes += bytearray(n.to_bytes((n.bit_length() + 7) // 8 if n != 0 else 1, "big"))
     return (bytes(out_bytes), len(input_str))
 
 def kh1us_decode(input_bytes):
