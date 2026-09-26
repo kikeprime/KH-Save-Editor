@@ -492,10 +492,12 @@ def kh1us_decode(input_bytes):
                     out_chars.append("{" + f"0x{input_bytes[i+4]:02X}" + "}")
                     i += 4
             case 0x09:
-                out_chars.append("{" + f"0x{b:02X}" + "}")
                 if (i + 1 < len(input_bytes)):
-                    out_chars.append("{" + f"0x{input_bytes[i+1]:02X}" + "}")
+                    b = int.from_bytes(input_bytes[i:i+2])
+                    out_chars.append(decode_table.get(b, "{" + f"0x{b:02X}" + "}"))
                     i += 1
+                else:
+                    out_chars.append("{" + f"0x{b:02X}" + "}")
             case 0x0D:
                 out_chars.append("{" + f"0x{b:02X}" + "}")
                 if (i + 2 < len(input_bytes)):
