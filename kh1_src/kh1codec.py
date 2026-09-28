@@ -214,6 +214,10 @@ encode_table = {v: k for k, v in decode_table.items()} | \
                {"{" + f"{i:#02x}" + "}": i for i in range(0x100)} | \
                {"{" + f"{i:#02X}" + "}": i for i in range(0x100)} | \
                {"{" + f"0X{i:02x}" + "}": i for i in range(0x100)}
+encode_table["ő"] = encode_table["ô"]
+encode_table["Ő"] = encode_table["Ô"]
+encode_table["ű"] = encode_table["û"]
+encode_table["ű"] = encode_table["Û"]
 decode_table_jp = {
     0x00: "{eol}",
     0x01: " ",
@@ -481,10 +485,10 @@ def kh1us_decode(input_bytes):
         b = input_bytes[i]
         match b:
             case 0x00:
-                out_chars.append(decode_table.get(b, "{" + f"0x{b:02X}" + "}"))
+                out_chars.append(decode_table[b])
                 break
             case 0x08:
-                out_chars.append("{" + f"0x{b:02X}" + "}")
+                out_chars.append(decode_table[b])
                 if (i + 4 < len(input_bytes)):
                     out_chars.append("{" + f"0x{input_bytes[i+1]:02X}" + "}")
                     out_chars.append("{" + f"0x{input_bytes[i+2]:02X}" + "}")
@@ -497,31 +501,42 @@ def kh1us_decode(input_bytes):
                     out_chars.append(decode_table.get(b, "{" + f"0x{b:02X}" + "}"))
                     i += 1
                 else:
-                    out_chars.append("{" + f"0x{b:02X}" + "}")
+                    out_chars.append(decode_table[b])
             case 0x0C | 0x0F | 0x13 | 0x14:
-                out_chars.append("{" + f"0x{b:02X}" + "}")
+                out_chars.append(decode_table[b])
                 if (i + 1 < len(input_bytes)):
                     out_chars.append("{" + f"0x{input_bytes[i+1]:02X}" + "}")
                     i += 1
             case 0x0D | 0x0E:
-                out_chars.append("{" + f"0x{b:02X}" + "}")
+                out_chars.append(decode_table[b])
                 if (i + 2 < len(input_bytes)):
                     out_chars.append("{" + f"0x{input_bytes[i+1]:02X}" + "}")
                     out_chars.append("{" + f"0x{input_bytes[i+2]:02X}" + "}")
                     i += 2
             case _:
-                out_chars.append(decode_table.get(b, "{" + f"0x{b:02X}" + "}"))
+                out_chars.append(decode_table[b])
         i += 1
     return ("".join(out_chars), len(input_bytes))
 
 def kh1jp_encode(input_str):
+    isseq = False
+    seq = []
+    i = 0
     out_bytes = bytearray()
     for ch in input_str:
-        if encode_table_jp.get(ch, 0x01) > 255:
-            out_bytes += bytearray(encode_table_jp.get(ch, 0x01).to_bytes(2, "big"))
-        else:
-            out_bytes.append(encode_table_jp.get(ch, 0x01))
-    out_bytes.append(0x00)
+        if ch == "{" and "}" in input_str[i:]:
+            isseq = True
+        if isseq and ch == "}":
+            ch = "".join(seq) + ch
+            isseq = False
+        if isseq:
+            seq.append(ch)
+        elif len(seq) > 0:
+            seq = []
+        if not isseq:
+            n = encode_table_jp.get(ch, 0x01)
+            out_bytes += bytearray(n.to_bytes((n.bit_length() + 7) // 8 if n != 0 else 1, "big"))
+        i += 1
     return (bytes(out_bytes), len(input_str))
 
 def kh1jp_decode(input_bytes):
@@ -531,14 +546,13 @@ def kh1jp_decode(input_bytes):
         b = input_bytes[i]
         if b == 0x0D and i + 1 < len(input_bytes):
             out_chars.append("{" + f"0x{b:02X}" + "}")
-            b = input_bytes[i+1]
-            out_chars.append("{" + f"0x{b:02X}" + "}")
+            out_chars.append("{" + f"0x{input_bytes[i+1]:02X}" + "}")
             i += 2
             continue
         if 0x18 <= b <= 0x1E and i + 1 < len(input_bytes):
             b = int.from_bytes(input_bytes[i:i+2])
             i += 1
-        out_chars.append(decode_table_jp.get(b, "{" + f"0x{b:02X}" + "}"))
+        out_chars.append(decode_table_jp.get(b, "{" + f"0x{b//0x100:02X}" + "}" + "{" + f"0x{b%0x100:02X}" + "}"))
         i += 1
         if b == 0x00:
             break
