@@ -31,6 +31,15 @@ def __create_treasures(tab):
 def __create_treasures_unique(tab):
     kh1 = utils.kh1
     unique = None
+    if tab == "Traverse Town":
+        unique = html.Div([
+            dcc.Checklist(
+                options=[{"label": "1st District Balcony Barrel (vanilla JP only): Postcard", "value": (1 << 5)}],
+                value=[kh1.balcony_barrel.value & (1 << 5)],
+                id="Balcony Barrel",
+                style={"margin-top": 10},
+            ),
+        ])
     if tab == "Atlantica":
         clams = html.Div([
             html.Div([
@@ -100,6 +109,16 @@ def journal_treasures_callback(values, ids):
             kh1.treasures[v // 16] |= (1 << v % 16)
         else:
             kh1.treasures[v // 16] &= ~(1 << v % 16)
+
+@callback(
+    Input("Balcony Barrel", "value"),
+)
+def balcony_barrel_callback(value):
+    kh1 = utils.kh1
+    if (1 << 5) in value:
+        kh1.balcony_barrel.value |= (1 << 5)
+    else:
+        kh1.balcony_barrel.value &= ~(1 << 5)
 
 @callback(
     Input({"type": "Clam", "index": ALL}, "value"),
