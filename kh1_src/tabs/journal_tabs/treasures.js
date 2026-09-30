@@ -40,6 +40,21 @@ export function create_treasures() {
             }
         </div>`;
         switch (kh1jtrtabs.value) {
+            case "Traverse Town": {
+                kh1jtrdiv.innerHTML += `
+                <div>
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            id=balcony_barrel
+                            ${window.kh1.balcony_barrel.value & (1 << 5) ? "checked" : ""}
+                        >
+                        1st District Balcony Barrel (vanilla JP only): Postcard
+                    </label>
+                </div>`;
+                balcony_barrel_callbacks();
+                break;
+            }
             case "Atlantica": {
                 kh1jtrdiv.innerHTML += `
                 <div id=clams>
@@ -118,6 +133,16 @@ function treasures_callbacks() {
             window.kh1.treasures[idx] |= (1 << bit);
         else
             window.kh1.treasures[idx] &= ~(1 << bit);
+    });
+}
+
+function balcony_barrel_callbacks() {
+    const balcony_barrel = document.getElementById("balcony_barrel");
+    balcony_barrel.addEventListener("change", () => {
+        if (balcony_barrel.checked)
+            window.kh1.balcony_barrel.value |= (1 << 5);
+        else
+            window.kh1.balcony_barrel.value &= ~(1 << 5);
     });
 }
 
