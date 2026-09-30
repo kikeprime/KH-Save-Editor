@@ -274,6 +274,7 @@ class KH1:
         # The Trinity flags spread across these.
         # The OC Lobby Push isn't here but at 0x1E10 bit index 0.
         self.trinity_flags = Array(U8, 0x48, 0x1C6C, self.data)
+        self.balcony_barrel = U8(0x1CC0, self.data)
         
         self.clams = Array(U8, 2, 0x1DA9, self.data)
         self.large_chest_state = U8(0x1DAB, self.data)
