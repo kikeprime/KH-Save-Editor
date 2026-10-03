@@ -215,7 +215,16 @@ class KH1:
         self.deaths = U16(0x084E, self.data)
         # data[0x0850:0x0856] is unknown.
         self.weapon_usage = U16(0x0856, self.data)
-
+        
+        # data[0x0C00] is the start of the EVDL flags
+        self.pos = Array(U8, 3, 0x0C0E, self.data)
+        self.navi_gummi = U8(0x0C40, self.data)
+        self.earthshine = U8(0x0C41, self.data)
+        self.di_day1_riku = U8(0x0C42, self.data)
+        self.di_day2_trio = U8(0x0C43, self.data)
+        self.di_day1_coconut = U8(0x0C44, self.data)
+        self.di_day1_kairi_potion = U8(0x0C45, self.data)
+        self.di_day1_kairi_hipotion = U8(0x0C46, self.data)
         self.dalmatian_event = U8(0x0E3A, self.data)
         self.dalmatian_gifts = Array(U8, 10, 0x0E3C, self.data)
         # data[0x0E46] is unknown.
@@ -249,6 +258,7 @@ class KH1:
         self.weapon_backup = U8(0x1114, self.data)
         
         self.slides = Array(U8, 6, 0x1207, self.data)
+        self.gorrillas_saved = Array(U8, 5, 0x120D, self.data)
         self.slides_watched = U8(0x1212, self.data)
 
         self.world_progresses = Array(U8, 20, 0x1500, self.data)
@@ -268,13 +278,18 @@ class KH1:
         self.reports = Array(U8, 2, 0x19C0, self.data)
         self.journal_unlock = U8(0x19C4, self.data) # bit index 3, 0x1F for completed game so needs further investigation
         self.synth_flags = Array(U8, 5, 0x19C8, self.data)
-        
+        # data[0x1C00] is the start of the EVDL flags if ID is >=0xD40
         self.trinity_unlock = U8(0x1C1B, self.data)
         self.trinity_count = Array(U8, 6, 0x1C66, self.data) # Jump, Unused, Charge, Ladder, Push, Detect
         # The Trinity flags spread across these.
         # The OC Lobby Push isn't here but at 0x1E10 bit index 0.
         self.trinity_flags = Array(U8, 0x48, 0x1C6C, self.data)
-        self.balcony_barrel = U8(0x1CC0, self.data)
+        
+        self.safe_postcard = U8(0x1CB7, self.data)
+        self.gizmo_switches = U8(0x1CBD, self.data)
+        self.gizmo_postcards = U8(0x1CBE, self.data)
+        self.postcards_mailed = U8(0x1CBF, self.data)
+        self.misc_postcards = U8(0x1CC0, self.data)
         
         self.clams = Array(U8, 2, 0x1DA9, self.data)
         self.large_chest_state = U8(0x1DAB, self.data)
