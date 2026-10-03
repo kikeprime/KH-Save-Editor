@@ -33,11 +33,54 @@ def __create_treasures_unique(tab):
     unique = None
     if tab == "Traverse Town":
         unique = html.Div([
+            html.H3("Postcards"),
             dcc.Checklist(
-                options=[{"label": "1st District Balcony Barrel (vanilla JP only): Postcard", "value": (1 << 5)}],
-                value=[kh1.balcony_barrel.value & (1 << 5)],
-                id="Balcony Barrel",
+                options=[{"label": "1st District Safe", "value": 1}],
+                value=[kh1.safe_postcard.value],
+                id="Safe Postcard",
                 style={"margin-top": 10},
+            ),
+            dcc.Checklist(
+                options=[
+                    {"label": "Gizmo Shop 1", "value": (1 << 5)},
+                    {"label": "Gizmo Shop 2", "value": (1 << 6)},
+                ],
+                value=[kh1.gizmo_postcards.value & (1 << i) for i in [5, 6]],
+                id="Gizmo Postcards",
+                style={"margin-top": 10},
+                labelStyle={"margin-top": 10},
+            ),
+            dcc.Checklist(
+                options=[
+                    {"label": "Geppetto's House Shelf", "value": (1 << 3)},
+                    {"label": "Item Workshop Poster", "value": (1 << 4)},
+                    {"label": "1st District Balcony Barrel (vanilla JP only)", "value": (1 << 5)},
+                    {"label": "3rd District Balcony", "value": (1 << 6)},
+                    {"label": "Item Shop Fan", "value": (1 << 7)},
+                ],
+                value=[kh1.misc_postcards.value & (1 << i) for i in range(8)],
+                id="Misc Postcards",
+                style={"margin-top": 10},
+                labelStyle={"margin-top": 10},
+            ),
+            dcc.Checklist(
+                options=[
+                    {"label": "Gizmo Shop switches are activated", "value": (1 << 0)},
+                    {"label": "Gizmo Shop Postcards are ready", "value": (1 << 1)},
+                ],
+                value=[kh1.gizmo_switches.value & (1 << i) for i in range(8)],
+                id="Gizmo Switches",
+                style={"margin-top": 10},
+                labelStyle={"margin-top": 10},
+            ),
+            dcc.Markdown("Postcards Mailed:"),
+            dcc.Input(
+                id="Postcards Mailed",
+                type="number",
+                value=kh1.postcards_mailed.value,
+                min=0,
+                max=10,
+                step=1,
             ),
         ])
     if tab == "Atlantica":
@@ -111,14 +154,41 @@ def journal_treasures_callback(values, ids):
             kh1.treasures[v // 16] &= ~(1 << v % 16)
 
 @callback(
-    Input("Balcony Barrel", "value"),
+    Input("Safe Postcard", "value"),
+    Input("Gizmo Postcards", "value"),
+    Input("Misc Postcards", "value"),
+    Input("Gizmo Switches", "value"),
+    Input("Postcards Mailed", "value"),
 )
-def balcony_barrel_callback(value):
+def postcards_callback(
+    safe_postcard,
+    gizmo_postcards,
+    misc_postcards,
+    gizmo_switches,
+    postcards_mailed,
+):
     kh1 = utils.kh1
-    if (1 << 5) in value:
-        kh1.balcony_barrel.value |= (1 << 5)
+    if 1 in safe_postcard:
+        kh1.safe_postcard.value = 1
     else:
-        kh1.balcony_barrel.value &= ~(1 << 5)
+        kh1.safe_postcard.value = 0
+    for i in range(8):
+        if (1 << i) in gizmo_postcards:
+            kh1.gizmo_postcards.value |= (1 << i)
+        elif i in [5, 6]:
+            kh1.gizmo_postcards.value &= ~(1 << i)
+        if (1 << i) in misc_postcards:
+            kh1.misc_postcards.value |= (1 << i)
+        else:
+            kh1.misc_postcards.value &= ~(1 << i)
+        if (1 << i) in gizmo_switches:
+            kh1.gizmo_switches.value |= (1 << i)
+        else:
+            kh1.gizmo_switches.value &= ~(1 << i)
+    try:
+        kh1.postcards_mailed.value = postcards_mailed
+    except:
+        pass
 
 @callback(
     Input({"type": "Clam", "index": ALL}, "value"),
