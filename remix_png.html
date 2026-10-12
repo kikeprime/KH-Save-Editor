@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>KH Save Editor Online</title>
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    </head>
+    <body>
+        <div style="margin-bottom: 10px">
+            <div>
+                <h1 style="color: #0088CE; font-size: 30px">
+                    Kingdom Hearts Remix PNG Editor    <img src="assets/favicon.ico" height="30">
+                </h1>
+            </div>
+            <div>
+                <h2 for="game">Select Game:</h2>
+                <select id="game">
+                    <option value="kh1">Kingdom Hearts 1</option>
+                    <option value="khrecom">Re:Chain or Memories</option>
+                    <option value="kh2">Kingdom Hearts 2</option>
+                    <option value="khbbs">Birth By Sleep</option>
+                    <option value="khddd">Dream Drop Distance</option>
+                </select>
+            </div>
+            <div>
+                <div>
+                    <h2>Select PNG File:</h2>
+                    <input type="file" id="pngfile">
+                </div>
+                <div>
+                    <a href="./"><button>Back to KH Save Editor</button></a>
+                </div>
+            </div>
+            <div>
+                <h2>Download Edited PNG File:</h2>
+                <button id="save" style="width: 100px">Save</button>
+            </div>
+        </div>
+        <div id="app"></div>
+        <script type="module">
+            import RemixPNG from "./kh1_src/remix_png.js";
+            const app = document.getElementById("app");
+            const game = document.getElementById("game");
+            const pngfile = document.getElementById("pngfile");
+            pngfile.addEventListener("change", async () => {
+                const file = pngfile.files[0];
+                window.png = new RemixPNG(game.value, file);
+                await window.png.loaded;
+                png.menu();
+            });
+            const save = document.getElementById("save");
+            save.addEventListener("click", async () => {
+                try {
+                    const picker = await window.showSaveFilePicker({suggestedName: png.file.name});
+                    const writable = await picker.createWritable();
+                    await writable.write(png.save());
+                    await writable.close();
+                } catch (e) {
+                    if (e.name == "AbortError") return;
+                    return e;
+                }
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script>
+            eruda.init({
+                defaults: {
+                    displaySize: 70,
+                }
+            });
+            eruda.position({x: 600, y: 20});
+        </script>
+    </body>
+</html>

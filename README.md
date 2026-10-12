@@ -27,6 +27,8 @@ So I want to emphasize that the priority is to run the app on smartphones hence 
 # Features
 The feature list is in the `main` branch's README.
 
+Remix PC PNGs are now supported. Press the button to switch to that tool.
+
 ## What not to expect
 - No memory card file support. Use folder type memory card instead.
 - The online version CANNOT attach to emulators.
