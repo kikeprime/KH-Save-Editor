@@ -32,8 +32,11 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
 
 # Features
 ## What not to expect
-- Don't expect support for the PC Remix PNG files, use Kingdom Save Editor for them. I have no reason to copy that functionality.
 - No memory card file support. Use folder type memory card and put the save slot's folder into the repo's files folder that YOU need to create.
+
+## Remix PC PNG support
+- All legacy PC games' PNG files can be managed in the online version.
+- It's an independent tool from the save editor.
 
 ## KH1 features
 - Support for both vanilla and Final Mix save files.
@@ -61,6 +64,7 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - Battle Report (—Battle Record—):
         - Includes a few hidden statistics too.
     - Treasure Chest and Atlantica Clam flags. (Vanilla chest contents aren't always correct yet but FM should be 100% correct.)
+    - Postcard flags including the vanilla JP exclusive 1st District balcony barrel.
     - Synthesis flags
 - Config menu options. It reflects the PS2 versions' options. Some of them are repurposed in Remix versions. PS3 and PC differs in that PC repurposes more options.
 - World statuses and landing point flags
