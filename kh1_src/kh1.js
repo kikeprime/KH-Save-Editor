@@ -231,7 +231,12 @@ export default class KH1 {
         this.trinity_unlock = new dt.U8(0x1C1B, this.data);
         this.trinity_count = dt.Array(dt.U8, 6, 0x1C66, this.data);
         this.trinity_flags = dt.Array(dt.U8, 0x48, 0x1C6C, this.data);
-        this.balcony_barrel = new dt.U8(0x1CC0, this.data);
+
+        this.safe_postcard = new dt.U8(0x1CB7, this.data);
+        this.gizmo_switches = new dt.U8(0x1CBD, this.data);
+        this.gizmo_postcards = new dt.U8(0x1CBE, this.data);
+        this.postcards_mailed = new dt.U8(0x1CBF, this.data);
+        this.misc_postcards = new dt.U8(0x1CC0, this.data);
         
         this.clams = dt.Array(dt.U8, 2, 0x1DA9, this.data);
         this.large_chest_state = new dt.U8(0x1DAB, this.data);

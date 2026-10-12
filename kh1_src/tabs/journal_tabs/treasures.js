@@ -42,17 +42,109 @@ export function create_treasures() {
         switch (kh1jtrtabs.value) {
             case "Traverse Town": {
                 kh1jtrdiv.innerHTML += `
-                <div>
+                <h2>Postcards</h2>
+                <div id="safe_postcard">
                     <label style="display: flex; align-items: center">
                         <input
                             type="checkbox"
-                            id=balcony_barrel
-                            ${window.kh1.balcony_barrel.value & (1 << 5) ? "checked" : ""}
+                            value=${(1 << 0)}
+                            ${window.kh1.safe_postcard.value & (1 << 0) ? "checked" : ""}
                         >
-                        1st District Balcony Barrel (vanilla JP only): Postcard
+                        1st District Safe
+                    </label>
+                </div>
+                <div id="gizmo_postcards">
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 5)}
+                            ${window.kh1.gizmo_postcards.value & (1 << 5) ? "checked" : ""}
+                        >
+                        Gizmo Shop 1
+                    </label>
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 6)}
+                            ${window.kh1.gizmo_postcards.value & (1 << 6) ? "checked" : ""}
+                        >
+                        Gizmo Shop 2
+                    </label>
+                </div>
+                <div id="misc_postcards">
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 3)}
+                            ${window.kh1.misc_postcards.value & (1 << 3) ? "checked" : ""}
+                        >
+                        Geppeto's House Shelf
+                    </label>
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 4)}
+                            ${window.kh1.misc_postcards.value & (1 << 4) ? "checked" : ""}
+                        >
+                        Item Workshop Poster
+                    </label>
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 5)}
+                            ${window.kh1.misc_postcards.value & (1 << 5) ? "checked" : ""}
+                        >
+                        1st District Balcony Barrel (vanilla JP only)
+                    </label>
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 6)}
+                            ${window.kh1.misc_postcards.value & (1 << 6) ? "checked" : ""}
+                        >
+                        3rd District Balcony
+                    </label>
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 7)}
+                            ${window.kh1.misc_postcards.value & (1 << 7) ? "checked" : ""}
+                        >
+                        Item Shop Fan
+                    </label>
+                </div>
+                <div id="gizmo_switches">
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 0)}
+                            ${window.kh1.gizmo_switches.value & (1 << 0) ? "checked" : ""}
+                        >
+                        Gizmo Shop switches are activated
+                    </label>
+                    <label style="display: flex; align-items: center">
+                        <input
+                            type="checkbox"
+                            value=${(1 << 1)}
+                            ${window.kh1.gizmo_switches.value & (1 << 1) ? "checked" : ""}
+                        >
+                        Gizmo Shop Postcards are ready
+                    </label>
+                </div>
+                <div>
+                    <label style="display: flex; align-items: center; gap: 10px">
+                        Postcards Mailed:
+                        <input
+                            id="postcards_mailed"
+                            type="number"
+                            value=${window.kh1.postcards_mailed.value}
+                            min=0
+                            max=10
+                            step=1
+                        >
                     </label>
                 </div>`;
-                balcony_barrel_callbacks();
+                postcard_callbacks();
                 break;
             }
             case "Atlantica": {
@@ -136,13 +228,40 @@ function treasures_callbacks() {
     });
 }
 
-function balcony_barrel_callbacks() {
-    const balcony_barrel = document.getElementById("balcony_barrel");
-    balcony_barrel.addEventListener("change", () => {
-        if (balcony_barrel.checked)
-            window.kh1.balcony_barrel.value |= (1 << 5);
+function postcard_callbacks() {
+    const safe_postcard = document.getElementById("safe_postcard");
+    safe_postcard.addEventListener("change", (e) => {
+        if (e.target.checked)
+            window.kh1.safe_postcard.value |= e.target.value;
         else
-            window.kh1.balcony_barrel.value &= ~(1 << 5);
+            window.kh1.safe_postcard.value &= ~e.target.value;
+    });
+    const gizmo_postcards = document.getElementById("gizmo_postcards");
+    gizmo_postcards.addEventListener("change", (e) => {
+        if (e.target.checked)
+            window.kh1.gizmo_postcards.value |= e.target.value;
+        else
+            window.kh1.gizmo_postcards.value &= ~e.target.value;
+    });
+    const misc_postcards = document.getElementById("misc_postcards");
+    misc_postcards.addEventListener("change", (e) => {
+        if (e.target.checked)
+            window.kh1.misc_postcards.value |= e.target.value;
+        else
+            window.kh1.misc_postcards.value &= ~e.target.value;
+    });
+    const gizmo_switches = document.getElementById("gizmo_switches");
+    gizmo_switches.addEventListener("change", (e) => {
+        if (e.target.checked)
+            window.kh1.gizmo_switches.value |= e.target.value;
+        else
+            window.kh1.gizmo_switches.value &= ~e.target.value;
+    });
+    const postcards_mailed = document.getElementById("postcards_mailed");
+    postcards_mailed.addEventListener("change", () => {
+        if (postcards_mailed.validity.valid)
+            window.kh1.postcards_mailed.value = postcards_mailed.value;
+        postcards_mailed.value = window.kh1.postcards_mailed.value;
     });
 }
 

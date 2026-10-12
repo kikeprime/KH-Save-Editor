@@ -28,8 +28,7 @@ So I want to emphasize that the priority is to run the app on smartphones hence 
 The feature list is in the `main` branch's README.
 
 ## What not to expect
-- Don't expect support for the PC Remix PNG files, use Kingdom Save Editor for them. I have no reason to copy that functionality.
-- No memory card file support. Use folder type memory card and put the save slot's folder into the repo's files folder that YOU need to create.
+- No memory card file support. Use folder type memory card instead.
 - The online version CANNOT attach to emulators.
 
 # Documentation
