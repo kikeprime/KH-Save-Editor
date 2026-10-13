@@ -130,6 +130,9 @@ export default class RemixPNG {
                 <td>
                     ${`<button name=${entry.idx}>Replace</button>`}
                 </td>
+                <td>
+                    ${`<button name=${entry.idx}>Remove</button>`}
+                </td>
             </tr>`;
         }
         const rows = this.entries
@@ -206,6 +209,20 @@ export default class RemixPNG {
                         if (e.name == "AbortError") return;
                         return e;
                     }
+                }
+                if (button.innerHTML == "Remove") {
+                    entry.date_created.value = 0;
+                    const date_created_col = slots.querySelectorAll("td.date_created_col")[entry.idx];
+                    date_created_col.innerHTML = new Date(0).toLocaleString("hu-HU");
+                    entry.date_modified.value = 0;
+                    const date_modified_col = slots.querySelectorAll("td.date_modified_col")[entry.idx];
+                    date_modified_col.innerHTML = new Date(0).toLocaleString("hu-HU");
+                    entry.size.value = 0;
+                    const size_col = slots.querySelectorAll("td.size_col")[entry.idx];
+                    size_col.innerHTML = entry.size.value.toString(16).toUpperCase().padStart(5, "0");
+                    entry.name = "";
+                    slots.querySelectorAll("input")[entry.idx].value = "";
+                    this.buffer.fill(0, offset, offset+this.stride);
                 }
             });
         });
