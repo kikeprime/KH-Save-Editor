@@ -8,6 +8,7 @@ List of supported games:
 - Kingdom Hearts Birth by Sleep Japan
 - Kingdom Hearts Birth by Sleep USA (EU should be the same as this)
 - Kingdom Hearts Birth by Sleep Final Mix (Remix too)
+- Kingdom Hearts 0.2 Birth by Sleep —A fragmentary passage— (only in the online version)
 - Kingdom Hearts III + ReMind (PC only)
 
 The idea to write my own save editor came from the fact that Kingdom Save Editor is abandoned and it is very barebones in terms of knowledge and it can't be run on Android. For a university assignment I had to work with the ipywidgets Python package so I thought I could use it for my save editor. It turned out that it's not optimized for small screens so I was looking for GUI packages. I mostly stayed with Python since it can be easily used on Android. So after multiple restarts and a second university class influence I landed on Dash.
@@ -148,6 +149,11 @@ Create a files and a saved folder in the repo's folder. Put your save files or e
     - However, PSP KHBBSFM seems to have some kind of memory protection so you need to load the dumped save file to see the changes.
     - Works with both 32 bit and 64 bit exes.
     - Windows only.
+
+## KH0.2 features
+- Unlike the rest of the supported games, all slots are in one big file thus most config options affect all of them.
+- Both decrypted raw files and the PC PNG are directly supported because there's no need for slot management.
+- A few global config options.
 
 ## KH3 features
 - Support for both raw encrypted and decrypted save files
