@@ -5,6 +5,7 @@ List of supported games:
 - Kingdom Hearts II Japan
 - Kingdom Hearts II USA (EU should be the same as this)
 - Kingdom Hearts II Final Mix (Remix too)
+- Kingdom Hearts 0.2 Birth by Sleep —A fragmentary passage—
 - Kingdom Hearts III + ReMind (PC only)
 
 Only supported in the Dash version:

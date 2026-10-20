@@ -30,10 +30,22 @@
                         <option value="khbbsus">Vanilla USA BBS</option>
                         <option value="khbbsfm">KHBBSFM</option>
                     </optgroup>
+                    <optgroup label="Kingdom Hearts 0.2 Birth by Sleep">
+                        <option value="kh02">KH0.2 Raw</option>
+                        <option value="kh02pc">KH0.2 PNG</option>
+                    </optgroup>
                     <optgroup label="Kingdom Hearts 3">
                         <option value="kh3rmpc">KH3RM PC</option>
                     </optgroup>
                 </select>
+                <label style="display: flex; align-items: center; gap: 10px; margin-top: 20px">
+                    Account ID:
+                    <input
+                        id="account"
+                        type="text"
+                        value="1638"
+                    >
+                </label>
             </div>
             <div style="display: flex">
                 <div>
@@ -46,8 +58,9 @@
                     <input type="file" id="systemsavefile">
                 </div>
             </div>
-            <div>
+            <div style="display: flex; gap: 20px">
                 <a href="./remix_png.html"><button>Open KH Remix PNG Editor</button></a>
+                <a href="https://github.com/kikeprime/KH-Save-Editor"><button>Source Code</button></a>
             </div>
             <div>
                 <h2>Download Edited Save File(s):</h2>
@@ -58,9 +71,11 @@
         <script type="module">
             import KH1 from "./kh1_src/kh1.js";
             import KH2 from "./kh2_src/kh2.js";
+            import KH02 from "./kh02_src/kh02.js";
             import KH3 from "./kh3_src/kh3.js";
             const app = document.getElementById("app");
             const game = document.getElementById("game");
+            const account = document.getElementById("account");
             const mainsavefile = document.getElementById("mainsavefile");
             mainsavefile.addEventListener("change", async () => {
                 const file = mainsavefile.files[0];
@@ -70,6 +85,7 @@
                         window.kh2 = null;
                         window.kh3 = null;
                         window.khbbs = null;
+                        window.kh02 = null;
                         await window.kh1.loaded;
                         console.log(String(kh1));
                         kh1.menu();
@@ -80,6 +96,7 @@
                         window.kh2 = null;
                         window.kh3 = null;
                         window.khbbs = null;
+                        window.kh02 = null;
                         await window.kh1.loaded;
                         console.log(String(kh1));
                         kh1.menu();
@@ -90,6 +107,7 @@
                         window.kh2 = new KH2(file, 0);
                         window.kh3 = null;
                         window.khbbs = null;
+                        window.kh02 = null;
                         await window.kh2.loaded;
                         console.log(String(kh2));
                         kh2.menu();
@@ -100,6 +118,7 @@
                         window.kh2 = new KH2(file, 1);
                         window.kh3 = null;
                         window.khbbs = null;
+                        window.kh02 = null;
                         await window.kh2.loaded;
                         console.log(String(kh2));
                         kh2.menu();
@@ -110,6 +129,7 @@
                         window.kh2 = new KH2(file, 2);
                         window.kh3 = null;
                         window.khbbs = null;
+                        window.kh02 = null;
                         await window.kh2.loaded;
                         console.log(String(kh2));
                         kh2.menu();
@@ -118,11 +138,34 @@
                     case "kh3rmpc": {
                         window.kh1 = null;
                         window.kh2 = null;
-                        window.kh3 = new KH3(file, 3, "");
+                        window.kh3 = new KH3(file, 3, account.value);
                         window.khbbs = null;
+                        window.kh02 = null;
                         await window.kh3.loaded;
                         console.log(String(kh3));
                         kh3.menu();
+                        break;
+                    }
+                    case "kh02": {
+                        window.kh1 = null;
+                        window.kh2 = null;
+                        window.kh3 = null;
+                        window.khbbs = null;
+                        window.kh02 = new KH02(file, false, account.value);
+                        await window.kh02.loaded;
+                        console.log(String(kh02));
+                        kh02.menu();
+                        break;
+                    }
+                    case "kh02pc": {
+                        window.kh1 = null;
+                        window.kh2 = null;
+                        window.kh3 = null;
+                        window.khbbs = null;
+                        window.kh02 = new KH02(file, true, account.value);
+                        await window.kh02.loaded;
+                        console.log(String(kh02));
+                        kh02.menu();
                         break;
                     }
                     default:
@@ -203,10 +246,34 @@
                         }
                         break;
                     }
+                    case "kh02":
+                    case "kh02pc": {
+                        try {
+                            const picker = await window.showSaveFilePicker({suggestedName: kh02.file.name});
+                            const writable = await picker.createWritable();
+                            await writable.write(kh02.save(true));
+                            await writable.close();
+                        } catch (e) {
+                            if (e.name == "AbortError") return;
+                            return e;
+                        }
+                        if (kh02.pc) {
+                            try {
+                                const picker = await window.showSaveFilePicker({suggestedName: kh02.file.name+".decrypted"});
+                                const writable = await picker.createWritable();
+                                await writable.write(kh02.save(false));
+                                await writable.close();
+                            } catch (e) {
+                                if (e.name == "AbortError") return;
+                                return e;
+                            }
+                        }
+                        break;
+                    }
                 }
             });
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script src="https://cdn.jsdelivr.net/npm/eruda@3.4.2"></script>
         <script>
             eruda.init({
                 defaults: {
@@ -216,7 +283,7 @@
             eruda.position({x: 500, y: 20});
         </script>
         <script src="https://cdn.sheetjs.com/crc-32-latest/package/crc32.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-md5"></script>
-        <script src="https://cdn.jsdelivr.net/npm/aes-js/index.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-md5@0.9.2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/aes-js@3.1.2"></script>
     </body>
 </html>

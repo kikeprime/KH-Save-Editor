@@ -5,7 +5,7 @@ import * as tabs from "./tabs/index.js"
 
 export default class KH3 {
     constructor(file, version, account) {
-        this.file = file
+        this.file = file;
         this.version = version;
         this.get_account(account);
         this.get_key();
