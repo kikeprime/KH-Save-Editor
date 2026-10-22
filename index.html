@@ -8,10 +8,23 @@
     </head>
     <body>
         <div style="margin-bottom: 10px">
-            <div>
-                <h1 style="color: #0088CE; font-size: 30px">
-                    Kingdom Hearts Save Editor    <img src="assets/favicon.ico" height="30">
-                </h1>
+            <div style="display: flex; align-items: center; gap: 40px">
+                <div>
+                    <h1 style="font-size: 30px">
+                        Kingdom Hearts Save Editor    <img src="assets/favicon.ico" height="30">
+                    </h1>
+                </div>
+                <details>
+                    <summary>
+                        Series Selector
+                    </summary>
+                    <a href="https://kikeprime.github.io/KH-Save-Editor" style="display: block">
+                        <img src="assets/favicon.ico" height="32">
+                    </a>
+                    <a href="https://kikeprime.github.io/Orbal-Save-Editor" style="display: block">
+                        <img src="assets/Estelle (Sora FC Orbment).png" height="32">
+                    </a>
+                </details>
             </div>
             <div>
                 <h2 for="game">Select Game:</h2>
@@ -280,7 +293,7 @@
                     displaySize: 70,
                 }
             });
-            eruda.position({x: 500, y: 20});
+            eruda.position({x: 445, y: 64});
         </script>
         <script src="https://cdn.sheetjs.com/crc-32-latest/package/crc32.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-md5@0.9.2"></script>
